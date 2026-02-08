@@ -1,6 +1,21 @@
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { MarkdownPage } from "@/components/markdown-page"
 import { experiences } from "@/data/experiences"
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const exp = experiences.find((e) => e.id === params.id)
+  if (!exp) return {}
+  return {
+    title: `${exp.title} at ${exp.company}`,
+    description: exp.description,
+    openGraph: {
+      title: `${exp.title} at ${exp.company}`,
+      description: exp.description,
+      type: "article",
+    },
+  }
+}
 
 async function getExperienceContent(id: string) {
   const experience = experiences.find((e) => e.id === id)

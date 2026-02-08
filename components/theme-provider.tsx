@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { createContext, useContext, useEffect, useState } from "react"
+import { MotionConfig } from "framer-motion"
 
 type Theme = "dark" | "light" | "system"
 
@@ -66,7 +67,9 @@ export function ThemeProvider({
 
   return (
     <ThemeProviderContext.Provider {...props} value={value}>
-      {children}
+      <MotionConfig reducedMotion="user">
+        {children}
+      </MotionConfig>
     </ThemeProviderContext.Provider>
   )
 }

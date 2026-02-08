@@ -31,9 +31,35 @@ const geistSans = localFont({
   display: "swap",
 })
 
+const siteUrl = "https://alepot55.github.io/alepot55"
+
 export const metadata: Metadata = {
-  title: "Alessandro Potenza",
-  description: "Computer Engineering student specializing in AI/ML and GPU Computing",
+  title: {
+    default: "Alessandro Potenza",
+    template: "%s | Alessandro Potenza",
+  },
+  description:
+    "Computer Engineering student at Politecnico di Milano, building high-performance AI systems, GPU kernels, and open-source tools.",
+  metadataBase: new URL(siteUrl),
+  openGraph: {
+    title: "Alessandro Potenza",
+    description:
+      "Computer Engineering student at Politecnico di Milano, building high-performance AI systems, GPU kernels, and open-source tools.",
+    url: siteUrl,
+    siteName: "Alessandro Potenza",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Alessandro Potenza",
+    description:
+      "Computer Engineering student at Politecnico di Milano, building high-performance AI systems, GPU kernels, and open-source tools.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export const viewport = {

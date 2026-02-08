@@ -15,12 +15,15 @@ No test framework is configured.
 
 - **Next.js 14** (App Router, static export for GitHub Pages)
 - **React 18** with TypeScript 5
-- **Tailwind CSS** with shadcn/ui components (Radix UI primitives)
+- **Tailwind CSS** with `@tailwindcss/typography` and `tailwindcss-animate` plugins
 - **framer-motion** for animations (fade-in, stagger effects)
-- **recharts** for data visualization (bar charts on project detail pages)
+- **recharts** for data visualization (bar charts with baselines/reference lines on project detail pages)
 - **react-markdown** with remark-gfm, remark-breaks, rehype-raw for content rendering
-- **Geist** font (loaded locally with multiple weights)
-- Custom `ThemeProvider` (context + localStorage) for dark/light mode — not `next-themes`
+- **remark-math** + **rehype-katex** + **katex** for LaTeX/math rendering in markdown
+- **lucide-react** for icons
+- **Geist** font (loaded locally via `next/font/local` with weights 400–700, CSS variable `--font-sans`)
+- **@alepot55/chessboardjs** — custom chess library for interactive demos (types in `types/chessboardjs.d.ts`)
+- Custom `ThemeProvider` (context + localStorage) for dark/light mode — **not** `next-themes` (despite it being in package.json)
 
 ## Architecture
 
@@ -28,6 +31,7 @@ This is a personal portfolio site deployed as a fully static export (`output: "e
 - `basePath` and `assetPrefix` are set to `/alepot55` **only in production** (empty in dev)
 - `trailingSlash: true` — all URLs end with `/`
 - `images.unoptimized: true` — required for static export
+- Deployed via GitHub Actions (`.github/workflows/nextjs.yml`) to GitHub Pages
 
 ### Content Model
 
@@ -46,7 +50,24 @@ Projects (`data/projects.ts`) have a rich interface with optional fields that en
 - `metrics?: ProjectMetric[]` — renders metric cards on detail page
 - `features?: ProjectFeature[]` — renders feature grid on detail page
 - `chartData?: ChartDataPoint[]` — renders bar chart visualization on detail page
+- `chartLabel?: string` — label for the chart axis
 - `liveUrl?: string` — adds live demo link
+
+### Custom Sections (Project-Specific Demos)
+
+`ProjectDetailPage` maintains two registries — `CUSTOM_SECTIONS` and `CUSTOM_CHARTS` — that map project IDs to bespoke interactive components. These live in `components/custom-sections/` (9 components):
+
+- `chessboard-demo.tsx` — Interactive chess board (uses `@alepot55/chessboardjs`, piece SVGs in `public/pieces/`)
+- `concepthub-demo.tsx` — ConceptHub AI preview
+- `confusion-matrix-viz.tsx` — ML confusion matrix for music-genre-classification
+- `flash-reasoning-charts.tsx` — Charts for Flash-Reasoning project
+- `flash-sae-charts.tsx` — Charts for Flash-SAE project
+- `gpu-charts.tsx` — GPU benchmark visualizations with HBM limit lines
+- `splat-slam-showcase.tsx` — Video embeds from GitHub for SplatSLAM
+- `terminal-showcase.tsx` — Multi-tab terminal UI for agentrial (animated progress bars, syntax highlighting)
+- `verification-pipeline.tsx` — Pipeline visualization for Verify-CBL
+
+To add a custom section for a project, create a component in `components/custom-sections/` and register it in `ProjectDetailPage`'s `CUSTOM_SECTIONS` or `CUSTOM_CHARTS` map.
 
 ### Shared Types and Constants
 
@@ -55,10 +76,13 @@ Projects (`data/projects.ts`) have a rich interface with optional fields that en
 - `SKILL_CATEGORY_COLORS` — styling for skill chart bars
 - `Experience`, `Education`, `Achievement` interfaces — shared type definitions
 
+`lib/utils.ts` exports:
+- `cn(...inputs)` — utility combining `clsx` + `tailwind-merge` for class composition
+
 ### Routing & Pages
 
 - `app/page.tsx` — Main portfolio page with all sections (grid layouts)
-- `app/projects/[id]/page.tsx` — Project detail pages (uses `ProjectDetailPage` component with hero, metrics, features, chart, markdown)
+- `app/projects/[id]/page.tsx` — Project detail pages (uses `ProjectDetailPage` component with hero, metrics, features, custom sections, chart, markdown)
 - `app/experience/[id]/page.tsx` — Experience detail pages
 - `app/education/[id]/page.tsx` — Education detail pages
 
@@ -66,19 +90,21 @@ All dynamic routes use `generateStaticParams()` for static generation.
 
 ### Component Patterns
 
-- **Server Components** for pages and layouts; **Client Components** (marked `"use client"`) for interactive elements (theme-toggle, MarkdownRenderer, ProjectCard, PortfolioPage)
-- `MarkdownRenderer` handles custom rendering: code copy buttons, styled tables/blockquotes, responsive headings, external link handling
+- **Server Components** for pages (`app/*/page.tsx`) and `app/layout.tsx`; **all components in `components/`** are Client Components (`"use client"`)
+- `MarkdownRenderer` handles custom rendering: code copy buttons, styled tables/blockquotes, responsive headings, external link handling, LaTeX math blocks
 - `MarkdownPage` is the shared wrapper for experience/education detail pages (header, back button, GitHub link)
-- `ProjectDetailPage` is the richer wrapper for project detail pages (hero section, metrics, features grid, chart, markdown)
+- `ProjectDetailPage` is the richer wrapper for project detail pages (hero section, metrics, features grid, custom sections/charts registry, markdown)
 - `MotionWrapper` exports `FadeIn`, `StaggerContainer`, `StaggerItem` for framer-motion animations
-- shadcn/ui components live in `components/ui/` — use `cn()` (clsx + tailwind-merge) for class composition
+- `SkillsChart` renders animated horizontal bar charts for skills
+- `ProjectChart` renders recharts bar charts with optional baseline/reference lines and custom tooltips
+- `cn()` from `lib/utils.ts` for class composition (clsx + tailwind-merge)
 
 ### Theming
 
-Class-based dark mode via CSS variables (HSL values) defined in `app/globals.css`. Custom `ThemeProvider` (in `components/theme-provider.tsx`) uses React context + localStorage (`"theme"` key) and applies a class to `<html>`. Wraps the app in `app/layout.tsx`.
+Class-based dark mode via CSS variables (HSL values) defined in `app/globals.css`. Custom `ThemeProvider` (in `components/theme-provider.tsx`) uses React context + localStorage (`"theme"` key) and applies a class to `<html>`. An inline `<script>` in the layout prevents FOUC by reading localStorage before paint. Wraps the app in `app/layout.tsx`.
 
 ## Adding Content
 
-- **New project**: Add entry to `data/projects.ts`, optionally create `content/projects/[id].md`. Use `featured: true` to show in the featured section.
+- **New project**: Add entry to `data/projects.ts`, optionally create `content/projects/[id].md`. Use `featured: true` to show in the featured section. Optionally add a custom demo component in `components/custom-sections/` and register it in `ProjectDetailPage`.
 - **New experience/education/achievement**: Same pattern — update the corresponding `/data` file, optionally add markdown in `/content`
 - Detail pages only become navigable when a matching markdown file exists in `/content`

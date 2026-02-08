@@ -1,6 +1,21 @@
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { MarkdownPage } from "@/components/markdown-page"
 import { education } from "@/data/education"
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const edu = education.find((e) => e.id === params.id)
+  if (!edu) return {}
+  return {
+    title: `${edu.degree} — ${edu.institution}`,
+    description: edu.description,
+    openGraph: {
+      title: `${edu.degree} — ${edu.institution}`,
+      description: edu.description,
+      type: "article",
+    },
+  }
+}
 
 async function getEducationContent(id: string) {
   const edu = education.find((e) => e.id === id)

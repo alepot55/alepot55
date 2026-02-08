@@ -1,6 +1,21 @@
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { projects } from "@/data/projects"
 import { ProjectDetailPage } from "@/components/project-detail-page"
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const project = projects.find((p) => p.id === params.id)
+  if (!project) return {}
+  return {
+    title: project.title,
+    description: project.description,
+    openGraph: {
+      title: project.title,
+      description: project.description,
+      type: "article",
+    },
+  }
+}
 
 async function getProjectContent(id: string) {
   const project = projects.find((p) => p.id === id)

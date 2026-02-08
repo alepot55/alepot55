@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@alepot55/chessboardjs": "^2.2.2",
+    "@alepot55/chessboardjs": "^2.3.0",
     "@tailwindcss/typography": "^0.5.15",
     "clsx": "^2.1.1",
     "framer-motion": "^12.33.0",
