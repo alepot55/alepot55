@@ -9,6 +9,14 @@ declare module "@alepot55/chessboardjs" {
     hints?: boolean
     moveHighlight?: boolean
     piecesPath?: string
+    whiteSquare?: string
+    blackSquare?: string
+    selectedSquareWhite?: string
+    selectedSquareBlack?: string
+    movedSquareWhite?: string
+    movedSquareBlack?: string
+    hintColor?: string
+    highlight?: string
     onMoveEnd?: () => boolean
   }
 

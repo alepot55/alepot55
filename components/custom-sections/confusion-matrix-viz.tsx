@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import { motion } from "framer-motion"
 import type { Project } from "@/data/projects"
 
@@ -35,8 +35,16 @@ export function ConfusionMatrixViz({ project }: { project: Project }) {
     row: number
     col: number
   } | null>(null)
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 })
+  const containerRef = useRef<HTMLDivElement>(null)
 
   void project
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    setTooltipPos({ x: e.clientX - rect.left, y: e.clientY - rect.top })
+  }
 
   return (
     <motion.div
@@ -52,9 +60,9 @@ export function ConfusionMatrixViz({ project }: { project: Project }) {
         Rows: actual genre, Columns: predicted genre
       </p>
 
-      <div className="overflow-x-auto">
+      <div ref={containerRef} className="relative flex justify-center" onMouseMove={handleMouseMove}>
         <div
-          className="grid gap-[2px]"
+          className="grid gap-[2px] w-full max-w-lg"
           style={{
             gridTemplateColumns: "60px repeat(10, 1fr)",
             gridTemplateRows: "48px repeat(10, 1fr)",
@@ -150,25 +158,32 @@ export function ConfusionMatrixViz({ project }: { project: Project }) {
                     >
                       {value}
                     </span>
-
-                    {/* Tooltip on hover */}
-                    {isHovered && (
-                      <div className="absolute -top-14 left-1/2 -translate-x-1/2 z-20 px-2 py-1.5 rounded-md bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-[10px] whitespace-nowrap shadow-lg pointer-events-none">
-                        <div className="font-medium">
-                          {GENRES[rowIdx]} → {GENRES[colIdx]}
-                        </div>
-                        <div className="text-gray-300 dark:text-gray-600">
-                          {value}% {isDiagonal ? "(correct)" : "misclassified"}
-                        </div>
-                        <div className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-2 h-2 rotate-45 bg-gray-900 dark:bg-gray-100" />
-                      </div>
-                    )}
                   </div>
                 )
               })}
             </React.Fragment>
           ))}
         </div>
+
+        {/* Floating tooltip — positioned relative to container, outside the grid */}
+        {hoveredCell && (
+          <div
+            className="absolute z-50 px-3 py-2 rounded-lg bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs whitespace-nowrap shadow-xl pointer-events-none"
+            style={{
+              left: tooltipPos.x,
+              top: tooltipPos.y - 12,
+              transform: "translate(-50%, -100%)",
+            }}
+          >
+            <div className="font-medium">
+              {GENRES[hoveredCell.row]} → {GENRES[hoveredCell.col]}
+            </div>
+            <div className="text-gray-300 dark:text-gray-600">
+              {CONFUSION_MATRIX[hoveredCell.row][hoveredCell.col]}%{" "}
+              {hoveredCell.row === hoveredCell.col ? "(correct)" : "misclassified"}
+            </div>
+          </div>
+        )}
       </div>
     </motion.div>
   )

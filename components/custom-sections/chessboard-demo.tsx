@@ -63,6 +63,13 @@ export function ChessboardDemo({ project }: { project: Project }) {
         hints: true,
         moveHighlight: true,
         piecesPath: `${basePath}/pieces`,
+        whiteSquare: "#e8dcc8",
+        blackSquare: "#7a6654",
+        selectedSquareWhite: "#c8b898",
+        selectedSquareBlack: "#6a5644",
+        movedSquareWhite: "#d4c8a0",
+        movedSquareBlack: "#8a7a58",
+        hintColor: "#9a8a7a",
         onMoveEnd: () => {
           updateState()
           return true
@@ -113,13 +120,13 @@ export function ChessboardDemo({ project }: { project: Project }) {
       transition={{ duration: 0.5, delay: 0.2 }}
     >
       <div className="flex flex-col lg:flex-row gap-6 items-start">
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 p-4 sm:p-6 w-full lg:w-auto">
+        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 p-4 sm:p-6 w-full lg:flex-1 lg:max-w-[600px]">
           <div
             ref={containerRef}
             id="chess-demo-board"
-            className="w-full max-w-[420px] aspect-square mx-auto"
+            className="w-full aspect-square mx-auto"
           />
-          <div className="flex items-center justify-between mt-4 max-w-[420px] mx-auto">
+          <div className="flex items-center justify-between mt-4">
             <div className="flex gap-2">
               <button
                 onClick={handleUndo}
@@ -161,7 +168,7 @@ export function ChessboardDemo({ project }: { project: Project }) {
             <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
               Moves
             </h4>
-            <div className="font-mono text-sm space-y-1 max-h-[320px] overflow-y-auto">
+            <div className="font-mono text-sm space-y-1 max-h-[420px] overflow-y-auto">
               {movePairs.map((pair) => (
                 <div key={pair.num} className="flex gap-2 text-gray-600 dark:text-gray-300">
                   <span className="text-gray-400 dark:text-gray-600 w-6 text-right shrink-0">

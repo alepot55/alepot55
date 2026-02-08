@@ -161,7 +161,7 @@ export function FlashSAECharts({ project }: { project: Project }) {
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">
             Decoder Memory Usage (%)
           </p>
-          <div className="h-48">
+          <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={memoryData}

@@ -90,7 +90,7 @@ export function FlashReasoningCharts({ project: _project }: { project: Project }
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <ChartCard title="Attention Speedup (\u00d7)" delay={0.2}>
+      <ChartCard title="Attention Speedup (×)" delay={0.2}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={speedupData}>
             <XAxis
@@ -106,7 +106,7 @@ export function FlashReasoningCharts({ project: _project }: { project: Project }
               domain={[0, 3]}
             />
             <Tooltip
-              content={<CustomTooltip unit="\u00d7" />}
+              content={<CustomTooltip unit="×" />}
               cursor={{ fill: "transparent" }}
             />
             <Bar
