@@ -12,20 +12,20 @@ interface EducationItemProps {
 }
 
 export function EducationItem({ education, index = 0, hasContent = false }: EducationItemProps) {
-  const content = (
+  const inner = (
     <>
-      <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-600" aria-hidden="true" />
+      <span className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-600 block" aria-hidden="true" />
       <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{education.period}</span>
-      <div className="flex items-start justify-between gap-2 mt-1">
-        <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">
+      <span className="flex items-start justify-between gap-2 mt-1">
+        <span className="text-base font-semibold text-gray-900 dark:text-gray-100 block">
           {education.degree}
-        </h3>
+        </span>
         {hasContent && (
           <ArrowUpRight size={14} className="text-gray-400 dark:text-gray-600 shrink-0 mt-1 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors" />
         )}
-      </div>
-      <p className="text-sm text-gray-500 dark:text-gray-400 mb-1.5">{education.institution}</p>
-      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{education.description}</p>
+      </span>
+      <span className="text-sm text-gray-500 dark:text-gray-400 mb-1.5 block">{education.institution}</span>
+      <span className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed block">{education.description}</span>
     </>
   )
 
@@ -38,10 +38,10 @@ export function EducationItem({ education, index = 0, hasContent = false }: Educ
     >
       {hasContent ? (
         <Link href={`/education/${education.id}`} className="block group">
-          {content}
+          {inner}
         </Link>
       ) : (
-        content
+        inner
       )}
     </motion.article>
   )
