@@ -65,10 +65,10 @@ export function SplatSLAMShowcase({ project }: { project: Project }) {
         <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">
           Real-time Pipeline
         </h4>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-0">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-0 sm:justify-between">
           {PIPELINE_STEPS.map((step, i) => (
-            <div key={step.label} className="flex items-center">
-              <div className="flex flex-col items-center text-center px-3 sm:px-4">
+            <div key={step.label} className="flex items-center flex-1">
+              <div className="flex flex-col items-center text-center w-full">
                 <step.icon size={18} className="text-gray-500 dark:text-gray-400 mb-1.5" />
                 <span className="text-xs font-semibold text-gray-900 dark:text-gray-100">
                   {step.label}
@@ -119,7 +119,7 @@ export function SplatSLAMShowcase({ project }: { project: Project }) {
         <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
           Demo Reconstructions
         </h4>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-3">
           {DEMOS.map((demo, i) => (
             <motion.div
               key={demo.title}

@@ -123,11 +123,6 @@ export const projects: Project[] = [
     technologies: ["Python", "C++", "CUDA", "Triton", "PyTorch"],
     period: "2025",
     category: "research",
-    chartData: [
-      { name: "Regular Workload", value: 1.2, baseline: 1.0 },
-      { name: "Irregular (FSM)", value: 220, baseline: 1.0 },
-    ],
-    chartLabel: "CUDA Speedup vs Triton (×)",
   },
   {
     id: "slam-gaussian-splatting",

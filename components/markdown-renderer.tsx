@@ -2,7 +2,10 @@
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import remarkBreaks from "remark-breaks"
+import remarkMath from "remark-math"
 import rehypeRaw from "rehype-raw"
+import rehypeKatex from "rehype-katex"
+import "katex/dist/katex.min.css"
 import { Copy, Check } from "lucide-react"
 import { useState } from "react"
 
@@ -57,8 +60,8 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   return (
     <div className="prose prose-gray dark:prose-invert prose-sm sm:prose-base lg:prose-lg max-w-none">
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkBreaks]}
-        rehypePlugins={[rehypeRaw]}
+        remarkPlugins={[remarkGfm, remarkBreaks, remarkMath]}
+        rehypePlugins={[rehypeRaw, rehypeKatex]}
         components={{
           code: CodeBlock,
           pre: ({ children }) => <div className="not-prose">{children}</div>,

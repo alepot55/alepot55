@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Github, ExternalLink, ArrowUpRight } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
 import { motion } from "framer-motion"
 import type { Project } from "@/data/projects"
 import { CATEGORY_COLORS, CATEGORY_LABELS } from "@/lib/constants"
@@ -60,32 +60,6 @@ export function ProjectCard({ project, hasContent = false, index = 0 }: ProjectC
             <span className="text-[11px] text-gray-400 dark:text-gray-500 self-center">
               +{project.technologies.length - 4}
             </span>
-          )}
-        </div>
-        <div className="flex gap-2 shrink-0">
-          {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-1 text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
-              onClick={(e) => e.stopPropagation()}
-              aria-label={`Live demo for ${project.title}`}
-            >
-              <ExternalLink size={16} />
-            </a>
-          )}
-          {project.github && (
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-1 text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
-              onClick={(e) => e.stopPropagation()}
-              aria-label={`GitHub repository for ${project.title}`}
-            >
-              <Github size={16} />
-            </a>
           )}
         </div>
       </div>
