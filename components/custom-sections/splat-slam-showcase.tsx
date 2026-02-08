@@ -37,18 +37,18 @@ const KEY_FEATURES = [
 const DEMOS = [
   {
     title: "Room Scene",
-    description: "Dense 3D reconstruction of an indoor room from monocular RGB video",
-    color: "from-blue-500/10 to-blue-600/5 dark:from-blue-500/20 dark:to-blue-600/10",
+    description: "Dense 3D reconstruction of an indoor room",
+    video: "https://github.com/alessandro-potenza/Gaussian_Splatting_SLAM/assets/61759069/3873ef02-11ca-4fdb-bbb8-a02bf7c55339",
   },
   {
     title: "Kitchen Scene",
-    description: "Real-time mapping of a complex kitchen environment with fine details",
-    color: "from-teal-500/10 to-teal-600/5 dark:from-teal-500/20 dark:to-teal-600/10",
+    description: "Complex environment with fine details",
+    video: "https://github.com/alessandro-potenza/Gaussian_Splatting_SLAM/assets/61759069/efa44483-a665-41ca-8e2f-37018e24aff4",
   },
   {
     title: "Living Room",
-    description: "Large-scale generalization to open environments with varying complexity",
-    color: "from-purple-500/10 to-purple-600/5 dark:from-purple-500/20 dark:to-purple-600/10",
+    description: "Large-scale open environment",
+    video: "https://github.com/alessandro-potenza/Gaussian_Splatting_SLAM/assets/61759069/91978c1e-f757-4e60-9f89-8a4325a594fb",
   },
 ]
 
@@ -114,41 +114,40 @@ export function SplatSLAMShowcase({ project }: { project: Project }) {
         ))}
       </div>
 
-      {/* Demo scenes */}
+      {/* Demo videos */}
       <div>
         <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
-          Demo Scenes
+          Demo Reconstructions
         </h4>
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2">
           {DEMOS.map((demo, i) => (
             <motion.div
               key={demo.title}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
-              className={`rounded-xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br ${demo.color} p-4`}
+              className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 overflow-hidden"
             >
-              <h5 className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                {demo.title}
-              </h5>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
-                {demo.description}
-              </p>
+              <video
+                src={demo.video}
+                controls
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="w-full aspect-video bg-black"
+              />
+              <div className="p-3">
+                <h5 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                  {demo.title}
+                </h5>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  {demo.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
-        <a
-          href="https://github.com/alepot55/SplatSLAM#demo-results"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors mt-3"
-        >
-          Watch demo videos on GitHub
-          <ExternalLink
-            size={14}
-            className="group-hover:translate-x-0.5 transition-transform"
-          />
-        </a>
       </div>
 
       {/* Thesis card */}
