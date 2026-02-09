@@ -53,7 +53,7 @@ export default function Home() {
         <HeroSection />
 
         {/* Featured Projects */}
-        <section className="pb-16 sm:pb-24" id="projects" aria-labelledby="featured-heading">
+        <section className="pb-16 sm:pb-24 scroll-mt-20" id="projects" aria-labelledby="featured-heading">
           <SectionHeading id="featured-heading">Featured Projects</SectionHeading>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {featuredProjects.map((project, index) => (
@@ -71,7 +71,7 @@ export default function Home() {
         <ProjectsSection projects={projects} contentMap={projectContentMap} />
 
         {/* Skills */}
-        <section className="pb-16 sm:pb-24" id="skills" aria-labelledby="skills-heading">
+        <section className="pb-16 sm:pb-24 scroll-mt-20" id="skills" aria-labelledby="skills-heading">
           <SectionHeading id="skills-heading">Skills</SectionHeading>
           <div className="max-w-3xl">
             <SkillsChart skills={skills} />
@@ -79,7 +79,7 @@ export default function Home() {
         </section>
 
         {/* Experience + Education Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 pb-16 sm:pb-24" id="experience">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 pb-16 sm:pb-24 scroll-mt-20" id="experience">
           <section aria-labelledby="experience-heading">
             <SectionHeading id="experience-heading">Experience</SectionHeading>
             <div className="space-y-8">
@@ -110,7 +110,7 @@ export default function Home() {
         </div>
 
         {/* Achievements */}
-        <section className="pb-16 sm:pb-24" id="achievements" aria-labelledby="achievements-heading">
+        <section className="pb-16 sm:pb-24 scroll-mt-20" id="achievements" aria-labelledby="achievements-heading">
           <SectionHeading id="achievements-heading">Achievements</SectionHeading>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {achievements.map((achievement, index) => (
