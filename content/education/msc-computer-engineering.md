@@ -6,10 +6,10 @@ After graduating cum Laude from Sapienza, I chose Polimi for its strong focus on
 
 My coursework and research concentrate on:
 
-- **Deep Learning & Representation Learning** — advanced architectures, training dynamics, and generalization theory
-- **Computer Vision & 3D Reconstruction** — building on my bachelor's thesis work with Gaussian Splatting
-- **High-Performance Computing** — GPU acceleration, distributed training, kernel optimization (Triton, CUDA)
-- **Systems Design** — scalable architectures for ML inference and training pipelines
+- **Deep Learning & Representation Learning**: advanced architectures, training dynamics, and generalization theory
+- **Computer Vision & 3D Reconstruction**: building on my bachelor's thesis work with Gaussian Splatting
+- **High-Performance Computing**: GPU acceleration, distributed training, kernel optimization (Triton, CUDA)
+- **Systems Design**: scalable architectures for ML inference and training pipelines
 
 ## Thesis
 
@@ -18,7 +18,7 @@ My thesis work is within the EU **Perivallon** Horizon Europe project, focusing 
 ## Achievements During the Program
 
 - **Merit-Based Scholarship** awarded for outstanding academic performance (GPA and credits)
-- **3rd Place** in the Artificial Neural Networks Challenge (AIRLab) — ranked 3rd out of 193 teams with a custom Vision Transformer ensemble for medical image classification
+- **3rd Place** in the Artificial Neural Networks Challenge (AIRLab), ranked 3rd out of 193 teams with a custom Vision Transformer ensemble for medical image classification
 - Active participant in the AI research community at Polimi's AIRLab
 
 ## What I'm Building

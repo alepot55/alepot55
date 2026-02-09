@@ -2,7 +2,7 @@
 
 Since February 2022, I've delivered over **800 hours** of one-on-one and small-group mentorship to university students in Computer Science and Engineering. The subjects span Machine Learning, Python programming, Algorithms, Data Structures, and thesis-level research guidance.
 
-Beyond tutoring, I act as a **Technical Lead** for thesis projects — helping students design architectures, debug complex systems, and develop the technical judgment that courses alone don't teach.
+Beyond tutoring, I act as a **Technical Lead** for thesis projects, helping students design architectures, debug complex systems, and develop the technical judgment that courses alone don't teach.
 
 ## How I Teach
 
@@ -19,7 +19,7 @@ Over four years, this work has produced:
 - **800+ hours** of specialized mentorship delivered
 - Students across Sapienza, Politecnico di Milano, and other Italian universities
 - Thesis projects in machine learning, computer vision, distributed systems, and GPU computing
-- A deep understanding of how people learn technical material — which directly informs my book authoring and my own study approach
+- A deep understanding of how people learn technical material, which directly informs my book authoring and my own study approach
 
 ## Why I Do This
 

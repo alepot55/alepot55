@@ -83,11 +83,11 @@ export function VerificationPipeline({ project }: { project: Project }) {
 
         {/* Desktop layout: horizontal */}
         <div className="hidden lg:block">
-          <div className="flex items-center justify-between gap-1">
+          <div className="flex items-center gap-1">
             {PIPELINE_STEPS.map((step, i) => {
               const Icon = step.icon
               return (
-                <div key={step.label} className="flex items-center">
+                <div key={step.label} className="contents">
                   {/* Step box */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -97,9 +97,9 @@ export function VerificationPipeline({ project }: { project: Project }) {
                       delay: i * 0.15,
                       ease: "easeOut",
                     }}
-                    className={`flex flex-col items-center justify-center gap-2 rounded-lg border-2 ${step.color} ${step.bg} px-3 py-4 min-w-[100px] w-[110px]`}
+                    className={`flex flex-col items-center justify-center gap-2 rounded-lg border-2 ${step.color} ${step.bg} px-3 py-4 flex-1 h-[80px]`}
                   >
-                    <Icon className={`h-5 w-5 ${step.iconColor}`} />
+                    <Icon className={`h-5 w-5 flex-shrink-0 ${step.iconColor}`} />
                     <span className="text-xs font-medium text-gray-700 dark:text-gray-300 text-center leading-tight">
                       {step.label}
                     </span>
@@ -115,9 +115,9 @@ export function VerificationPipeline({ project }: { project: Project }) {
                         delay: i * 0.15 + 0.1,
                         ease: "easeOut",
                       }}
-                      className="flex items-center px-1 origin-left"
+                      className="flex items-center origin-left flex-shrink-0"
                     >
-                      <ArrowRight className="h-4 w-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+                      <ArrowRight className="h-4 w-4 text-gray-400 dark:text-gray-500" />
                     </motion.div>
                   )}
                 </div>

@@ -103,6 +103,11 @@ All dynamic routes use `generateStaticParams()` for static generation.
 
 Class-based dark mode via CSS variables (HSL values) defined in `app/globals.css`. Custom `ThemeProvider` (in `components/theme-provider.tsx`) uses React context + localStorage (`"theme"` key) and applies a class to `<html>`. An inline `<script>` in the layout prevents FOUC by reading localStorage before paint. Wraps the app in `app/layout.tsx`.
 
+## Writing Style
+
+- **Never use em dashes (—) in content markdown files.** They make the text look AI-generated. Use colons, commas, periods, parentheses, or restructure the sentence instead. This applies to all files under `content/`.
+- Use LaTeX (`$...$`) for mathematical notation in content: variables, Big-O, multipliers (`$13.6\times$`), formulas. Don't overdo it on plain numbers/percentages.
+
 ## Adding Content
 
 - **New project**: Add entry to `data/projects.ts`, optionally create `content/projects/[id].md`. Use `featured: true` to show in the featured section. Optionally add a custom demo component in `components/custom-sections/` and register it in `ProjectDetailPage`.

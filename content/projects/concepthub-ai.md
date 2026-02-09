@@ -1,6 +1,6 @@
 ## Motivation
 
-I wanted to explore AI-powered content generation in a practical context: helping people extract structured knowledge from books. The idea was simple — upload a text, and the platform generates summaries, key concepts, and visual mind maps automatically.
+I wanted to explore AI-powered content generation in a practical context: helping people extract structured knowledge from books. The idea was simple: upload a text, and the platform generates summaries, key concepts, and visual mind maps automatically.
 
 ## What It Does
 
@@ -22,7 +22,7 @@ The technical stack reflects the choices I made to balance development speed wit
 - **Database**: PostgreSQL on Vercel with SQL queries for data persistence
 - **Infrastructure**: Docker containers deployed on GCP, with the frontend on Vercel
 
-User authentication, session management, and content persistence are fully implemented — this isn't a demo, it's a functional platform.
+User authentication, session management, and content persistence are fully implemented. This isn't a demo, it's a functional platform.
 
 ## What I Learned
 

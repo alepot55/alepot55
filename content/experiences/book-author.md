@@ -2,7 +2,7 @@
 
 I was commissioned by Neldiritto Editore to author a comprehensive Computer Science textbook aimed at candidates preparing for Italian public administration competitive exams (*Concorsi Pubblici*).
 
-The challenge was unique: distill complex technical topics — Computer Architecture, Operating Systems, Algorithms, Networking, Databases — into chapters that are both **technically rigorous** and **accessible to non-specialists**. The target readers aren't CS students; they're professionals who need to understand computing fundamentals well enough to pass a competitive exam.
+The challenge was unique: distill complex technical topics (Computer Architecture, Operating Systems, Algorithms, Networking, Databases) into chapters that are both **technically rigorous** and **accessible to non-specialists**. The target readers aren't CS students; they're professionals who need to understand computing fundamentals well enough to pass a competitive exam.
 
 ## The Approach
 
@@ -12,7 +12,7 @@ Each chapter follows a deliberate structure:
 - **Progressive depth** that builds from intuition to technical precision
 - **Exam-oriented practice** with worked examples and common pitfalls
 
-The hardest part was calibrating the level: too technical and you lose the audience, too simplified and you produce incorrect mental models. I drew heavily on my teaching experience — 800+ hours of mentoring taught me where people actually get stuck, which is rarely where textbooks assume they will.
+The hardest part was calibrating the level: too technical and you lose the audience, too simplified and you produce incorrect mental models. I drew heavily on my teaching experience: 800+ hours of mentoring taught me where people actually get stuck, which is rarely where textbooks assume they will.
 
 ## Topics Covered
 

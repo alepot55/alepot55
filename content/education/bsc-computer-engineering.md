@@ -1,16 +1,16 @@
 ## The Foundation
 
-Sapienza gave me a rigorous grounding in computer engineering fundamentals: from transistors to operating systems, from data structures to distributed systems. The curriculum was broad by design — and that breadth turned out to be invaluable.
+Sapienza gave me a rigorous grounding in computer engineering fundamentals: from transistors to operating systems, from data structures to distributed systems. The curriculum was broad by design, and that breadth turned out to be invaluable.
 
 ## What I Studied
 
 The core areas spanned the full stack:
 
-- **Algorithms & Data Structures** — complexity theory, graph algorithms, dynamic programming
-- **Computer Architecture** — CPU pipelines, cache hierarchies, memory systems
-- **Operating Systems** — process scheduling, virtual memory, file systems, concurrency
-- **Database Systems** — relational algebra, SQL optimization, transaction isolation
-- **Signal Processing & Control** — the mathematical foundations that later proved essential for computer vision
+- **Algorithms & Data Structures**: complexity theory, graph algorithms, dynamic programming
+- **Computer Architecture**: CPU pipelines, cache hierarchies, memory systems
+- **Operating Systems**: process scheduling, virtual memory, file systems, concurrency
+- **Database Systems**: relational algebra, SQL optimization, transaction isolation
+- **Signal Processing & Control**: the mathematical foundations that later proved essential for computer vision
 
 ## The Turn Toward AI
 

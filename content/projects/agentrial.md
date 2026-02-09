@@ -6,20 +6,20 @@ I built agentrial because I was tired of anecdotes. I wanted **confidence interv
 
 ## The Core Insight
 
-Agent evaluation is a statistical problem, not a pass/fail one. A single successful run tells you nothing about production reliability. You need multiple trials, proper statistical tests, and a framework that tracks *where* failures happen — not just *that* they happen.
+Agent evaluation is a statistical problem, not a pass/fail one. A single successful run tells you nothing about production reliability. You need multiple trials, proper statistical tests, and a framework that tracks *where* failures happen, not just *that* they happen.
 
-agentrial borrows from clinical trial methodology: run your agent N times, compute Wilson confidence intervals on pass rates, and use Fisher's exact test to pinpoint which *step* in the pipeline is the weak link. No more guessing.
+agentrial borrows from clinical trial methodology: run your agent $N$ times, compute Wilson confidence intervals on pass rates, and use Fisher's exact test to pinpoint which *step* in the pipeline is the weak link. No more guessing.
 
 ## What It Does
 
-The framework wraps around any agent — LangGraph, CrewAI, AutoGen, OpenAI Agents SDK, or custom — and provides:
+The framework wraps around any agent (LangGraph, CrewAI, AutoGen, OpenAI Agents SDK, or custom) and provides:
 
 - **Multi-trial execution** with configurable parallelism
 - **Wilson confidence intervals** on every metric
 - **Step-level failure attribution** via Fisher exact test: if step 3 fails 40% of the time, you see it
 - **Real cost tracking** across 45+ models with per-test breakdowns
 - **Drift detection** for production: CUSUM, Page-Hinkley, and Kolmogorov-Smirnov detectors catch regressions before users do
-- **Agent Reliability Score (ARS)**: a composite 0-100 metric combining success rate, latency, cost, and consistency
+- **Agent Reliability Score (ARS)**: a composite $[0, 100]$ metric combining success rate, latency, cost, and consistency
 
 ## Design Decisions
 
