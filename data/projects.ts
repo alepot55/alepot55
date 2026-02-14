@@ -34,6 +34,46 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "atlas-mm",
+    title: "atlas-mm",
+    description:
+      "GPU-Accelerated Limit Order Book Simulator with Formally Verified Market Making. From-scratch L2 order book engine at 134K orders/sec, Avellaneda-Stoikov analytical model vs PPO reinforcement learning agent, and Z3 formal proofs of critical invariants.",
+    technologies: [
+      "Python",
+      "Z3 SMT Solver",
+      "Gymnasium",
+      "Stable-Baselines3",
+      "GARCH",
+      "Quantitative Finance",
+    ],
+    period: "2026",
+    github: "https://github.com/alepot55/atlas-mm",
+    featured: true,
+    category: "ai-ml",
+    features: [
+      {
+        title: "L2 Order Book Engine",
+        description:
+          "From-scratch limit order book with price-time priority matching, supporting limit orders, market orders, and cancellations",
+      },
+      {
+        title: "Avellaneda-Stoikov Model",
+        description:
+          "Analytical optimal market making with reservation price and spread computation based on inventory, volatility, and risk aversion",
+      },
+      {
+        title: "PPO Reinforcement Learning",
+        description:
+          "Gymnasium environment with GARCH(1,1) price dynamics, background agents (noise, momentum, mean-reversion), and 500K training steps",
+      },
+      {
+        title: "Z3 Formal Verification",
+        description:
+          "Mathematical proofs that critical invariants hold for all inputs: no crossed book, positive spreads, inventory mean-reversion, price-time priority",
+      },
+    ],
+  },
+  {
     id: "agentrial",
     title: "agentrial",
     description:

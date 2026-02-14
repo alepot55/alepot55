@@ -17,6 +17,7 @@ import { TerminalShowcase } from "./custom-sections/terminal-showcase"
 import { ConfusionMatrixViz } from "./custom-sections/confusion-matrix-viz"
 import { ConceptHubDemo } from "./custom-sections/concepthub-demo"
 import { GPUCharts } from "./custom-sections/gpu-charts"
+import { AtlasMMCharts } from "./custom-sections/atlas-mm-charts"
 import type { ComponentType } from "react"
 
 const CUSTOM_SECTIONS: Record<string, ComponentType<{ project: Project }>> = {
@@ -32,6 +33,7 @@ const CUSTOM_CHARTS: Record<string, ComponentType<{ project: Project }>> = {
   "flash-reasoning": FlashReasoningCharts,
   "flash-sae": FlashSAECharts,
   "gpu-performance-analysis": GPUCharts,
+  "atlas-mm": AtlasMMCharts,
 }
 
 interface ProjectDetailPageProps {
