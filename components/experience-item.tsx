@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { ValueCell } from "./value-cell"
-import { ROW_GRID_NARROW } from "@/lib/constants"
+import { ROW_GRID, VALUE_SLOT } from "@/lib/constants"
 import type { Experience } from "@/lib/constants"
 
 interface ExperienceItemProps {
@@ -10,7 +10,7 @@ interface ExperienceItemProps {
 
 export function ExperienceItem({ experience, hasContent = false }: ExperienceItemProps) {
   return (
-    <li className={`group relative border-t border-rail py-5 ${ROW_GRID_NARROW}`}>
+    <li className={`group relative border-t border-rail py-5 ${ROW_GRID}`}>
       <p className="font-mono text-meta text-ref">
         {experience.company} · {experience.period}
       </p>
@@ -32,7 +32,7 @@ export function ExperienceItem({ experience, hasContent = false }: ExperienceIte
         value={experience.value}
         unit={experience.unit}
         artifact={experience.artifact}
-        className="sm:col-start-2 sm:row-start-1 sm:row-span-4"
+        className={VALUE_SLOT}
       />
 
       <p className="max-w-measure text-body text-ink">{experience.description}</p>

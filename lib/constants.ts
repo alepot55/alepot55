@@ -8,10 +8,6 @@ export const ROW_GRID =
 /** placement of the value cell inside ROW_GRID */
 export const VALUE_SLOT = "sm:col-start-2 sm:row-start-1 sm:row-span-6"
 
-/** narrower variant for the two-up experience and education columns */
-export const ROW_GRID_NARROW =
-  "grid grid-cols-1 gap-y-2 sm:grid-cols-[1fr_6rem] sm:gap-x-5 sm:gap-y-0"
-
 export const CATEGORY_LABELS: Record<string, string> = {
   "ai-ml": "AI/ML",
   systems: "Systems",

@@ -61,11 +61,7 @@ export default function Home() {
           >
             Projects
           </SectionHeader>
-          <ProjectsRegister
-            projects={projects}
-            contentMap={projectContentMap}
-            heroProjectId={flagship?.id}
-          />
+          <ProjectsRegister projects={projects} contentMap={projectContentMap} />
         </section>
 
         <section className={SECTION} id="skills" aria-labelledby="skills-heading">
@@ -75,37 +71,31 @@ export default function Home() {
           <SkillsMatrix skills={skills} />
         </section>
 
-        <div className={`grid grid-cols-1 gap-x-14 gap-y-12 lg:grid-cols-2 ${SECTION}`} id="experience">
-          <section aria-labelledby="experience-heading">
-            <SectionHeader id="experience-heading">
-              Experience
-            </SectionHeader>
-            <ul role="list">
-              {experiences.map((experience) => (
-                <ExperienceItem
-                  key={experience.id}
-                  experience={experience}
-                  hasContent={experienceContentMap[experience.id] || false}
-                />
-              ))}
-            </ul>
-          </section>
+        <section className={SECTION} id="experience" aria-labelledby="experience-heading">
+          <SectionHeader id="experience-heading">Experience</SectionHeader>
+          <ul role="list">
+            {experiences.map((experience) => (
+              <ExperienceItem
+                key={experience.id}
+                experience={experience}
+                hasContent={experienceContentMap[experience.id] || false}
+              />
+            ))}
+          </ul>
+        </section>
 
-          <section aria-labelledby="education-heading">
-            <SectionHeader id="education-heading">
-              Education
-            </SectionHeader>
-            <ul role="list">
-              {education.map((edu) => (
-                <EducationItem
-                  key={edu.id}
-                  education={edu}
-                  hasContent={educationContentMap[edu.id] || false}
-                />
-              ))}
-            </ul>
-          </section>
-        </div>
+        <section className={SECTION} id="education" aria-labelledby="education-heading">
+          <SectionHeader id="education-heading">Education</SectionHeader>
+          <ul role="list">
+            {education.map((edu) => (
+              <EducationItem
+                key={edu.id}
+                education={edu}
+                hasContent={educationContentMap[edu.id] || false}
+              />
+            ))}
+          </ul>
+        </section>
 
         <section className={SECTION} id="achievements" aria-labelledby="achievements-heading">
           <SectionHeader id="achievements-heading">

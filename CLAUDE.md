@@ -67,8 +67,8 @@ same row, and an empty cell is a legitimate state.
 - `provenance` is copied from the write-up, never inferred. If the hardware is not stated in the
   content, the provenance carries the method and does not invent a GPU.
 - Approximate or ranged source values keep their form via `display` ("~134", "82-83").
-- Each measurement is drawn once per page: the hero spends the flagship one, and that project's row
-  receives `axisDrawn`.
+- The axis appears on the hero and on detail pages only. The register shows the bare value, so its
+  rows stay one height and the page stays scannable.
 
 ## Architecture
 
@@ -92,6 +92,7 @@ route is `app/experience/[id]/` (singular). `data/experiences.ts` is plural too.
 ### Project data model
 
 - `category`: `"ai-ml" | "systems" | "data" | "web" | "research"` — drives the register filter
+- `summary: string` — the one line shown in the register
 - `featured?: boolean` — eligible to open the page as the hero measurement; does not change the row
 - `measurement?: Measurement` — the headline number with its references and source
 - `artifact?: string` — what exists instead, when nothing was benchmarked ("npm package", "live demo")
@@ -111,7 +112,7 @@ To add one, create the component and register it in the right map.
 
 ### Shared types and constants
 
-`lib/constants.ts` exports `ROW_GRID`, `VALUE_SLOT`, `ROW_GRID_NARROW`, `CATEGORY_LABELS`,
+`lib/constants.ts` exports `ROW_GRID`, `VALUE_SLOT`, `CATEGORY_LABELS`,
 `CATEGORY_LABELS_FULL`, and the `Experience`, `Education`, `Achievement` interfaces, which the data
 files apply. Those three carry optional `value` / `unit` / `artifact` for the value column.
 
@@ -120,7 +121,8 @@ files apply. Those three carry optional `value` / `unit` / `artifact` for the va
 ### Routing
 
 - `app/page.tsx` — the whole portfolio: hero, one project register, skills, experience, education,
-  achievements, footer
+  achievements, footer. Every section is full width and uses `ROW_GRID`, so the value column runs
+  unbroken from the hero to the last row.
 - `app/projects/[id]/page.tsx`, `app/experience/[id]/page.tsx`, `app/education/[id]/page.tsx`
 
 All dynamic routes use `generateStaticParams()`.
@@ -130,9 +132,10 @@ All dynamic routes use `generateStaticParams()`.
 - **Server Components** for pages and `app/layout.tsx`. Components are Client Components only when
   they need state or motion: `value-cell`, `skills-matrix`, `experience-item`, `education-item` and
   `achievement-item` are server components.
-- `ProjectsRegister` holds the filter and renders one uniform list. Every project row has the same
-  shape; the only variation is whether its measurement had a reference to draw an axis against.
-  There is no separate "featured" section, so no project appears twice.
+- `ProjectsRegister` holds the filter and renders one uniform list. A row is an index entry: title,
+  category, year, one-line `summary`, value. The paragraph, the technologies and the measurement
+  axis live on the detail page, where there is room to read them. There is no separate "featured"
+  section, so no project appears twice.
 - `MarkdownRenderer` styles every element explicitly and no longer uses the `prose` classes.
 - `MotionWrapper` exports only `FadeIn`, which is opacity-only and takes no `delay` or `direction`.
 - The skip link in `app/layout.tsx` targets `#main`; every `<main>` needs `id="main"` and `tabIndex={-1}`.

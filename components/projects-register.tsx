@@ -18,15 +18,9 @@ const FILTERS = [
 interface ProjectsRegisterProps {
   projects: Project[]
   contentMap: Record<string, boolean>
-  /** the project whose axis the hero already drew */
-  heroProjectId?: string
 }
 
-export function ProjectsRegister({
-  projects,
-  contentMap,
-  heroProjectId,
-}: ProjectsRegisterProps) {
+export function ProjectsRegister({ projects, contentMap }: ProjectsRegisterProps) {
   const [active, setActive] = useState("all")
   const reduced = useReducedMotion()
 
@@ -77,7 +71,6 @@ export function ProjectsRegister({
               key={project.id}
               project={project}
               hasContent={contentMap[project.id] || false}
-              axisDrawn={project.id === heroProjectId}
             />
           ))}
         </ul>
