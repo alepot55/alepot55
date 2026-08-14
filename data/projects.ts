@@ -1,20 +1,4 @@
-export interface ProjectMetric {
-  label: string
-  value: string
-  description?: string
-}
-
-export interface ProjectFeature {
-  title: string
-  description: string
-}
-
-export interface ChartDataPoint {
-  name: string
-  value: number
-  baseline?: number
-  unit?: string
-}
+import type { Measurement } from "@/lib/measure"
 
 export interface Project {
   id: string
@@ -24,23 +8,123 @@ export interface Project {
   period: string
   github?: string
   featured?: boolean
-  category: "ai-ml" | "systems" | "web" | "research"
-  metrics?: ProjectMetric[]
-  features?: ProjectFeature[]
-  chartData?: ChartDataPoint[]
-  chartLabel?: string
+  category: "ai-ml" | "systems" | "data" | "web" | "research"
+  /** the headline number, with its references and its source */
+  measurement?: Measurement
+  /** what exists instead, when nothing was benchmarked */
+  artifact?: string
   liveUrl?: string
 }
 
 export const projects: Project[] = [
   {
+    id: "gpufsm",
+    title: "gpufsm",
+    description:
+      "Anatomy and cure of the abstraction regret between Triton and hand-written CUDA on irregular automata. The 10x gap is decomposed into a launch-configuration artifact, a lane-packing component and an irreducible residual, the residual is traced to intra-warp latency hiding the tile IR cannot express, and the cure is built below that IR as a TritonGPU to LLVM per-lane retirement pass.",
+    technologies: [
+      "OpenAI Triton",
+      "CUDA",
+      "C++",
+      "MLIR",
+      "LLVM",
+      "Python",
+      "Nsight Compute",
+    ],
+    period: "2025 - 2026",
+    github: "https://github.com/alepot55/gpufsm",
+    featured: true,
+    category: "research",
+    measurement: {
+      value: 6.7,
+      display: "2.3-6.7",
+      unit: "× from the compiler pass",
+      label: "speedup on control-bound lock-step kernels",
+      baseline: { value: 1, label: "stock Triton 1x", shortLabel: "1x" },
+      provenance:
+        "RTX 4070, rebuilt from a pinned recipe. 1.6-3.8x reproduced on A100, and no gain on gather-bound SpMV and MoE, near 1.0x",
+    },
+  },
+  {
+    id: "flash-reasoning",
+    title: "Flash-Reasoning",
+    description:
+      "Tree-aware KV-cache attention for reasoning LLMs. Fused GQA Triton kernels exploit physical prefix sharing between branches, so shared blocks stay resident in L2 and the kernel reads faster than HBM allows.",
+    technologies: ["OpenAI Triton", "CUDA", "PyTorch", "Python", "LLM Inference"],
+    period: "2026",
+    github: "https://github.com/alepot55/flash-reasoning",
+    featured: true,
+    category: "systems",
+    measurement: {
+      value: 1194,
+      unit: "GB/s effective",
+      label: "effective bandwidth",
+      baseline: { value: 470, label: "standard attention 470", shortLabel: "470" },
+      limit: { value: 900, label: "HBM peak 900", shortLabel: "900" },
+      provenance: "fused GQA over a tree-structured KV cache, prefix blocks resident in L2",
+    },
+  },
+  {
+    id: "flash-sae",
+    title: "Flash-SAE",
+    description:
+      "Triton kernels for sparse autoencoders. Fusing the sparse gather removes the dense latent matrix that PyTorch materialises even though over 99 percent of features are inactive. Drop-in replacement with full autograd support.",
+    technologies: [
+      "OpenAI Triton",
+      "CUDA",
+      "PyTorch",
+      "Python",
+      "Mechanistic Interpretability",
+    ],
+    period: "2026",
+    github: "https://github.com/alepot55/flash-sae",
+    featured: true,
+    category: "systems",
+    measurement: {
+      value: 13.6,
+      unit: "× decoder forward",
+      label: "decoder speedup",
+      baseline: { value: 1, label: "PyTorch parity 1x", shortLabel: "1x" },
+      provenance:
+        "RTX 4070, bfloat16, batch 1024, d_model 4096, n_features 65,536, k 64",
+    },
+  },
+  {
+    id: "pvsite",
+    title: "pvsite",
+    description:
+      "Geospatial engine that finds land where a ground-mounted photovoltaic plant can legally be built. It takes an entire Italian province from the cadastre, one to two million parcels, and returns a few thousand ranked with the reason for each. A constraint that could not be verified never yields an admissible parcel: it returns undetermined.",
+    technologies: [
+      "Python",
+      "GeoPandas",
+      "Shapely",
+      "DuckDB",
+      "FastAPI",
+      "TypeScript",
+      "MapLibre GL",
+      "Docker",
+    ],
+    period: "2026",
+    featured: true,
+    category: "data",
+    measurement: {
+      value: 80,
+      display: "~80",
+      unit: "% of territory discarded",
+      label: "statutory eligibility filter",
+      provenance:
+        "stage one, an OR over the statutory categories, before any scoring. 7 weighted criteria follow, each carrying the share of weight backed by data that was actually available",
+    },
+  },
+  {
     id: "atlas-mm",
     title: "atlas-mm",
     description:
-      "GPU-Accelerated Limit Order Book Simulator with Formally Verified Market Making. From-scratch L2 order book engine at 134K orders/sec, Avellaneda-Stoikov analytical model vs PPO reinforcement learning agent, and Z3 formal proofs of critical invariants.",
+      "GPU-accelerated limit order book simulator with formally verified market making. From-scratch L2 matching engine, the Avellaneda-Stoikov analytical model against a PPO agent, and Z3 proofs that the book invariants hold for every input.",
     technologies: [
       "Python",
       "Z3 SMT Solver",
+      "Formal Verification",
       "Gymnasium",
       "Stable-Baselines3",
       "GARCH",
@@ -50,34 +134,43 @@ export const projects: Project[] = [
     github: "https://github.com/alepot55/atlas-mm",
     featured: true,
     category: "ai-ml",
-    features: [
-      {
-        title: "L2 Order Book Engine",
-        description:
-          "From-scratch limit order book with price-time priority matching, supporting limit orders, market orders, and cancellations",
-      },
-      {
-        title: "Avellaneda-Stoikov Model",
-        description:
-          "Analytical optimal market making with reservation price and spread computation based on inventory, volatility, and risk aversion",
-      },
-      {
-        title: "PPO Reinforcement Learning",
-        description:
-          "Gymnasium environment with GARCH(1,1) price dynamics, background agents (noise, momentum, mean-reversion), and 500K training steps",
-      },
-      {
-        title: "Z3 Formal Verification",
-        description:
-          "Mathematical proofs that critical invariants hold for all inputs: no crossed book, positive spreads, inventory mean-reversion, price-time priority",
-      },
+    measurement: {
+      value: 134,
+      display: "~134",
+      unit: "K orders/s",
+      label: "order book throughput",
+      provenance:
+        "pure Python, single thread. Z3 proved 4 invariants, under 6 ms each",
+    },
+  },
+  {
+    id: "verify-cbl",
+    title: "Verify-CBL",
+    description:
+      "Neuro-symbolic verification engine. An LLM translates legacy code, then Z3 proves the translation behaves identically for every input, catching the penny drift that accumulates below the resolution of any test suite.",
+    technologies: [
+      "Python",
+      "Z3 SMT Solver",
+      "LLM Integration",
+      "Formal Verification",
+      "Neuro-Symbolic AI",
     ],
+    period: "2026",
+    github: "https://github.com/alepot55/verify-cbl",
+    featured: true,
+    category: "ai-ml",
+    measurement: {
+      value: 100,
+      unit: "% verification accuracy",
+      label: "verification accuracy",
+      provenance: "42 benchmark cases, hybrid Z3 and Monte Carlo",
+    },
   },
   {
     id: "agentrial",
     title: "agentrial",
     description:
-      "The pytest for AI agents. Run your agent 100 times, get confidence intervals instead of anecdotes. Published open-source framework with Wilson confidence intervals, step-level failure attribution via Fisher exact test, and real cost tracking across 45+ models.",
+      "The pytest for AI agents. Run an agent a hundred times and get Wilson confidence intervals instead of anecdotes, with step-level failure attribution via Fisher exact test and real cost tracking.",
     technologies: [
       "Python",
       "Statistics",
@@ -91,78 +184,12 @@ export const projects: Project[] = [
     github: "https://github.com/alepot55/agentrial",
     featured: true,
     category: "ai-ml",
-  },
-  {
-    id: "flash-reasoning",
-    title: "Flash-Reasoning",
-    description:
-      "Tree-Aware KV-Cache Attention for Reasoning LLMs. Custom Fused GQA Triton kernels exploit physical prefix sharing to exceed HBM bandwidth limits, enabling efficient inference for System 2 Reasoning models like DeepSeek-R1.",
-    technologies: [
-      "OpenAI Triton",
-      "CUDA",
-      "PyTorch",
-      "Python",
-      "LLM Inference",
-    ],
-    period: "2026",
-    github: "https://github.com/alepot55/flash-reasoning",
-    featured: true,
-    category: "systems",
-    chartData: [
-      { name: "Standard Attn", value: 470, unit: "GB/s" },
-      { name: "Flash-Reasoning", value: 1194, unit: "GB/s" },
-      { name: "HBM Limit", value: 900, unit: "GB/s" },
-    ],
-    chartLabel: "Effective Bandwidth (GB/s)",
-  },
-  {
-    id: "flash-sae",
-    title: "Flash-SAE",
-    description:
-      "High-Performance Triton Kernels for Sparse Autoencoders. 13.6x speedup and 97% memory reduction via sparse kernel fusion. Drop-in PyTorch replacement with full autograd support for Mechanistic Interpretability research.",
-    technologies: [
-      "OpenAI Triton",
-      "CUDA",
-      "PyTorch",
-      "Python",
-      "Mechanistic Interpretability",
-    ],
-    period: "2026",
-    github: "https://github.com/alepot55/flash-sae",
-    featured: true,
-    category: "systems",
-    chartData: [
-      { name: "Encoder", value: 1.06, baseline: 1.0 },
-      { name: "Decoder", value: 13.6, baseline: 1.0 },
-      { name: "Full Forward", value: 1.78, baseline: 1.0 },
-    ],
-    chartLabel: "Speedup vs PyTorch (×)",
-  },
-  {
-    id: "verify-cbl",
-    title: "Verify-CBL",
-    description:
-      "Neuro-Symbolic Formal Verification Engine combining Z3 SMT solver with LLM-powered code translation. Mathematically proves behavioral equivalence between legacy and modernized code, detecting 'penny drift' that testing misses.",
-    technologies: [
-      "Python",
-      "Z3 SMT Solver",
-      "LLM Integration",
-      "Formal Methods",
-      "Neuro-Symbolic AI",
-    ],
-    period: "2026",
-    github: "https://github.com/alepot55/verify-cbl",
-    category: "ai-ml",
-    featured: true,
-  },
-  {
-    id: "gpu-performance-analysis",
-    title: "GPU Performance Analysis: Triton vs. CUDA",
-    description:
-      "Research paper quantifying the performance gap between high-level GPU programming models (Triton) and hand-optimized CUDA kernels, with a focus on irregular workloads like finite state machines.",
-    technologies: ["Python", "C++", "CUDA", "Triton", "PyTorch"],
-    period: "2025",
-    category: "research",
+    measurement: {
+      value: 450,
+      unit: "tests passing",
+      label: "test suite",
+      provenance: "published on PyPI, MIT licence, cost tracking across 45+ models",
+    },
   },
   {
     id: "slam-gaussian-splatting",
@@ -173,6 +200,7 @@ export const projects: Project[] = [
       "Python",
       "PyTorch",
       "Computer Vision",
+      "SLAM",
       "3D Reconstruction",
       "CUDA",
       "Nerfstudio",
@@ -180,44 +208,62 @@ export const projects: Project[] = [
     period: "2024",
     github: "https://github.com/alepot55/SplatSLAM",
     category: "research",
-  },
-  {
-    id: "concepthub-ai",
-    title: "ConceptHub",
-    description:
-      "AI-Powered full-stack learning platform integrating Google's Gemini API. Automates generation of book summaries and conceptual mind maps from text, with user authentication and persistent storage.",
-    technologies: [
-      "React",
-      "TypeScript",
-      "PostgreSQL",
-      "Python",
-      "GCP",
-      "Docker",
-      "Gemini API",
-    ],
-    period: "2024",
-    liveUrl: "https://concepthub-chi.vercel.app/",
-    category: "web",
+    artifact: "Nerfstudio ext",
   },
   {
     id: "music-genre-classification",
     title: "Music Genre Classification",
     description:
-      "End-to-end reproducible pipeline achieving SOTA 83.5% accuracy on GTZAN with a U-Net inspired model. Leak-free methodology with track-level splits, cross-validation, and transfer learning.",
-    technologies: ["Python", "PyTorch", "Scikit-learn", "Jupyter", "Mel-Spectrograms"],
+      "End-to-end reproducible pipeline on GTZAN with a U-Net inspired model. Splitting at track level before slicing removes the leakage that lets published pipelines report over 90 percent.",
+    technologies: [
+      "Python",
+      "PyTorch",
+      "Scikit-learn",
+      "Computer Vision",
+      "Jupyter",
+      "Mel-Spectrograms",
+    ],
     period: "2024",
     github: "https://github.com/alepot55/MGC-GTZAN",
     category: "ai-ml",
+    measurement: {
+      value: 83,
+      display: "82-83",
+      unit: "% test accuracy",
+      label: "leak-free test accuracy",
+      provenance: "GTZAN, track-level 60/20/20 split, 5-fold CV mean near 90 percent",
+    },
+  },
+  {
+    id: "concepthub-ai",
+    title: "ConceptHub",
+    description:
+      "Full-stack learning platform on the Gemini API. Generates book summaries and conceptual mind maps from text, with authentication and persistent storage.",
+    technologies: [
+      "React",
+      "TypeScript",
+      "PostgreSQL",
+      "Python",
+      "FastAPI",
+      "GCP",
+      "Docker",
+      "LLM APIs",
+    ],
+    period: "2024",
+    liveUrl: "https://concepthub-chi.vercel.app/",
+    category: "web",
+    artifact: "live demo",
   },
   {
     id: "chessboard-js",
     title: "Chessboard.js",
     description:
-      "Modern, dependency-free JavaScript library and NPM package for building interactive chess experiences. Rich API for programmatic control, drag-and-drop, animations, and legal move enforcement.",
-    technologies: ["JavaScript", "TypeScript", "NPM", "Node.js"],
+      "Dependency-free JavaScript library for interactive chess boards. Programmatic API, drag and drop, animations, and legal move enforcement, published on npm.",
+    technologies: ["JavaScript", "TypeScript", "npm", "Node.js"],
     period: "2023",
     github: "https://github.com/alepot55/Chessboard.js",
     liveUrl: "https://sites.google.com/view/chessboard-js/home",
     category: "web",
+    artifact: "npm package",
   },
-];
+]

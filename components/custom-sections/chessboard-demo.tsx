@@ -1,8 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState, useCallback } from "react"
-import { motion } from "framer-motion"
-import { RotateCcw, Undo2, FlipVertical, Package, Shield, Code2 } from "lucide-react"
+import { useEffect, useRef, useState, useCallback, type CSSProperties } from "react"
 import "@alepot55/chessboardjs/dist/chessboard.css"
 import type { Project } from "@/data/projects"
 
@@ -52,25 +50,44 @@ const PRESETS: Preset[] = [
   },
 ]
 
-/* ── Feature cards data ───────────────────────────────────────── */
+/* ── Feature notes ────────────────────────────────────────────── */
 
 const FEATURES = [
   {
-    icon: Package,
     title: "Zero Dependencies",
-    description: "Pure TypeScript — no chess.js, no stockfish, no external engines",
+    description: "Pure TypeScript: no chess.js, no stockfish, no external engines",
   },
   {
-    icon: Shield,
     title: "Legal Move Validation",
     description: "Full rule enforcement: castling, en passant, promotion, pins",
   },
   {
-    icon: Code2,
     title: "Rich API",
     description: "load(), flip(), undo, history, check detection, FEN import/export",
   },
 ]
+
+/* ── Board palette ────────────────────────────────────────────────
+   chessboard.css paints squares with var(--whiteSquare) & co. The
+   library writes those custom properties on <html>; declaring them on
+   the board container shadows that for the whole board subtree, so the
+   squares are derived from the six tokens and follow the theme.
+   ─────────────────────────────────────────────────────────────── */
+
+const BOARD_THEME = {
+  "--whiteSquare": "hsl(var(--surface))",
+  "--blackSquare": "hsl(var(--ink) / 0.12)",
+  "--selectedSquareWhite": "hsl(var(--limit) / 0.22)",
+  "--selectedSquareBlack": "hsl(var(--limit) / 0.32)",
+  "--movedSquareWhite": "hsl(var(--ink) / 0.06)",
+  "--movedSquareBlack": "hsl(var(--ink) / 0.2)",
+  "--choiceSquare": "hsl(var(--surface))",
+  "--coverSquare": "hsl(var(--ink) / 0.55)",
+  "--hintColor": "hsl(var(--ref) / 0.5)",
+} as CSSProperties
+
+const CONTROL =
+  "flex min-h-[44px] items-center rounded px-3 font-mono text-meta text-ref transition-colors duration-150 hover:text-ink hover:bg-ink/[0.04] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-ref"
 
 /* ── Component ────────────────────────────────────────────────── */
 
@@ -92,13 +109,13 @@ export function ChessboardDemo({ project }: { project: Project }) {
     setMoves(board.getHistory())
     setTurn(board.turn())
     if (board.isCheckmate()) {
-      setStatus(board.turn() === "w" ? "Checkmate — Black wins!" : "Checkmate — White wins!")
+      setStatus(board.turn() === "w" ? "Checkmate, Black wins" : "Checkmate, White wins")
     } else if (board.isDraw()) {
-      setStatus("Draw!")
+      setStatus("Draw")
     } else if (board.isGameOver()) {
-      setStatus("Game Over")
+      setStatus("Game over")
     } else if (board.inCheck()) {
-      setStatus("Check!")
+      setStatus("Check")
     } else {
       setStatus("")
     }
@@ -130,13 +147,6 @@ export function ChessboardDemo({ project }: { project: Project }) {
         hints: true,
         moveHighlight: true,
         piecesPath: `${basePath}/pieces`,
-        whiteSquare: "#e8dcc8",
-        blackSquare: "#7a6654",
-        selectedSquareWhite: "#c8b898",
-        selectedSquareBlack: "#6a5644",
-        movedSquareWhite: "#d4c8a0",
-        movedSquareBlack: "#8a7a58",
-        hintColor: "#9a8a7a",
         onMoveEnd: () => {
           updateState()
           return true
@@ -199,55 +209,35 @@ export function ChessboardDemo({ project }: { project: Project }) {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Feature cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {FEATURES.map((feature, i) => (
-          <motion.div
-            key={feature.title}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: i * 0.1 }}
-            className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 p-4"
-          >
-            <div className="flex items-center gap-2.5 mb-2">
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#7a6654]/10 dark:bg-[#e8dcc8]/10">
-                <feature.icon size={16} className="text-[#7a6654] dark:text-[#e8dcc8]" />
-              </div>
-              <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                {feature.title}
-              </h4>
-            </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-              {feature.description}
-            </p>
-          </motion.div>
+    <div className="space-y-8">
+      {/* Feature notes */}
+      <div className="grid gap-6 sm:grid-cols-3">
+        {FEATURES.map((feature) => (
+          <div key={feature.title}>
+            <h4 className="font-mono text-unit text-ink">{feature.title}</h4>
+            <p className="mt-1 text-body text-ref">{feature.description}</p>
+          </div>
         ))}
       </div>
 
-      {/* Interactive demo */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 overflow-hidden"
-      >
+      {/* Interactive demo: the board needs a real surface */}
+      <div className="overflow-hidden rounded border border-rail bg-surface">
         {/* Preset tabs */}
-        <div className="flex items-center gap-1 px-4 pt-4 pb-2">
+        <div className="flex flex-wrap items-center gap-1 px-3 pt-2">
           {PRESETS.map((preset, i) => (
             <button
               key={preset.label}
               onClick={() => loadPreset(i)}
-              className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+              className={`flex min-h-[44px] items-center rounded px-3 font-mono text-meta transition-colors duration-150 ${
                 activePreset === i
-                  ? "bg-[#7a6654] text-white dark:bg-[#e8dcc8] dark:text-gray-900 font-medium"
-                  : "text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800"
+                  ? "bg-ink/[0.07] text-ink"
+                  : "text-ref hover:bg-ink/[0.04] hover:text-ink"
               }`}
             >
               {preset.label}
             </button>
           ))}
-          <span className="ml-auto text-xs text-gray-400 dark:text-gray-500 hidden sm:inline">
+          <span className="ml-auto hidden pr-1 font-mono text-meta text-ref sm:inline">
             {PRESETS[activePreset].description}
           </span>
         </div>
@@ -255,55 +245,51 @@ export function ChessboardDemo({ project }: { project: Project }) {
         {/* Board + side panel */}
         <div className="flex flex-col lg:flex-row">
           {/* Board */}
-          <div className="p-4 sm:p-6 lg:flex-1 lg:max-w-[560px]">
+          <div className="p-4 sm:p-6 lg:max-w-[560px] lg:flex-1">
             <div
               ref={containerRef}
               id="chess-demo-board"
-              className="w-full aspect-square mx-auto"
+              style={BOARD_THEME}
+              className="mx-auto aspect-square w-full"
             />
           </div>
 
           {/* Side panel */}
-          <div className="flex flex-col border-t lg:border-t-0 lg:border-l border-gray-200 dark:border-gray-800 lg:w-60 min-h-0">
+          <div className="flex min-h-0 flex-col border-t border-rail lg:w-60 lg:border-l lg:border-t-0">
             {/* Turn indicator */}
-            <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
+            <div className="border-b border-rail px-4 py-3">
               <div className="flex items-center gap-2">
                 <span
-                  className={`w-2.5 h-2.5 rounded-full ${
-                    turn === "w"
-                      ? "bg-[#e8dcc8] border border-gray-300 dark:border-gray-600"
-                      : "bg-[#7a6654]"
+                  aria-hidden="true"
+                  className={`h-2.5 w-2.5 rounded-full ${
+                    turn === "w" ? "border border-ink" : "bg-ink"
                   }`}
                 />
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {status || (ready ? `${turn === "w" ? "White" : "Black"} to move` : "Loading...")}
+                <span className="font-mono text-meta text-ink">
+                  {status || (ready ? `${turn === "w" ? "White" : "Black"} to move` : "Loading")}
                 </span>
               </div>
-              {status === "Check!" && (
-                <span className="text-xs text-amber-600 dark:text-amber-400 mt-0.5 block pl-[18px]">
-                  Get out of check!
+              {status === "Check" && (
+                <span className="mt-0.5 block pl-[18px] font-mono text-meta text-limit">
+                  Get out of check
                 </span>
               )}
             </div>
 
             {/* Move history */}
-            <div className="flex-1 min-h-0 px-4 py-3 overflow-hidden flex flex-col">
-              <h4 className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2">
-                Moves
-              </h4>
+            <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-4 py-3">
+              <h4 className="mb-2 font-mono text-meta text-ref">Moves</h4>
               <div
                 ref={moveListRef}
-                className="flex-1 overflow-y-auto font-mono text-sm min-h-[120px] max-h-[280px] lg:max-h-none"
+                className="min-h-[120px] max-h-[280px] flex-1 overflow-y-auto font-mono text-meta lg:max-h-none"
               >
                 {movePairs.length === 0 ? (
-                  <p className="text-xs text-gray-400 dark:text-gray-600 italic">
-                    Make a move to begin...
-                  </p>
+                  <p className="text-ref">No moves yet</p>
                 ) : (
                   <div className="space-y-0.5">
                     {movePairs.map((pair) => (
-                      <div key={pair.num} className="flex gap-2 text-gray-600 dark:text-gray-300">
-                        <span className="text-gray-400 dark:text-gray-600 w-6 text-right shrink-0 tabular-nums">
+                      <div key={pair.num} className="flex gap-2 text-ink">
+                        <span className="w-6 shrink-0 text-right text-ref tnum">
                           {pair.num}.
                         </span>
                         <span className="w-14">{pair.white}</span>
@@ -316,36 +302,25 @@ export function ChessboardDemo({ project }: { project: Project }) {
             </div>
 
             {/* Controls */}
-            <div className="px-4 py-3 border-t border-gray-200 dark:border-gray-800 flex gap-2">
+            <div className="flex gap-1 border-t border-rail px-3 py-1">
               <button
                 onClick={handleUndo}
                 disabled={moves.length === 0}
                 title="Undo last move"
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className={CONTROL}
               >
-                <Undo2 size={14} />
-                Undo
+                undo
               </button>
-              <button
-                onClick={handleReset}
-                title="Reset to preset position"
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                <RotateCcw size={14} />
-                Reset
+              <button onClick={handleReset} title="Reset to preset position" className={CONTROL}>
+                reset
               </button>
-              <button
-                onClick={handleFlip}
-                title="Flip board"
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-auto"
-              >
-                <FlipVertical size={14} />
-                Flip
+              <button onClick={handleFlip} title="Flip board" className={`${CONTROL} ml-auto`}>
+                flip
               </button>
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   )
 }

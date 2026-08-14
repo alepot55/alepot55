@@ -1,7 +1,6 @@
 "use client"
 
-import React, { useState, useRef } from "react"
-import { motion } from "framer-motion"
+import React, { useState } from "react"
 import type { Project } from "@/data/projects"
 
 const GENRES = [
@@ -17,6 +16,7 @@ const GENRES = [
   "Rock",
 ] as const
 
+/* Measured results, unchanged. Every row sums to 100. */
 const CONFUSION_MATRIX: number[][] = [
   [82, 2, 4, 1, 0, 5, 0, 2, 3, 1], // Blues
   [1, 95, 0, 0, 0, 2, 1, 1, 0, 0], // Classical
@@ -30,64 +30,64 @@ const CONFUSION_MATRIX: number[][] = [
   [2, 0, 5, 4, 3, 1, 4, 4, 3, 74], // Rock
 ]
 
+/* One hue, five densities of --ink, five equal fifths of the 0 to 100 domain.
+   The step is a quantisation of the value, so a denser cell is always a
+   larger value. From step 0.70 up the fill is too dark for --ink text, so
+   the digits flip to --bg. */
+const STEPS = [
+  { below: 20, fill: "bg-ink/[0.08]", label: "0-19", onDark: false },
+  { below: 40, fill: "bg-ink/[0.22]", label: "20-39", onDark: false },
+  { below: 60, fill: "bg-ink/[0.44]", label: "40-59", onDark: false },
+  { below: 80, fill: "bg-ink/[0.70]", label: "60-79", onDark: true },
+  { below: Number.POSITIVE_INFINITY, fill: "bg-ink", label: "80-100", onDark: true },
+]
+
+function stepFor(value: number) {
+  return STEPS.find((step) => value < step.below) ?? STEPS[STEPS.length - 1]
+}
+
 export function ConfusionMatrixViz({ project }: { project: Project }) {
-  const [hoveredCell, setHoveredCell] = useState<{
-    row: number
-    col: number
-  } | null>(null)
-  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 })
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [hovered, setHovered] = useState<{ row: number; col: number } | null>(null)
 
   void project
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return
-    const rect = containerRef.current.getBoundingClientRect()
-    setTooltipPos({ x: e.clientX - rect.left, y: e.clientY - rect.top })
-  }
+  const readout = hovered
+    ? `${GENRES[hovered.row]} -> ${GENRES[hovered.col]}   ${
+        CONFUSION_MATRIX[hovered.row][hovered.col]
+      }%  ${hovered.row === hovered.col ? "correct" : "misclassified"}`
+    : "Rows: actual genre, columns: predicted genre"
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-      className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 p-5"
-    >
-      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">
-        Classification Confusion Matrix
+    <div className="rounded border border-rail bg-surface p-4 sm:p-5">
+      <h3 className="font-mono text-index font-medium text-ink">
+        Classification confusion matrix
       </h3>
-      <p className="text-xs text-gray-400 mb-4">
-        Rows: actual genre, Columns: predicted genre
-      </p>
 
-      <div ref={containerRef} className="relative flex justify-center" onMouseMove={handleMouseMove}>
+      <div className="mt-5 overflow-x-auto">
         <div
-          className="grid gap-[2px] w-full max-w-lg"
+          className="grid min-w-[440px] gap-px"
           style={{
-            gridTemplateColumns: "60px repeat(10, 1fr)",
-            gridTemplateRows: "48px repeat(10, 1fr)",
-            minWidth: "400px",
+            gridTemplateColumns: "72px repeat(10, minmax(28px, 1fr))",
+            gridTemplateRows: "56px repeat(10, auto)",
           }}
         >
-          {/* Top-left empty corner */}
+          {/* corner */}
           <div />
 
-          {/* Column headers */}
+          {/* predicted genre, rotated so ten labels fit the width */}
           {GENRES.map((genre, colIdx) => (
             <div
               key={`col-${genre}`}
-              className="flex items-end justify-center pb-1 relative"
+              className="relative flex h-16 items-end justify-center pb-1"
             >
               <span
-                className={`text-[10px] font-medium truncate origin-bottom-left whitespace-nowrap transition-colors duration-150 ${
-                  hoveredCell?.col === colIdx
-                    ? "text-blue-600 dark:text-blue-400"
-                    : "text-gray-500 dark:text-gray-400"
+                className={`whitespace-nowrap font-mono text-meta transition-colors duration-150 ${
+                  hovered?.col === colIdx ? "text-ink" : "text-ref"
                 }`}
                 style={{
+                  display: "inline-block",
                   transform: "rotate(-45deg)",
                   transformOrigin: "center bottom",
-                  display: "inline-block",
                 }}
               >
                 {genre}
@@ -95,65 +95,38 @@ export function ConfusionMatrixViz({ project }: { project: Project }) {
             </div>
           ))}
 
-          {/* Data rows with row headers */}
           {CONFUSION_MATRIX.map((row, rowIdx) => (
             <React.Fragment key={`row-${GENRES[rowIdx]}`}>
-              {/* Row header */}
               <div className="flex items-center justify-end pr-2">
                 <span
-                  className={`text-[10px] font-medium truncate transition-colors duration-150 ${
-                    hoveredCell?.row === rowIdx
-                      ? "text-blue-600 dark:text-blue-400"
-                      : "text-gray-500 dark:text-gray-400"
+                  className={`truncate font-mono text-meta transition-colors duration-150 ${
+                    hovered?.row === rowIdx ? "text-ink" : "text-ref"
                   }`}
                 >
                   {GENRES[rowIdx]}
                 </span>
               </div>
 
-              {/* Data cells */}
               {row.map((value, colIdx) => {
-                const isDiagonal = rowIdx === colIdx
-                const isHovered =
-                  hoveredCell?.row === rowIdx && hoveredCell?.col === colIdx
-                const opacity = Math.max(0.05, value / 100)
+                const step = stepFor(value)
+                const isHovered = hovered?.row === rowIdx && hovered?.col === colIdx
 
                 return (
                   <div
                     key={`cell-${rowIdx}-${colIdx}`}
-                    className="relative flex items-center justify-center aspect-square cursor-pointer"
-                    onMouseEnter={() =>
-                      setHoveredCell({ row: rowIdx, col: colIdx })
-                    }
-                    onMouseLeave={() => setHoveredCell(null)}
-                    style={{
-                      transform: isHovered ? "scale(1.1)" : "scale(1)",
-                      transition: "transform 150ms ease",
-                      zIndex: isHovered ? 10 : 1,
-                    }}
+                    className={`relative flex aspect-square items-center justify-center rounded-sm ${step.fill}`}
+                    onMouseEnter={() => setHovered({ row: rowIdx, col: colIdx })}
+                    onMouseLeave={() => setHovered(null)}
                   >
-                    {/* Background color layer */}
-                    <div
-                      className="absolute inset-0 rounded-sm bg-blue-500 dark:bg-blue-400"
-                      style={{ opacity }}
-                    />
-
-                    {/* Diagonal highlight ring */}
-                    {isDiagonal && (
-                      <div className="absolute inset-0 rounded-sm ring-1 ring-inset ring-blue-600/30 dark:ring-blue-300/30" />
-                    )}
-
-                    {/* Hover outline */}
                     {isHovered && (
-                      <div className="absolute inset-0 rounded-sm ring-2 ring-blue-500 dark:ring-blue-400" />
+                      <span
+                        className="absolute inset-0 rounded-sm ring-1 ring-inset ring-limit"
+                        aria-hidden="true"
+                      />
                     )}
-
-                    {/* Value text */}
                     <span
-                      className={`relative text-[10px] font-medium leading-none ${
-                        value > 50
-                          ? "text-white"
-                          : "text-gray-600 dark:text-gray-300"
+                      className={`relative font-mono text-meta leading-none tnum ${
+                        step.onDark ? "text-bg" : "text-ink"
                       }`}
                     >
                       {value}
@@ -164,27 +137,22 @@ export function ConfusionMatrixViz({ project }: { project: Project }) {
             </React.Fragment>
           ))}
         </div>
-
-        {/* Floating tooltip — positioned relative to container, outside the grid */}
-        {hoveredCell && (
-          <div
-            className="absolute z-50 px-3 py-2 rounded-lg bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs whitespace-nowrap shadow-xl pointer-events-none"
-            style={{
-              left: tooltipPos.x,
-              top: tooltipPos.y - 12,
-              transform: "translate(-50%, -100%)",
-            }}
-          >
-            <div className="font-medium">
-              {GENRES[hoveredCell.row]} → {GENRES[hoveredCell.col]}
-            </div>
-            <div className="text-gray-300 dark:text-gray-600">
-              {CONFUSION_MATRIX[hoveredCell.row][hoveredCell.col]}%{" "}
-              {hoveredCell.row === hoveredCell.col ? "(correct)" : "misclassified"}
-            </div>
-          </div>
-        )}
       </div>
-    </motion.div>
+
+      {/* single readout line: no floating overlay, no layout shift */}
+      <p className="mt-4 min-h-[1.1rem] whitespace-pre-wrap font-mono text-meta text-ref">
+        {readout}
+      </p>
+
+      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+        {STEPS.map((step) => (
+          <span key={step.label} className="flex items-center gap-1.5">
+            <span className={`h-3 w-3 rounded-sm ${step.fill}`} aria-hidden="true" />
+            <span className="font-mono text-meta text-ref tnum">{step.label}</span>
+          </span>
+        ))}
+        <span className="font-mono text-meta text-ref">percent of row</span>
+      </div>
+    </div>
   )
 }

@@ -1,13 +1,21 @@
-export const CATEGORY_COLORS: Record<string, string> = {
-  "ai-ml": "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
-  systems: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
-  web: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-  research: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
-}
+/**
+ * The mother grid. Every block that carries a value uses it, so all values on
+ * the page share one right edge.
+ */
+export const ROW_GRID =
+  "grid grid-cols-1 gap-y-3 sm:grid-cols-[1fr_var(--value-col-sm)] sm:gap-x-6 sm:gap-y-0 lg:grid-cols-[1fr_var(--value-col)] lg:gap-x-8"
+
+/** placement of the value cell inside ROW_GRID */
+export const VALUE_SLOT = "sm:col-start-2 sm:row-start-1 sm:row-span-6"
+
+/** narrower variant for the two-up experience and education columns */
+export const ROW_GRID_NARROW =
+  "grid grid-cols-1 gap-y-2 sm:grid-cols-[1fr_6rem] sm:gap-x-5 sm:gap-y-0"
 
 export const CATEGORY_LABELS: Record<string, string> = {
   "ai-ml": "AI/ML",
   systems: "Systems",
+  data: "Data",
   web: "Web",
   research: "Research",
 }
@@ -15,17 +23,9 @@ export const CATEGORY_LABELS: Record<string, string> = {
 export const CATEGORY_LABELS_FULL: Record<string, string> = {
   "ai-ml": "AI / Machine Learning",
   systems: "Systems / GPU",
+  data: "Data / Geospatial",
   web: "Web Development",
   research: "Research",
-}
-
-export const SKILL_CATEGORY_COLORS: Record<string, string> = {
-  Programming: "bg-blue-500/80",
-  "AI/ML": "bg-purple-500/80",
-  Systems: "bg-emerald-500/80",
-  Databases: "bg-amber-500/80",
-  Web: "bg-rose-500/80",
-  Tools: "bg-gray-500/80",
 }
 
 export interface Experience {
@@ -34,6 +34,9 @@ export interface Experience {
   company: string
   period: string
   description: string
+  value?: string
+  unit?: string
+  artifact?: string
 }
 
 export interface Education {
@@ -42,6 +45,9 @@ export interface Education {
   institution: string
   period: string
   description: string
+  value?: string
+  unit?: string
+  artifact?: string
 }
 
 export interface Achievement {
@@ -50,5 +56,7 @@ export interface Achievement {
   organization: string
   date: string
   description: string
-  icon?: string
+  value?: string
+  unit?: string
+  artifact?: string
 }

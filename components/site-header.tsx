@@ -1,18 +1,18 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Mail, Github, Linkedin } from "lucide-react"
 import { ThemeToggle } from "./theme-toggle"
 
 const NAV_ITEMS = [
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Experience", href: "#experience" },
-  { label: "Achievements", href: "#achievements" },
+  { label: "projects", href: "#projects" },
+  { label: "skills", href: "#skills" },
+  { label: "experience", href: "#experience" },
+  { label: "achievements", href: "#achievements" },
 ]
 
 export function SiteHeader() {
   const [activeSection, setActiveSection] = useState("")
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const sectionIds = NAV_ITEMS.map((item) => item.href.slice(1))
@@ -35,63 +35,50 @@ export function SiteHeader() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
   return (
-    <header className="fixed top-0 right-0 left-0 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md z-50 border-b border-gray-100 dark:border-gray-900">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 h-header bg-surface/[0.88] backdrop-blur-md transition-colors ${
+        scrolled ? "border-b border-rail" : "border-b border-transparent"
+      }`}
+    >
       <nav
-        className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center"
+        className="mx-auto flex h-full max-w-content items-center justify-between px-5 sm:px-8"
         aria-label="Main navigation"
       >
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-8">
           <a
             href="#"
-            className="text-sm font-bold text-gray-900 dark:text-gray-100 tracking-tight hover:opacity-80 transition-opacity"
+            className="font-mono text-nav font-semibold tracking-normal text-ink transition-opacity hover:opacity-70"
           >
-            AP
+            A. Potenza
           </a>
-          <div className="hidden sm:flex items-center gap-1">
+          <div className="hidden items-center gap-5 sm:flex">
             {NAV_ITEMS.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className={`text-xs font-medium px-2.5 py-1.5 rounded-md transition-colors ${
+                className={`relative py-4 font-mono text-nav transition-colors ${
                   activeSection === item.href
-                    ? "text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-800"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+                    ? "text-ink"
+                    : "text-ref hover:text-ink"
                 }`}
               >
                 {item.label}
+                {activeSection === item.href && (
+                  <span className="absolute inset-x-0 bottom-3 h-px bg-limit" aria-hidden="true" />
+                )}
               </a>
             ))}
           </div>
         </div>
-        <div className="flex items-center gap-1 sm:gap-3">
-          <a
-            href="https://github.com/alepot55"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-            aria-label="GitHub profile"
-          >
-            <Github size={18} />
-          </a>
-          <a
-            href="https://linkedin.com/in/alepot55"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-            aria-label="LinkedIn profile"
-          >
-            <Linkedin size={18} />
-          </a>
-          <a
-            href="mailto:ap.alessandro.potenza@gmail.com"
-            className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-            aria-label="Send email"
-          >
-            <Mail size={18} />
-          </a>
-          <ThemeToggle />
-        </div>
+        <ThemeToggle />
       </nav>
     </header>
   )

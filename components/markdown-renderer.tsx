@@ -6,12 +6,14 @@ import remarkMath from "remark-math"
 import rehypeRaw from "rehype-raw"
 import rehypeKatex from "rehype-katex"
 import "katex/dist/katex.min.css"
-import { Copy, Check } from "lucide-react"
 import { useState } from "react"
 
 interface MarkdownRendererProps {
   content: string
 }
+
+/** running prose: sans, ink, one measure */
+const PROSE = "text-body leading-relaxed text-ink sm:text-lead sm:leading-relaxed"
 
 function CodeBlock({ children, className, ...props }: any) {
   const [copied, setCopied] = useState(false)
@@ -32,16 +34,17 @@ function CodeBlock({ children, className, ...props }: any) {
 
   if (language) {
     return (
-      <div className="relative group my-4">
+      <div className="relative my-6">
         <button
+          type="button"
           onClick={copyToClipboard}
-          className="absolute top-2 right-2 p-1.5 bg-gray-800 dark:bg-gray-700 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity z-10 text-xs"
-          aria-label="Copy code"
+          className="absolute right-1 top-1 z-10 inline-flex h-11 min-w-[44px] items-center justify-center rounded-sm bg-surface px-3 font-mono text-meta text-ref transition-colors hover:text-ink"
+          aria-label={copied ? "Code copied" : "Copy code"}
         >
-          {copied ? <Check size={14} /> : <Copy size={14} />}
+          {copied ? "copied" : "copy"}
         </button>
-        <pre className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4 overflow-x-auto text-sm border">
-          <code className={`language-${language} text-gray-800 dark:text-gray-200`}>
+        <pre className="overflow-x-auto rounded border border-rail bg-surface p-4 pr-16">
+          <code className={`language-${language} font-mono text-[0.8125rem] leading-relaxed text-ink`}>
             {String(children).replace(/\n$/, "")}
           </code>
         </pre>
@@ -50,7 +53,10 @@ function CodeBlock({ children, className, ...props }: any) {
   }
 
   return (
-    <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
+    <code
+      className="rounded-sm bg-ink/[0.06] px-1 py-0.5 font-mono text-[0.9em] text-ink"
+      {...props}
+    >
       {children}
     </code>
   )
@@ -58,7 +64,7 @@ function CodeBlock({ children, className, ...props }: any) {
 
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   return (
-    <div className="prose prose-gray dark:prose-invert prose-sm sm:prose-base lg:prose-lg max-w-none">
+    <div className="max-w-none text-ink">
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkBreaks, remarkMath]}
         rehypePlugins={[rehypeRaw, rehypeKatex]}
@@ -66,58 +72,58 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
           code: CodeBlock,
           pre: ({ children }) => <div className="not-prose">{children}</div>,
           table: ({ children }) => (
-            <div className="overflow-x-auto -mx-4 sm:mx-0">
-              <div className="inline-block min-w-full align-middle">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 border border-gray-200 dark:border-gray-700">
-                  {children}
-                </table>
-              </div>
+            <div className="my-6 overflow-x-auto">
+              <table className="min-w-full text-left">{children}</table>
             </div>
           ),
-          thead: ({ children }) => <thead className="bg-gray-50 dark:bg-gray-800">{children}</thead>,
+          thead: ({ children }) => <thead className="border-b border-rail">{children}</thead>,
           th: ({ children }) => (
-            <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            <th className="py-2 pr-6 text-left font-mono text-meta font-medium text-ref last:pr-0">
               {children}
             </th>
           ),
           td: ({ children }) => (
-            <td className="px-3 sm:px-6 py-4 text-sm text-gray-900 dark:text-gray-100 border-t border-gray-200 dark:border-gray-700">
+            <td className="py-2 pr-6 align-top text-body leading-relaxed text-ink last:pr-0">
               {children}
             </td>
           ),
           blockquote: ({ children }) => (
-            <blockquote className="border-l-4 border-gray-300 dark:border-gray-600 pl-4 my-4 italic text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900/50 py-2 rounded-r">
+            <blockquote className="my-6 border-l border-ref pl-4 text-body not-italic leading-relaxed text-ref sm:text-lead sm:leading-relaxed">
               {children}
             </blockquote>
           ),
           h1: ({ children }) => (
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light mb-4 sm:mb-6 mt-6 sm:mt-8 text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-2">
+            <h1 className="mb-4 mt-10 font-mono text-row-title font-semibold leading-tight tracking-snug text-ink sm:mt-12 sm:text-value-m sm:leading-tight">
               {children}
             </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-light mb-3 sm:mb-4 mt-6 sm:mt-8 text-gray-900 dark:text-gray-100">
+            <h2 className="mb-3 mt-10 font-mono text-value-s font-semibold leading-tight tracking-snug text-ink sm:mt-12 sm:text-row-title">
               {children}
             </h2>
           ),
           h3: ({ children }) => (
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-light mb-2 sm:mb-3 mt-4 sm:mt-6 text-gray-900 dark:text-gray-100">
+            <h3 className="mb-2 mt-8 font-mono text-lead font-semibold leading-snug text-ink">
               {children}
             </h3>
           ),
           h4: ({ children }) => (
-            <h4 className="text-base sm:text-lg font-light mb-2 mt-4 text-gray-900 dark:text-gray-100">{children}</h4>
+            <h4 className="mb-2 mt-6 font-mono text-body font-medium text-ink">{children}</h4>
           ),
-          p: ({ children }) => (
-            <p className="mb-4 leading-relaxed text-gray-700 dark:text-gray-300 text-sm sm:text-base">{children}</p>
+          p: ({ children }) => <p className={`mb-4 ${PROSE}`}>{children}</p>,
+          ul: ({ children }) => (
+            <ul className={`mb-4 list-disc space-y-1 pl-5 marker:text-ref ${PROSE}`}>{children}</ul>
           ),
-          ul: ({ children }) => <ul className="mb-4 pl-4 sm:pl-6 space-y-1 text-sm sm:text-base">{children}</ul>,
-          ol: ({ children }) => <ol className="mb-4 pl-4 sm:pl-6 space-y-1 text-sm sm:text-base">{children}</ol>,
-          li: ({ children }) => <li className="text-gray-700 dark:text-gray-300 leading-relaxed">{children}</li>,
+          ol: ({ children }) => (
+            <ol className={`mb-4 list-decimal space-y-1 pl-5 marker:font-mono marker:text-ref ${PROSE}`}>
+              {children}
+            </ol>
+          ),
+          li: ({ children }) => <li className="leading-relaxed text-ink">{children}</li>,
           a: ({ children, href }) => (
             <a
               href={href}
-              className="text-gray-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-400 transition-colors underline underline-offset-2"
+              className="text-ink underline decoration-rail underline-offset-4 transition-colors hover:decoration-limit"
               target={href?.startsWith("http") ? "_blank" : undefined}
               rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
             >
@@ -125,17 +131,17 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
             </a>
           ),
           img: ({ src, alt }) => (
-            <div className="my-6 -mx-4 sm:mx-0">
+            <div className="my-6">
               <img
                 src={src || "/placeholder.svg"}
                 alt={alt}
-                className="w-full h-auto rounded-lg border border-gray-200 dark:border-gray-700"
+                className="h-auto w-full rounded border border-rail"
                 loading="lazy"
               />
-              {alt && <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-2 italic">{alt}</p>}
+              {alt && <p className="mt-2 font-mono text-meta text-ref">{alt}</p>}
             </div>
           ),
-          hr: () => <hr className="my-8 border-gray-200 dark:border-gray-700" />,
+          hr: () => <hr className="my-10 border-rail" />,
         }}
       >
         {content}

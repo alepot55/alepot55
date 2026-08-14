@@ -1,40 +1,26 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { ExternalLink, Globe } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 import type { Project } from "@/data/projects"
 
 export function ConceptHubDemo({ project }: { project: Project }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-    >
+    <div>
+      <p className="font-mono text-meta text-ref">Live deployment</p>
+
       <a
         href="https://concepthub-chi.vercel.app/"
         target="_blank"
         rel="noopener noreferrer"
-        className="group block rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 p-6 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-md transition-all"
+        className="mt-2 inline-flex items-center gap-1.5 font-mono text-index text-ink underline decoration-rail underline-offset-4 transition-colors duration-150 hover:decoration-limit"
       >
-        <div className="flex items-center gap-4">
-          <div className="p-3 rounded-lg bg-gray-100 dark:bg-gray-800 shrink-0">
-            <Globe size={24} className="text-gray-500 dark:text-gray-400" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
-              Try ConceptHub Live
-            </h4>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-              AI-powered summaries and mind maps — deployed on Vercel
-            </p>
-          </div>
-          <ExternalLink
-            size={16}
-            className="text-gray-300 dark:text-gray-700 group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors shrink-0"
-          />
-        </div>
+        Try ConceptHub live
+        <ExternalLink size={13} aria-hidden="true" className="text-ref" />
       </a>
-    </motion.div>
+
+      <p className="mt-2 max-w-measure text-body text-ref">
+        AI-powered summaries and mind maps, deployed on Vercel.
+      </p>
+    </div>
   )
 }

@@ -1,16 +1,22 @@
-export const education = [
+import type { Education } from "@/lib/constants"
+
+export const education: Education[] = [
   {
     id: "msc-computer-engineering",
     degree: "MSc in Computer Engineering",
-    institution: "Polytechnic University of Milan",
+    institution: "Politecnico di Milano",
     period: "2024 - 2026",
-    description: "AI Systems specialization. Recipient of the Merit-Based Scholarship for outstanding academic performance. Thesis on deep learning for satellite imagery within the EU 'Perivallon' Horizon Europe project.",
+    description:
+      "AI Systems track, on a merit-based scholarship. Thesis on deep learning for satellite imagery inside the EU Horizon Europe project Perivallon.",
   },
   {
     id: "bsc-computer-engineering",
     degree: "BSc in Computer Engineering",
     institution: "Sapienza University of Rome",
     period: "2021 - 2024",
-    description: "Graduated with Highest Distinction (110/110 cum Laude). Selected for the Honors Program (Top 1% of students). Authored an experimental thesis on Real-Time SLAM using 3D Gaussian Splatting.",
+    description:
+      "Honors Program, top 1 percent of the cohort. Experimental thesis on real-time SLAM with 3D Gaussian Splatting.",
+    value: "110 / 110",
+    unit: "cum laude",
   },
-];
+]

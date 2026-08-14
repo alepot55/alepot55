@@ -7,22 +7,29 @@ export function ScrollToTop() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 500)
+    const onScroll = () => setVisible(window.scrollY > 600)
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
   return (
     <button
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className={`fixed bottom-6 right-6 p-3 rounded-full bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 shadow-lg transition-all duration-300 z-40 hover:scale-105 ${
-        visible
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-4 pointer-events-none"
+      onClick={() =>
+        window.scrollTo({
+          top: 0,
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto"
+            : "smooth",
+        })
+      }
+      className={`fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center border border-rail bg-surface text-ref transition-opacity duration-200 hover:text-ink ${
+        visible ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
       aria-label="Scroll to top"
+      aria-hidden={!visible}
+      tabIndex={visible ? 0 : -1}
     >
-      <ArrowUp size={18} />
+      <ArrowUp size={16} />
     </button>
   )
 }

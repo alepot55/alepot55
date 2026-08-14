@@ -21,30 +21,42 @@ const geistSans = localFont({
       weight: "600",
       style: "normal",
     },
-    {
-      path: "../node_modules/geist/dist/fonts/geist-sans/Geist-Bold.woff2",
-      weight: "700",
-      style: "normal",
-    },
   ],
   variable: "--font-sans",
   display: "swap",
 })
 
+// The instrumental voice: names, titles, every numeral, unit and label.
+// Self-hosted rather than pulled from next/font/google, so the production build
+// does not depend on reaching fonts.googleapis.com. Chivo Mono is OFL.
+const chivoMono = localFont({
+  src: [
+    {
+      path: "./fonts/ChivoMono-Variable.woff2",
+      weight: "400 600",
+      style: "normal",
+    },
+  ],
+  variable: "--font-mono",
+  display: "swap",
+  fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
+})
+
 const siteUrl = "https://alepot55.github.io/alepot55"
+
+const description =
+  "GPU kernels, compiler work, and formally verified systems. MSc Computer Engineering at Politecnico di Milano."
 
 export const metadata: Metadata = {
   title: {
     default: "Alessandro Potenza",
     template: "%s | Alessandro Potenza",
   },
-  description:
-    "Computer Engineering student at Politecnico di Milano, building high-performance AI systems, GPU kernels, and open-source tools.",
+  description,
   metadataBase: new URL(siteUrl),
   openGraph: {
     title: "Alessandro Potenza",
-    description:
-      "Computer Engineering student at Politecnico di Milano, building high-performance AI systems, GPU kernels, and open-source tools.",
+    description,
     url: siteUrl,
     siteName: "Alessandro Potenza",
     locale: "en_US",
@@ -53,8 +65,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
     title: "Alessandro Potenza",
-    description:
-      "Computer Engineering student at Politecnico di Milano, building high-performance AI systems, GPU kernels, and open-source tools.",
+    description,
   },
   robots: {
     index: true,
@@ -76,7 +87,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={geistSans.variable} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${chivoMono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -85,6 +100,9 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

@@ -1,7 +1,9 @@
 import Link from "next/link"
-import { ArrowLeft, Github } from "lucide-react"
 import { ThemeToggle } from "./theme-toggle"
 import { MarkdownRenderer } from "./markdown-renderer"
+
+const LINK =
+  "text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-limit"
 
 interface MarkdownPageProps {
   title: string
@@ -15,27 +17,16 @@ interface MarkdownPageProps {
 
 export function MarkdownPage({ title, subtitle, content, backHref, backLabel, github, technologies }: MarkdownPageProps) {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
-      {/* Header */}
-      <header className="sticky top-0 bg-white/90 dark:bg-gray-950/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 z-10">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
-          <Link
-            href={backHref}
-            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-          >
-            <ArrowLeft size={16} />
-            <span className="text-sm">{backLabel}</span>
+    <>
+      <header className="sticky top-0 z-50 h-header border-b border-rail bg-surface/[0.88] backdrop-blur-md">
+        <div className="mx-auto flex h-full max-w-content items-center justify-between px-5 sm:px-8">
+          <Link href={backHref} className="font-mono text-nav text-ref transition-colors hover:text-ink">
+            {backLabel}
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-5 font-mono text-nav">
             {github && (
-              <a
-                href={github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-              >
-                <Github size={16} />
-                <span className="text-sm">GitHub</span>
+              <a href={github} target="_blank" rel="noopener noreferrer" className={LINK}>
+                source
               </a>
             )}
             <ThemeToggle />
@@ -43,31 +34,34 @@ export function MarkdownPage({ title, subtitle, content, backHref, backLabel, gi
         </div>
       </header>
 
-      {/* Content */}
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        <div className="mb-8 sm:mb-12">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light mb-3 sm:mb-4 tracking-tight">{title}</h1>
-          {subtitle && (
-            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-4">{subtitle}</p>
-          )}
+      <main id="main" tabIndex={-1} className="mx-auto max-w-content px-5 sm:px-8">
+        <section className="pb-10 pt-12 sm:pt-16">
+          {subtitle && <p className="font-mono text-meta text-ref">{subtitle}</p>}
+
+          <h1 className="mt-2 font-mono text-[clamp(1.5rem,3.6vw,2.25rem)] font-semibold leading-[1.1] tracking-snug text-ink">
+            {title}
+          </h1>
+
           {technologies && technologies.length > 0 && (
-            <div className="flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-wrap gap-x-1.5 gap-y-1.5">
               {technologies.map((tech) => (
                 <span
                   key={tech}
-                  className="text-xs px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-full font-medium"
+                  className="rounded-sm bg-ink/[0.05] px-1.5 py-0.5 font-mono text-meta text-ref"
                 >
                   {tech}
                 </span>
               ))}
             </div>
           )}
-        </div>
+        </section>
 
-        <article className="overflow-hidden">
-          <MarkdownRenderer content={content} />
-        </article>
+        <section className="pb-section-sm sm:pb-section-md">
+          <article className="max-w-prose">
+            <MarkdownRenderer content={content} />
+          </article>
+        </section>
       </main>
-    </div>
+    </>
   )
 }

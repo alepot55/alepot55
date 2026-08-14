@@ -2,24 +2,29 @@ import Link from "next/link"
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 flex items-center justify-center px-4">
-      <div className="text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">
-          404
-        </p>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
-          Page not found
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto">
-          The page you&apos;re looking for doesn&apos;t exist or has been moved.
-        </p>
+    <main
+      id="main"
+      tabIndex={-1}
+      className="mx-auto flex min-h-screen max-w-content flex-col justify-center px-5 sm:px-8"
+    >
+      <p className="font-mono text-meta text-ref">404</p>
+
+      <h1 className="mt-2 font-mono text-[clamp(1.5rem,3.6vw,2.25rem)] font-semibold leading-[1.1] tracking-snug text-ink">
+        Page not found
+      </h1>
+
+      <p className="mt-5 max-w-measure text-body leading-relaxed text-ink sm:text-lead">
+        The page you&apos;re looking for doesn&apos;t exist or has been moved.
+      </p>
+
+      <div className="mt-6">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm font-medium px-5 py-2.5 rounded-full bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 hover:opacity-90 transition-opacity"
+          className="inline-flex min-h-[44px] items-center font-mono text-nav text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-limit"
         >
-          Back to Portfolio
+          Back to portfolio
         </Link>
       </div>
-    </div>
+    </main>
   )
 }

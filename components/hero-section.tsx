@@ -1,26 +1,62 @@
 "use client"
 
-import { motion } from "framer-motion"
+import Link from "next/link"
+import { Measure } from "./measure"
+import { ValueCell } from "./value-cell"
+import { ROW_GRID, VALUE_SLOT } from "@/lib/constants"
+import type { Project } from "@/data/projects"
 
-export function HeroSection() {
+interface HeroSectionProps {
+  /** the one project whose measurement opens the page */
+  flagship?: Project
+}
+
+export function HeroSection({ flagship }: HeroSectionProps) {
+  const m = flagship?.measurement
+
   return (
-    <section className="pt-24 sm:pt-32 pb-16 sm:pb-24">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
-      >
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-5 text-balance">
+    <section className="pt-28 pb-section-sm sm:pt-32 sm:pb-section-md lg:pb-section">
+      <div className={ROW_GRID}>
+        <h1 className="font-mono text-[clamp(1.75rem,5.2vw,3.25rem)] font-semibold leading-[1.02] tracking-crush text-ink">
           Alessandro Potenza
         </h1>
-        <p className="text-lg sm:text-xl text-gray-500 dark:text-gray-400 max-w-2xl leading-relaxed">
-          Computer Engineering student at{" "}
-          <span className="text-gray-800 dark:text-gray-200 font-medium">
-            Politecnico di Milano
-          </span>
-          , building high-performance AI systems, GPU kernels, and open-source tools.
+
+        <div className={`${VALUE_SLOT} mt-4 sm:mt-0`}>
+          <p className="font-mono text-micro uppercase tracking-micro text-ref sm:text-right">
+            Peak measured result
+          </p>
+          <ValueCell
+            value={m ? (m.display ?? m.value.toLocaleString("en-US")) : undefined}
+            unit={m?.unit}
+            size="xl"
+            className="mt-2"
+          />
+        </div>
+
+        <p className="mt-4 max-w-lead text-lead text-ink sm:mt-5">
+          GPU kernels, compiler work, and formally verified systems. MSc Computer
+          Engineering at Politecnico di Milano.
         </p>
-      </motion.div>
+
+        <p className="mt-3 max-w-measure text-body text-ref">
+          Every number on this page carries its unit, its reference and its source. Where a
+          project was never benchmarked, the page says so instead of filling the gap.
+        </p>
+
+        {m && flagship && (
+          <div className="mt-8">
+            <Measure measurement={m} trigger="mount" />
+            <p className="mt-2 font-mono text-meta text-ref">
+              <Link
+                href={`/projects/${flagship.id}`}
+                className="text-ink underline decoration-rail underline-offset-4 transition-colors hover:decoration-limit"
+              >
+                {flagship.title}
+              </Link>
+            </p>
+          </div>
+        )}
+      </div>
     </section>
   )
 }

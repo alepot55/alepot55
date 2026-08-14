@@ -1,16 +1,22 @@
-export const experiences = [
+import type { Experience } from "@/lib/constants"
+
+export const experiences: Experience[] = [
   {
     id: "book-author",
     title: "Technical Book Author",
     company: "Neldiritto Editore",
-    period: "2025 - Present", // O la data precisa di inizio
-    description: "Commissioned to author a comprehensive Computer Science textbook for competitive exam preparation (Concorsi Pubblici). Deconstructed complex topics like Computer Architecture, OS, and Algorithms into rigorous yet accessible chapters.",
+    period: "2025 - Present",
+    description:
+      "Commissioned to author a Computer Science textbook for Italian public-sector competitive exams. Computer architecture, operating systems and algorithms, written to be rigorous and still readable by candidates outside the field.",
   },
   {
     id: "academic-mentor-tutor",
-    title: "Academic Mentor & Technical Lead",
+    title: "Academic Mentor and Technical Lead",
     company: "Self-Employed",
     period: "Feb 2022 - Present",
-    description: "Delivered over 800 hours of specialized mentorship in Machine Learning, Python, and Algorithms. Acting as a Technical Lead for university-level thesis projects, guiding students through architecture design and debugging.",
+    description:
+      "Mentorship in machine learning, Python and algorithms, plus technical lead on university thesis projects: architecture design, debugging and review.",
+    value: "800+",
+    unit: "hours taught",
   },
-];
+]

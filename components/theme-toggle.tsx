@@ -6,17 +6,13 @@ import { useTheme } from "./theme-provider"
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme()
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark")
-  }
-
   return (
     <button
-      onClick={toggleTheme}
-      className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-      aria-label="Toggle theme"
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="-mr-2 flex h-11 w-11 items-center justify-center text-ref transition-colors hover:text-ink"
+      aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
     >
-      {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+      {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
     </button>
   )
 }

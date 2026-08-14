@@ -2,9 +2,6 @@
 
 import type { Project } from "@/data/projects"
 import type { ReactNode } from "react"
-import { useRef } from "react"
-import { motion, useInView } from "framer-motion"
-import { Shield, CheckCircle } from "lucide-react"
 import {
   BarChart,
   Bar,
@@ -15,63 +12,39 @@ import {
   Cell,
 } from "recharts"
 
-const COLORS = {
-  as: "hsl(220, 80%, 55%)",
-  rl: "hsl(0, 0%, 75%)",
+/**
+ * Recharts overwrites the className it is handed on axis ticks, so the colour
+ * arrives as currentColor (the frame carries `text-ref`) and the mono face as
+ * an inline style. Bars and cells keep their classes.
+ */
+const AXIS_TICK = {
+  className: "chart-ref",
+  fill: "currentColor",
+  fontSize: 11,
+  style: { fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" },
 }
 
-interface ChartCardProps {
-  title: string
-  delay: number
-  children: ReactNode
+const TOOLTIP_CONTENT = {
+  background: "hsl(var(--surface))",
+  border: "1px solid hsl(var(--rail))",
+  borderRadius: "4px",
+  padding: "6px 9px",
+  boxShadow: "none",
+  fontFamily: "var(--font-mono)",
+  fontSize: "0.6875rem",
+  fontVariantNumeric: "tabular-nums",
 }
+const TOOLTIP_LABEL = { color: "hsl(var(--ink))" }
+const TOOLTIP_ITEM = { color: "hsl(var(--ref))" }
 
-function ChartCard({ title, delay, children }: ChartCardProps) {
+function ChartFrame({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay, ease: [0.25, 0.4, 0.25, 1] }}
-      className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 p-5"
-    >
-      <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">
-        {title}
-      </p>
-      <div className="h-48">{children}</div>
-    </motion.div>
-  )
-}
-
-interface CustomTooltipPayloadEntry {
-  name: string
-  value: number
-  payload: { name: string; value: number }
-}
-
-interface CustomTooltipProps {
-  active?: boolean
-  payload?: CustomTooltipPayloadEntry[]
-  unit: string
-}
-
-function CustomTooltip({ active, payload, unit }: CustomTooltipProps) {
-  if (!active || !payload || payload.length === 0) return null
-
-  const entry = payload[0]
-  return (
-    <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 shadow-lg">
-      <p className="text-xs font-medium text-gray-900 dark:text-gray-100">
-        {entry.payload.name}
-      </p>
-      <p className="text-xs text-gray-500 dark:text-gray-400">
-        {entry.value}
-        {unit}
-      </p>
+    <div className="rounded border border-rail bg-surface p-4 text-ref">
+      <p className="font-mono text-meta text-ref tnum">{title}</p>
+      <div className="mt-3 h-48">{children}</div>
     </div>
   )
 }
-
-const AXIS_TICK_STYLE = { fontSize: 11, fill: "currentColor" }
 
 const VERIFICATION_RESULTS = [
   { property: "No crossed book", time: "2.2ms" },
@@ -81,9 +54,6 @@ const VERIFICATION_RESULTS = [
 ]
 
 export function AtlasMMCharts({ project: _project }: { project: Project }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: "-50px" })
-
   const inventoryData = [
     { name: "A-S", value: 7.19 },
     { name: "RL (PPO)", value: 22.4 },
@@ -101,147 +71,149 @@ export function AtlasMMCharts({ project: _project }: { project: Project }) {
   ]
 
   return (
-    <div className="space-y-4">
-      {/* Charts grid */}
+    <div className="space-y-8">
+      {/* A-S is the measured strategy, every other agent is a reference point */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <ChartCard title="Inventory Std (lower = better)" delay={0.2}>
+        <ChartFrame title="Inventory std, lower is better">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={inventoryData}>
               <XAxis
                 dataKey="name"
-                tick={AXIS_TICK_STYLE}
+                tick={AXIS_TICK}
                 tickLine={false}
-                axisLine={{ stroke: "hsl(0, 0%, 75%)" }}
+                axisLine={{ className: "chart-ref-stroke" }}
+                interval={0}
               />
               <YAxis
-                tick={AXIS_TICK_STYLE}
+                tick={AXIS_TICK}
                 tickLine={false}
                 axisLine={false}
                 domain={[0, 45]}
               />
               <Tooltip
-                content={<CustomTooltip unit="" />}
                 cursor={{ fill: "transparent" }}
+                contentStyle={TOOLTIP_CONTENT}
+                labelStyle={TOOLTIP_LABEL}
+                itemStyle={TOOLTIP_ITEM}
+                formatter={(value) => `${value}`}
               />
               <Bar
                 dataKey="value"
-                radius={[6, 6, 0, 0]}
+                name="inventory std"
+                radius={[2, 2, 0, 0]}
                 maxBarSize={60}
                 animationDuration={800}
               >
                 {inventoryData.map((entry, index) => (
                   <Cell
                     key={entry.name}
-                    fill={index === 0 ? COLORS.as : COLORS.rl}
+                    className={index === 0 ? "chart-ink" : "chart-ref"}
                   />
                 ))}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-        </ChartCard>
+        </ChartFrame>
 
-        <ChartCard title="Max Drawdown (lower = better)" delay={0.3}>
+        <ChartFrame title="Max drawdown, lower is better">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={drawdownData}>
               <XAxis
                 dataKey="name"
-                tick={AXIS_TICK_STYLE}
+                tick={AXIS_TICK}
                 tickLine={false}
-                axisLine={{ stroke: "hsl(0, 0%, 75%)" }}
+                axisLine={{ className: "chart-ref-stroke" }}
+                interval={0}
               />
               <YAxis
-                tick={AXIS_TICK_STYLE}
+                tick={AXIS_TICK}
                 tickLine={false}
                 axisLine={false}
                 domain={[0, 22]}
               />
               <Tooltip
-                content={<CustomTooltip unit="" />}
                 cursor={{ fill: "transparent" }}
+                contentStyle={TOOLTIP_CONTENT}
+                labelStyle={TOOLTIP_LABEL}
+                itemStyle={TOOLTIP_ITEM}
+                formatter={(value) => `${value}`}
               />
               <Bar
                 dataKey="value"
-                radius={[6, 6, 0, 0]}
+                name="max drawdown"
+                radius={[2, 2, 0, 0]}
                 maxBarSize={60}
                 animationDuration={800}
               >
                 {drawdownData.map((entry, index) => (
                   <Cell
                     key={entry.name}
-                    fill={index === 0 ? COLORS.as : COLORS.rl}
+                    className={index === 0 ? "chart-ink" : "chart-ref"}
                   />
                 ))}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-        </ChartCard>
+        </ChartFrame>
 
-        <ChartCard title="Fill Rate (%)" delay={0.4}>
+        <ChartFrame title="Fill rate (%)">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={fillRateData}>
               <XAxis
                 dataKey="name"
-                tick={AXIS_TICK_STYLE}
+                tick={AXIS_TICK}
                 tickLine={false}
-                axisLine={{ stroke: "hsl(0, 0%, 75%)" }}
+                axisLine={{ className: "chart-ref-stroke" }}
+                interval={0}
               />
               <YAxis
-                tick={AXIS_TICK_STYLE}
+                tick={AXIS_TICK}
                 tickLine={false}
                 axisLine={false}
                 domain={[0, 35]}
               />
               <Tooltip
-                content={<CustomTooltip unit="%" />}
                 cursor={{ fill: "transparent" }}
+                contentStyle={TOOLTIP_CONTENT}
+                labelStyle={TOOLTIP_LABEL}
+                itemStyle={TOOLTIP_ITEM}
+                formatter={(value) => `${value}%`}
               />
               <Bar
                 dataKey="value"
-                radius={[6, 6, 0, 0]}
+                name="fill rate"
+                radius={[2, 2, 0, 0]}
                 maxBarSize={60}
                 animationDuration={800}
               >
                 {fillRateData.map((entry, index) => (
                   <Cell
                     key={entry.name}
-                    fill={index === 0 ? COLORS.as : COLORS.rl}
+                    className={index === 0 ? "chart-ink" : "chart-ref"}
                   />
                 ))}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-        </ChartCard>
+        </ChartFrame>
       </div>
 
       {/* Formal verification results */}
-      <div ref={ref} className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 p-6">
-        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">
-          Z3 Formal Verification
+      <div>
+        <p className="font-mono text-meta text-ref">
+          Z3 formal verification: all four properties proved, with solver time
         </p>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {VERIFICATION_RESULTS.map((result, i) => (
-            <motion.div
+        <ul className="mt-3 space-y-2">
+          {VERIFICATION_RESULTS.map((result) => (
+            <li
               key={result.property}
-              initial={{ opacity: 0, x: -10 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.4, delay: i * 0.1, ease: "easeOut" }}
-              className="flex items-center gap-3 rounded-lg border border-green-200 dark:border-green-900/50 bg-green-50 dark:bg-green-950/20 px-4 py-3"
+              className="flex items-baseline justify-between gap-4"
             >
-              <CheckCircle className="h-4 w-4 flex-shrink-0 text-green-500 dark:text-green-400" />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">
-                  {result.property}
-                </p>
-              </div>
-              <div className="flex items-center gap-1.5 flex-shrink-0">
-                <Shield className="h-3.5 w-3.5 text-green-500 dark:text-green-400" />
-                <span className="text-xs font-mono text-green-600 dark:text-green-400">
-                  {result.time}
-                </span>
-              </div>
-            </motion.div>
+              <span className="font-mono text-meta text-ink">{result.property}</span>
+              <span className="font-mono text-meta text-ref tnum">{result.time}</span>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   )

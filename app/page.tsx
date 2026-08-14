@@ -1,9 +1,7 @@
-import { ArrowUpRight } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { HeroSection } from "@/components/hero-section"
-import { ProjectCard } from "@/components/project-card"
-import { ProjectsSection } from "@/components/projects-section"
-import { SkillsChart } from "@/components/skills-chart"
+import { ProjectsRegister } from "@/components/projects-register"
+import { SkillsMatrix } from "@/components/skills-matrix"
 import { ExperienceItem } from "@/components/experience-item"
 import { EducationItem } from "@/components/education-item"
 import { AchievementItem } from "@/components/achievement-item"
@@ -14,16 +12,24 @@ import { education } from "@/data/education"
 import { achievements } from "@/data/achievements"
 import { skills } from "@/data/skills"
 import { hasContentFile } from "@/lib/content-utils"
+import { hasAxis } from "@/lib/measure"
 
-function SectionHeading({ children, id }: { children: React.ReactNode; id?: string }) {
+function SectionLabel({ id, children }: { id: string; children: React.ReactNode }) {
   return (
-    <h2
-      id={id}
-      className="text-sm font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-8 flex items-center gap-3"
-    >
-      <span className="h-px w-6 bg-gray-300 dark:bg-gray-700" aria-hidden="true" />
+    <h2 id={id} className="mb-7 font-mono text-micro uppercase tracking-micro text-ref">
       {children}
     </h2>
+  )
+}
+
+/**
+ * The page opens on the one measurement that crosses a physical ceiling. If no
+ * such measurement exists, it opens on the first featured one that has an axis.
+ */
+function pickFlagship() {
+  return (
+    projects.find((p) => p.measurement?.limit && p.measurement.value > p.measurement.limit.value) ??
+    projects.find((p) => p.featured && p.measurement && hasAxis(p.measurement))
   )
 }
 
@@ -43,117 +49,116 @@ export default function Home() {
     educationContentMap[edu.id] = hasContentFile("education", edu.id)
   }
 
-  const featuredProjects = projects.filter((p) => p.featured)
+  const flagship = pickFlagship()
+  const measured = projects.filter((p) => p.measurement).length
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+    <>
       <SiteHeader />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6">
-        <HeroSection />
+      <main id="main" tabIndex={-1} className="mx-auto max-w-content px-5 sm:px-8">
+        <HeroSection flagship={flagship} />
 
-        {/* Featured Projects */}
-        <section className="pb-16 sm:pb-24 scroll-mt-20" id="projects" aria-labelledby="featured-heading">
-          <SectionHeading id="featured-heading">Featured Projects</SectionHeading>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            {featuredProjects.map((project, index) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                hasContent={projectContentMap[project.id] || false}
-                index={index}
-              />
-            ))}
-          </div>
+        <section
+          className="scroll-mt-[4.5rem] pb-section-sm sm:pb-section-md lg:pb-section"
+          id="projects"
+          aria-labelledby="projects-heading"
+        >
+          <SectionLabel id="projects-heading">
+            Projects · {projects.length} listed · {measured} measured
+          </SectionLabel>
+          <ProjectsRegister
+            projects={projects}
+            contentMap={projectContentMap}
+            heroProjectId={flagship?.id}
+          />
         </section>
 
-        {/* All Projects (with filter) */}
-        <ProjectsSection projects={projects} contentMap={projectContentMap} />
-
-        {/* Skills */}
-        <section className="pb-16 sm:pb-24 scroll-mt-20" id="skills" aria-labelledby="skills-heading">
-          <SectionHeading id="skills-heading">Skills</SectionHeading>
-          <div className="max-w-3xl">
-            <SkillsChart skills={skills} />
-          </div>
+        <section
+          className="scroll-mt-[4.5rem] pb-section-sm sm:pb-section-md lg:pb-section"
+          id="skills"
+          aria-labelledby="skills-heading"
+        >
+          <SectionLabel id="skills-heading">Skills · listed, not rated</SectionLabel>
+          <SkillsMatrix skills={skills} />
         </section>
 
-        {/* Experience + Education Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 pb-16 sm:pb-24 scroll-mt-20" id="experience">
+        <div
+          className="grid scroll-mt-[4.5rem] grid-cols-1 gap-x-16 gap-y-12 pb-section-sm sm:pb-section-md lg:grid-cols-2 lg:pb-section"
+          id="experience"
+        >
           <section aria-labelledby="experience-heading">
-            <SectionHeading id="experience-heading">Experience</SectionHeading>
-            <div className="space-y-8">
-              {experiences.map((experience, index) => (
+            <SectionLabel id="experience-heading">Experience · {experiences.length}</SectionLabel>
+            <ul role="list">
+              {experiences.map((experience) => (
                 <ExperienceItem
                   key={experience.id}
                   experience={experience}
-                  index={index}
                   hasContent={experienceContentMap[experience.id] || false}
                 />
               ))}
-            </div>
+            </ul>
           </section>
 
           <section aria-labelledby="education-heading">
-            <SectionHeading id="education-heading">Education</SectionHeading>
-            <div className="space-y-8">
-              {education.map((edu, index) => (
+            <SectionLabel id="education-heading">Education · {education.length}</SectionLabel>
+            <ul role="list">
+              {education.map((edu) => (
                 <EducationItem
                   key={edu.id}
                   education={edu}
-                  index={index}
                   hasContent={educationContentMap[edu.id] || false}
                 />
               ))}
-            </div>
+            </ul>
           </section>
         </div>
 
-        {/* Achievements */}
-        <section className="pb-16 sm:pb-24 scroll-mt-20" id="achievements" aria-labelledby="achievements-heading">
-          <SectionHeading id="achievements-heading">Achievements</SectionHeading>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            {achievements.map((achievement, index) => (
-              <AchievementItem key={achievement.id} achievement={achievement} index={index} />
+        <section
+          className="scroll-mt-[4.5rem] pb-section-sm sm:pb-section-md lg:pb-section"
+          id="achievements"
+          aria-labelledby="achievements-heading"
+        >
+          <SectionLabel id="achievements-heading">
+            Achievements · {achievements.length}
+          </SectionLabel>
+          <ul role="list">
+            {achievements.map((achievement) => (
+              <AchievementItem key={achievement.id} achievement={achievement} />
             ))}
-          </div>
+          </ul>
         </section>
 
-        {/* Footer */}
-        <footer className="border-t border-gray-200 dark:border-gray-800 py-10 sm:py-14">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-              Alessandro Potenza
-            </p>
-            <div className="flex gap-6">
-              <a
-                href="mailto:ap.alessandro.potenza@gmail.com"
-                className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors flex items-center gap-1.5"
-              >
-                Email <ArrowUpRight size={12} />
-              </a>
-              <a
-                href="https://github.com/alepot55"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors flex items-center gap-1.5"
-              >
-                GitHub <ArrowUpRight size={12} />
-              </a>
-              <a
-                href="https://linkedin.com/in/alepot55"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors flex items-center gap-1.5"
-              >
-                LinkedIn <ArrowUpRight size={12} />
-              </a>
-            </div>
+        <footer className="flex flex-col gap-4 pb-14 pt-10 sm:flex-row sm:items-baseline sm:justify-between">
+          <p className="font-mono text-meta text-ref">Alessandro Potenza · Milano, Italy</p>
+          <div className="flex gap-6 font-mono text-meta">
+            <a
+              href="mailto:ap.alessandro.potenza@gmail.com"
+              className="text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-limit"
+            >
+              Email
+            </a>
+            <a
+              href="https://github.com/alepot55"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-limit"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://linkedin.com/in/alepot55"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-limit"
+            >
+              LinkedIn
+            </a>
           </div>
         </footer>
       </main>
 
       <ScrollToTop />
-    </div>
+    </>
   )
 }
