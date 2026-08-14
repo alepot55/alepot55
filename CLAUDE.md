@@ -21,8 +21,9 @@ setup prompt. Use `npx tsc --noEmit` plus `npm run build` as the gate.
 - **react-markdown** with remark-gfm, remark-breaks, rehype-raw for content rendering
 - **remark-math** + **rehype-katex** + **katex** for LaTeX in markdown
 - **lucide-react** for the few remaining icons
-- **Chivo Mono** via `next/font/google`, CSS variable `--font-mono`. This makes the production build
-  depend on network access at build time, which GitHub Actions has.
+- **Chivo Mono** self-hosted from `app/fonts/` via `next/font/local`, CSS variable `--font-mono`.
+  Deliberately not `next/font/google`: that made the production build depend on reaching
+  fonts.googleapis.com, which failed intermittently.
 - **Geist Sans** via `next/font/local` from `node_modules/geist`, weights 400/500/600, `--font-sans`
 - **@alepot55/chessboardjs** — chess library for the interactive demo (types in `types/chessboardjs.d.ts`)
 - Custom `ThemeProvider` (context + localStorage) for dark/light mode, **not** `next-themes` (despite it
@@ -39,8 +40,12 @@ component.** The short version:
 - **Two typefaces, one rule**: `font-mono` for anything that is a label, identifier, number, unit,
   heading or code; the default sans for sentences only. Every visible digit is in mono.
 - Spaced uppercase is reserved for section labels. Nowhere else.
-- **No cards**: no bordered boxes around content, no shadows, no gradients. Separation is space.
-  Radius is 4px everywhere.
+- **No cards**: no bordered boxes around content, no shadows, no gradients. Radius is 4px everywhere.
+- **Hairlines do two jobs only**: separate the rows of a register, and mark where a part of a page
+  begins. Everything else is separated by space.
+- **Two structural levels**: `SectionHeader` announces a section or a page part, hairlines separate
+  the rows below it. Detail pages name every part (`Measurements`, `Write-up`, and the per-project
+  demo label in `CUSTOM_SECTION_LABELS`).
 - **One animation**: the measurement segment being drawn. No entry animations, no stagger.
 
 ### The value column
@@ -68,7 +73,8 @@ same row, and an empty cell is a legitimate state.
 ## Architecture
 
 Fully static export (`output: "export"` in next.config.mjs):
-- `basePath` and `assetPrefix` are `/alepot55` **only in production** (empty in dev)
+- `basePath` and `assetPrefix` are `/alepot55` only on GitHub Pages: production builds that set
+  `VERCEL` (preview deployments) and local dev serve from the root
 - `trailingSlash: true`, `images.unoptimized: true`
 - Deployed via GitHub Actions (`.github/workflows/nextjs.yml`) to GitHub Pages
 
@@ -86,7 +92,7 @@ route is `app/experience/[id]/` (singular). `data/experiences.ts` is plural too.
 ### Project data model
 
 - `category`: `"ai-ml" | "systems" | "data" | "web" | "research"` — drives the register filter
-- `featured?: boolean` — the row is rendered expanded, with description and axis
+- `featured?: boolean` — eligible to open the page as the hero measurement; does not change the row
 - `measurement?: Measurement` — the headline number with its references and source
 - `artifact?: string` — what exists instead, when nothing was benchmarked ("npm package", "live demo")
 - `github?`, `liveUrl?`
@@ -124,8 +130,9 @@ All dynamic routes use `generateStaticParams()`.
 - **Server Components** for pages and `app/layout.tsx`. Components are Client Components only when
   they need state or motion: `value-cell`, `skills-matrix`, `experience-item`, `education-item` and
   `achievement-item` are server components.
-- `ProjectsRegister` holds the filter and renders one list: featured projects expanded, the rest
-  compact. There is no separate "featured" section, so no project appears twice.
+- `ProjectsRegister` holds the filter and renders one uniform list. Every project row has the same
+  shape; the only variation is whether its measurement had a reference to draw an axis against.
+  There is no separate "featured" section, so no project appears twice.
 - `MarkdownRenderer` styles every element explicitly and no longer uses the `prose` classes.
 - `MotionWrapper` exports only `FadeIn`, which is opacity-only and takes no `delay` or `direction`.
 - The skip link in `app/layout.tsx` targets `#main`; every `<main>` needs `id="main"` and `tabIndex={-1}`.

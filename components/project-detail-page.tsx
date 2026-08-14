@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { ThemeToggle } from "./theme-toggle"
 import { MarkdownRenderer } from "./markdown-renderer"
+import { SectionHeader } from "./section-header"
 import { Measure } from "./measure"
 import { ValueCell } from "./value-cell"
 import { hasAxis } from "@/lib/measure"
@@ -27,6 +28,16 @@ const CUSTOM_SECTIONS: Record<string, ComponentType<{ project: Project }>> = {
   agentrial: TerminalShowcase,
   "music-genre-classification": ConfusionMatrixViz,
   "concepthub-ai": ConceptHubDemo,
+}
+
+/** every part of the page says what it is */
+const CUSTOM_SECTION_LABELS: Record<string, string> = {
+  "chessboard-js": "Interactive board",
+  "slam-gaussian-splatting": "Reconstruction",
+  "verify-cbl": "Verification pipeline",
+  agentrial: "Command line",
+  "music-genre-classification": "Confusion matrix",
+  "concepthub-ai": "The platform",
 }
 
 const CUSTOM_CHARTS: Record<string, ComponentType<{ project: Project }>> = {
@@ -73,7 +84,7 @@ export function ProjectDetailPage({ project, content }: ProjectDetailPageProps) 
       </header>
 
       <main id="main" tabIndex={-1} className="mx-auto max-w-content px-5 sm:px-8">
-        <section className={`${ROW_GRID} pb-10 pt-12 sm:pt-16`}>
+        <section className={`${ROW_GRID} pb-section-sm pt-12 sm:pt-14`}>
           <p className="font-mono text-meta text-ref">
             {CATEGORY_LABELS_FULL[project.category] || project.category} · {project.period}
           </p>
@@ -107,26 +118,31 @@ export function ProjectDetailPage({ project, content }: ProjectDetailPageProps) 
         </section>
 
         {CustomSection && (
-          <section className="pb-12">
+          <section className="border-t border-rail pb-section-sm pt-8">
+            <SectionHeader level="part">
+              {CUSTOM_SECTION_LABELS[project.id] ?? "Demo"}
+            </SectionHeader>
             <CustomSection project={project} />
           </section>
         )}
 
         {CustomCharts && (
-          <section className="pb-12">
+          <section className="border-t border-rail pb-section-sm pt-8">
+            <SectionHeader level="part">Measurements</SectionHeader>
             <CustomCharts project={project} />
           </section>
         )}
 
         {content && (
-          <section className="pb-section-sm sm:pb-section-md">
+          <section className="border-t border-rail pb-section-sm pt-8 sm:pb-section-md">
+            <SectionHeader level="part">Write-up</SectionHeader>
             <article className="max-w-prose">
               <MarkdownRenderer content={content} />
             </article>
           </section>
         )}
 
-        <footer className="flex items-center justify-between gap-4 py-10 font-mono text-meta">
+        <footer className="flex items-center justify-between gap-4 border-t border-rail py-8 font-mono text-meta">
           <Link href="/" className={LINK}>
             All projects
           </Link>

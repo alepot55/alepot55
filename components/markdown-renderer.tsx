@@ -93,22 +93,22 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
             </blockquote>
           ),
           h1: ({ children }) => (
-            <h1 className="mb-4 mt-10 font-mono text-row-title font-semibold leading-tight tracking-snug text-ink sm:mt-12 sm:text-value-m sm:leading-tight">
+            <h1 className="mb-3 mt-10 font-mono text-lead font-semibold leading-snug tracking-snug text-ink sm:mt-12 sm:text-row-title">
               {children}
             </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="mb-3 mt-10 font-mono text-value-s font-semibold leading-tight tracking-snug text-ink sm:mt-12 sm:text-row-title">
+            <h2 className="mb-3 mt-10 font-mono text-lead font-semibold leading-snug tracking-snug text-ink sm:mt-12">
               {children}
             </h2>
           ),
           h3: ({ children }) => (
-            <h3 className="mb-2 mt-8 font-mono text-lead font-semibold leading-snug text-ink">
+            <h3 className="mb-2 mt-8 font-mono text-body font-semibold leading-snug text-ink">
               {children}
             </h3>
           ),
           h4: ({ children }) => (
-            <h4 className="mb-2 mt-6 font-mono text-body font-medium text-ink">{children}</h4>
+            <h4 className="mb-2 mt-6 font-mono text-body font-medium text-ref">{children}</h4>
           ),
           p: ({ children }) => <p className={`mb-4 ${PROSE}`}>{children}</p>,
           ul: ({ children }) => (

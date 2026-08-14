@@ -15,7 +15,7 @@ export function HeroSection({ flagship }: HeroSectionProps) {
   const m = flagship?.measurement
 
   return (
-    <section className="pt-28 pb-section-sm sm:pt-32 sm:pb-section-md lg:pb-section">
+    <section className="pb-section-sm pt-24 sm:pb-section-md sm:pt-28 lg:pb-section">
       <div className={ROW_GRID}>
         <h1 className="font-mono text-[clamp(1.75rem,5.2vw,3.25rem)] font-semibold leading-[1.02] tracking-crush text-ink">
           Alessandro Potenza
@@ -44,7 +44,7 @@ export function HeroSection({ flagship }: HeroSectionProps) {
         </p>
 
         {m && flagship && (
-          <div className="mt-8">
+          <div className="mt-6">
             <Measure measurement={m} trigger="mount" />
             <p className="mt-2 font-mono text-meta text-ref">
               <Link

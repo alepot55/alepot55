@@ -10,12 +10,12 @@ interface ExperienceItemProps {
 
 export function ExperienceItem({ experience, hasContent = false }: ExperienceItemProps) {
   return (
-    <li className={`group relative ${ROW_GRID_NARROW} py-4`}>
+    <li className={`group relative border-t border-rail py-5 ${ROW_GRID_NARROW}`}>
       <p className="font-mono text-meta text-ref">
         {experience.company} · {experience.period}
       </p>
 
-      <h3 className="font-mono text-index font-semibold text-ink">
+      <h3 className="font-mono text-lead font-semibold tracking-snug text-ink">
         {hasContent ? (
           <Link
             href={`/experience/${experience.id}`}

@@ -31,13 +31,11 @@ export function ProjectsRegister({
   const reduced = useReducedMotion()
 
   const visible = active === "all" ? projects : projects.filter((p) => p.category === active)
-  const expanded = visible.filter((p) => p.featured)
-  const rest = visible.filter((p) => !p.featured)
 
   return (
     <>
       <div
-        className="mb-8 flex flex-wrap items-baseline gap-x-5 gap-y-2"
+        className="mb-2 flex flex-wrap items-baseline gap-x-5 gap-y-2"
         role="group"
         aria-label="Filter projects by category"
       >
@@ -48,47 +46,38 @@ export function ProjectsRegister({
               key={f.key}
               aria-pressed={isActive}
               onClick={() => setActive(f.key)}
-              className={`relative py-1 font-mono text-nav transition-colors ${
+              className={`relative py-2 font-mono text-nav transition-colors ${
                 isActive ? "text-ink" : "text-ref hover:text-ink"
               }`}
             >
               {f.label}
               {isActive &&
                 (reduced ? (
-                  <span className="absolute inset-x-0 -bottom-px h-0.5 bg-limit" />
+                  <span className="absolute inset-x-0 bottom-0 h-0.5 bg-limit" />
                 ) : (
                   <motion.span
                     layoutId="filter-underline"
-                    className="absolute inset-x-0 -bottom-px h-0.5 bg-limit"
+                    className="absolute inset-x-0 bottom-0 h-0.5 bg-limit"
                     transition={{ duration: 0.22, ease: [0.22, 0.61, 0.36, 1] }}
                   />
                 ))}
             </button>
           )
         })}
-        <span className="ml-auto font-mono text-meta text-ref tnum">
-          {visible.length} / {projects.length}
-        </span>
       </div>
 
       {visible.length === 0 ? (
-        <p className="py-8 font-mono text-meta text-ref">No projects in this category.</p>
+        <p className="border-t border-rail py-8 font-mono text-meta text-ref">
+          No projects in this category.
+        </p>
       ) : (
         <ul role="list">
-          {expanded.map((project) => (
+          {visible.map((project) => (
             <ProjectRow
               key={project.id}
               project={project}
               hasContent={contentMap[project.id] || false}
-              expanded
               axisDrawn={project.id === heroProjectId}
-            />
-          ))}
-          {rest.map((project) => (
-            <ProjectRow
-              key={project.id}
-              project={project}
-              hasContent={contentMap[project.id] || false}
             />
           ))}
         </ul>

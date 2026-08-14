@@ -71,9 +71,9 @@ module.exports = {
         full: "var(--radius)",
       },
       spacing: {
-        section: "7rem",
-        "section-md": "5rem",
-        "section-sm": "3.5rem",
+        section: "5rem",
+        "section-md": "4rem",
+        "section-sm": "3rem",
         header: "3.25rem",
         value: "9rem",
       },

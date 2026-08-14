@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ThemeToggle } from "./theme-toggle"
 import { MarkdownRenderer } from "./markdown-renderer"
+import { SectionHeader } from "./section-header"
 
 const LINK =
   "text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-limit"
@@ -56,11 +57,18 @@ export function MarkdownPage({ title, subtitle, content, backHref, backLabel, gi
           )}
         </section>
 
-        <section className="pb-section-sm sm:pb-section-md">
+        <section className="border-t border-rail pb-section-sm pt-8 sm:pb-section-md">
+          <SectionHeader level="part">Write-up</SectionHeader>
           <article className="max-w-prose">
             <MarkdownRenderer content={content} />
           </article>
         </section>
+
+        <footer className="border-t border-rail py-8 font-mono text-meta">
+          <Link href={backHref} className={LINK}>
+            {backLabel}
+          </Link>
+        </footer>
       </main>
     </>
   )

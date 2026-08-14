@@ -12,8 +12,10 @@ export function SkillsMatrix({ skills }: SkillsMatrixProps) {
       {Object.entries(skills).map(([category, items]) => {
         const used = categoryUsage(items)
         return (
-          <li key={category} className={`${ROW_GRID} py-4`}>
-            <h3 className="font-mono text-index font-medium text-ink">{category}</h3>
+          <li key={category} className={`border-t border-rail py-5 ${ROW_GRID}`}>
+            <h3 className="font-mono text-lead font-semibold tracking-snug text-ink">
+              {category}
+            </h3>
 
             <ValueCell
               value={used > 0 ? String(used) : undefined}
