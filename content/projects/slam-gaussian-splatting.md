@@ -1,27 +1,34 @@
-## Motivation
+## In short
 
-Traditional SLAM systems produce sparse point clouds or geometric meshes. These are useful for localization, but visually far from the actual scene. I wanted to build a system that produces **photo-realistic** 3D reconstructions from nothing more than a standard RGB camera, in real-time.
+- Traditional SLAM returns sparse point clouds or geometric meshes: useful for localization, visually far from the actual scene.
+- SplatSLAM turns 3D Gaussian Splatting, designed for offline reconstruction, into a real-time incremental pipeline driven by a plain RGB camera.
+- Tracking minimizes photometric error against a rendered view and mapping optimizes the Gaussians from covisibility-selected keyframes, with no feature detection and no depth sensor.
+- The result is real-time dense reconstruction whose quality clearly exceeds mesh-based and point cloud-based SLAM, shown on room, kitchen and living room sequences.
 
-3D Gaussian Splatting had just emerged as a breakthrough in neural rendering, achieving photorealistic quality with fast rendering times. But it was designed for offline reconstruction from pre-captured images. I adapted it into a real-time SLAM pipeline.
+## Why splatting instead of meshes
 
-## The Approach
+I wanted photo-realistic 3D reconstruction from nothing more than a standard RGB camera, in real time. Sparse points and geometric meshes do not get there.
 
-SplatSLAM runs a continuous loop over incoming RGB frames:
+3D Gaussian Splatting had just emerged as a breakthrough in neural rendering, reaching photorealistic quality with fast rendering times, but it was built for offline reconstruction from pre-captured images. Making it incremental was the work.
 
-**Tracking**: for each new frame, the system estimates the camera's pose by minimizing photometric error between the observed frame and a rendered view from the current 3D map. No feature detection, no depth sensor, just pixel-level alignment.
+## What the system does per frame
 
-**Mapping**: keyframes are selected using a covisibility heuristic and used to optimize the 3D Gaussian Splatting representation. Each Gaussian stores position, covariance, color (spherical harmonics), and opacity. The optimization incrementally refines these parameters as new views arrive.
+- **Tracking**: the camera pose for each new frame comes from minimizing photometric error between the observed frame and a view rendered from the current 3D map. Pixel-level alignment only, no feature detection and no depth sensor.
+- **Mapping**: keyframes are selected with a covisibility heuristic and used to optimize the 3D Gaussian Splatting representation. Each Gaussian stores position, covariance, color as spherical harmonics, and opacity, and the optimization refines these parameters as new views arrive.
+- **Rendering**: the final map can be rendered from any viewpoint, producing continuous detailed surfaces rather than blocky meshes or scattered points.
 
-**Rendering**: the final map can be rendered from any viewpoint, producing images that are qualitatively close to the original video: not blocky meshes or scattered points, but continuous, detailed surfaces.
+## Implementation
 
-The system is built as an extension to the Nerfstudio framework, adapting the `splatfacto` offline method into a real-time incremental pipeline.
+The system is built as an extension to the Nerfstudio framework. It adapts the offline `splatfacto` method into a real-time incremental pipeline.
 
 ## Results
 
 The system achieves real-time dense reconstruction from monocular RGB video, with reconstruction quality significantly exceeding traditional mesh-based or point cloud-based SLAM methods. The output is a 3D scene that can be freely explored with photo-realistic rendering.
 
-Demonstrations on room, kitchen, and living room sequences show the system handling diverse indoor environments with varying levels of complexity and scale.
+Demonstrations on room, kitchen and living room sequences show the system handling diverse indoor environments with varying levels of complexity and scale.
 
 ## Context
 
-This project was developed as part of the excellence program at Sapienza University of Rome and became the foundation for my bachelor's thesis. It directly informed my subsequent work on GPU kernel optimization. The performance bottlenecks I encountered here led me to explore Triton and CUDA programming for dense mapping acceleration.
+The project was developed as part of the excellence program at Sapienza University of Rome and became the foundation for my bachelor's thesis.
+
+The performance bottlenecks I hit here pushed me toward Triton and CUDA programming for dense mapping acceleration, which is where my later work on GPU kernel optimization started.

@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { MarkdownPage } from "@/components/markdown-page"
+import { BookShowcase } from "@/components/custom-sections/book-showcase"
 import { experiences } from "@/data/experiences"
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
@@ -46,6 +47,8 @@ export default async function ExperiencePage({ params }: { params: { id: string 
       content={experience.content}
       result={experience.result}
       links={experience.links}
+      showcase={experience.id === "book-author" ? <BookShowcase /> : undefined}
+      showcaseLabel="The book"
       backHref="/"
       backLabel="Portfolio"
     />

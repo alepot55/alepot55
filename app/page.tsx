@@ -34,7 +34,8 @@ export default function Home() {
               <Row
                 key={e.id}
                 title={e.title}
-                meta={`${e.company} · ${e.period}`}
+                period={e.period}
+                meta={e.company}
                 summary={e.summary}
                 result={e.result}
                 links={e.links}
@@ -51,7 +52,8 @@ export default function Home() {
               <Row
                 key={e.id}
                 title={e.degree}
-                meta={`${e.institution} · ${e.period}`}
+                period={e.period}
+                meta={e.institution}
                 summary={e.summary}
                 result={e.result}
                 links={e.links}
@@ -70,7 +72,8 @@ export default function Home() {
               <Row
                 key={p.id}
                 title={p.title}
-                meta={`${CATEGORY_LABELS[p.category]} · ${p.period}`}
+                period={p.period}
+                meta={CATEGORY_LABELS[p.category]}
                 summary={p.summary}
                 result={p.result}
                 links={p.links}
@@ -92,7 +95,8 @@ export default function Home() {
               <Row
                 key={a.id}
                 title={a.title}
-                meta={`${a.organization} · ${a.date}`}
+                period={a.date}
+                meta={a.organization}
                 summary={a.summary}
                 result={a.result}
                 links={a.links}

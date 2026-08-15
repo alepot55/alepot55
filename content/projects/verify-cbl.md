@@ -1,25 +1,37 @@
-## Motivation
+## In short
 
-When organizations modernize legacy codebases, for example migrating from COBOL to Python, they need more than tests. They need **proof** that the new code behaves identically to the old one.
+- **Problem:** modernising a legacy codebase, COBOL to Python for instance, needs proof that the new code behaves identically, and a test suite only covers the scenarios someone thought to write.
+- **Failure mode:** penny drift, a rounding gap of 0.01 dollars per transaction that fails no individual test and accumulates into a real financial discrepancy across millions of transactions.
+- **Mechanism:** an LLM performs the structural translation, Z3 proves the two programs agree on every input in the space, and a Monte Carlo sampler takes over where the symbolic proof does not scale.
+- **Measured:** 100 percent verification accuracy across 42 benchmark cases, several of them with known penny drift that traditional test suites had missed.
+- **State:** the solver side is solid. What still limits the system is the translation layer, not the theorem proving.
 
-The conventional approach is to write a comprehensive test suite and run both versions against it. But tests can only cover known scenarios. What they miss is **penny drift**: subtle rounding differences that are invisible on individual transactions but accumulate to significant financial discrepancies at scale. A difference of $0.01 per transaction across millions of transactions is a problem no test suite would catch, because no individual test fails.
+## Why a test suite is not enough
 
-## The Approach
+Tests can only cover known scenarios, and they are checked one transaction at a time. A gap of 0.01 dollars per transaction breaks no assertion, so the suite stays green and says nothing about it. Across millions of transactions that same gap becomes the reconciliation problem someone finds months later.
 
-Verify-CBL combines formal methods with LLM capabilities in a neuro-symbolic architecture:
+## The three components
 
-**Z3 SMT Solver** translates both the legacy and modern code into Satisfiability Modulo Theories formulas. Z3 then checks if there exists *any* input, across the entire input space, where the two programs produce different outputs. If no such input exists, the equivalence is **mathematically proven**, not merely tested.
+**Z3 SMT solver.** It translates both the legacy and the modern program into Satisfiability Modulo Theories formulas. It then asks whether there exists any input, across the entire input space, where the two produce different outputs. If no such input exists, the equivalence is mathematically proven, not merely tested.
 
-**LLM-Powered Translation** handles the messy reality of legacy code. COBOL has idiosyncratic constructs, implicit decimal handling, and platform-specific behavior. An LLM performs the initial structural translation, and the formal verifier validates the result. This gives us the flexibility of AI with the rigor of theorem proving.
+**LLM-powered translation.** COBOL has idiosyncratic constructs, implicit decimal handling, and platform-specific behaviour. The LLM performs the initial structural translation and the formal verifier validates the result, which gives the flexibility of AI with the rigor of theorem proving.
 
-**Monte Carlo Fallback** provides statistical guarantees when symbolic verification hits complexity limits (deeply nested loops, recursive structures). The engine samples inputs uniformly and computes confidence bounds on equivalence.
+**Monte Carlo fallback.** Symbolic verification hits complexity limits on deeply nested loops and recursive structures. There the engine samples inputs uniformly and computes confidence bounds on equivalence, so the answer degrades to a statistical guarantee instead of no answer at all.
 
 ## Results
 
-Across 42 benchmark cases, including several with known penny drift that traditional test suites had missed, Verify-CBL achieved **100% verification accuracy** with the hybrid Z3/Monte Carlo approach.
+- 42 benchmark cases, including several with known penny drift that traditional test suites had missed.
+- 100 percent verification accuracy with the hybrid Z3 and Monte Carlo approach.
+- The most satisfying cases were the ones where the test suite reported all green and Verify-CBL found the rounding discrepancy anyway.
 
-The most satisfying cases were the ones where the test suite said "all green" but Verify-CBL found rounding discrepancies. These are exactly the bugs that escape to production and cause reconciliation nightmares months later.
+Those are exactly the bugs that escape to production and cause reconciliation nightmares months later.
 
-## What I Learned
+## What I learned
 
-The hardest part wasn't the theorem proving: Z3 is remarkably capable. The hard part was the translation layer. COBOL's implicit decimal arithmetic, `COMP-3` packed decimal, and `REDEFINES` clauses create edge cases that neither an LLM alone nor a rule-based translator alone can handle reliably. The hybrid approach (LLM for structural understanding, formal methods for correctness) turned out to be far more robust than either component individually.
+The theorem proving was not the hard part: Z3 is remarkably capable. The hard part was the translation layer, where COBOL produces edge cases that neither an LLM alone nor a rule-based translator alone handles reliably:
+
+- implicit decimal arithmetic
+- `COMP-3` packed decimal
+- `REDEFINES` clauses
+
+The hybrid split, LLM for structural understanding and formal methods for correctness, turned out to be far more robust than either component individually.

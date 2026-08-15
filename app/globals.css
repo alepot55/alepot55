@@ -131,9 +131,30 @@
     top: 0.75rem;
   }
 
-  /* KaTeX keeps its own families: maths is the one place another face is right */
+  /*
+    KaTeX ships Computer Modern, which reads as a third typeface next to the
+    mono and the sans. Real formulas keep it, because the symbols need it, but
+    they are set at the surrounding size and colour so the jump is a change of
+    notation and not a change of voice. Simple multipliers and percentages do
+    not go through KaTeX at all: they are written as text.
+  */
   .katex {
     font-size: 1em !important;
+    color: hsl(var(--ink));
+  }
+
+  .katex-display {
+    margin: 1.5rem 0;
+    padding: 0.875rem 1rem;
+    background: hsl(var(--surface));
+    border: 1px solid hsl(var(--rail));
+    border-radius: var(--radius);
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .katex-display > .katex {
+    text-align: left;
   }
 
   pre {

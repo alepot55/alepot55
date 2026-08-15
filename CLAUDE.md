@@ -130,10 +130,21 @@ There is none. One light theme, defined once in `app/globals.css`.
 
 - **Never use em dashes (—)** anywhere in content or UI copy. Use colons, commas, parentheses, or
   restructure. No emoji. No glyphs outside Latin-1.
-- Use LaTeX (`$...$`) for mathematical notation in content: variables, Big-O, multipliers
-  (`$13.6\times$`), formulas. Do not overdo it on plain numbers and percentages.
+- **LaTeX only for real formulas**, in display blocks (`$$...$$`): fractions, sums, notation that
+  prose cannot carry. Inline `$...$` is banned. KaTeX ships a third typeface, so using it for a
+  multiplier makes the page change voice mid-sentence for nothing.
+  - multipliers are text: `13.6x`, never `$13.6\times$`
+  - percentages are words: `97 percent`
+  - identifiers and variables are inline code: `k`, `d_model`, `O(batch * k * d_model)`
+  - a display formula is followed by a list glossing its symbols, not a paragraph full of `$...$`
+- **Write-ups are schematic.** Every one opens with `## In short` and 3 to 5 bullets: the problem,
+  the mechanism, the measured result, the current state. Then sections whose `##` titles say what
+  they contain. Paragraphs run to 3 sentences at most, and anything enumerable becomes a list.
+- **One paragraph is one source line.** The renderer uses `remark-breaks`, so a newline inside a
+  paragraph becomes a `<br>` and splits the sentence on screen.
 - Numbers in content must match the numbers in `data/projects.ts`. If a write-up hedges a figure, the
-  data hedges it too.
+  data hedges it too. A number that came from a synthetic or development set says so, in the
+  `## In short` block, not buried in a paragraph.
 
 ## Adding content
 

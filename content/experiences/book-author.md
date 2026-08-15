@@ -1,27 +1,26 @@
-## The Project
+## In short
 
-I was commissioned by Neldiritto Editore to author a comprehensive Computer Science textbook aimed at candidates preparing for Italian public administration competitive exams (*Concorsi Pubblici*).
+- Neldiritto Editore commissioned me to author a Computer Science manual for candidates preparing Italian public administration competitive exams (*Concorsi Pubblici*).
+- The readers are not CS students but professionals who need computing fundamentals solid enough to pass an exam, and that audience set the level of every chapter.
+- The brief was to keep complex technical material rigorous and still accessible to non-specialists, which is the tension the whole book had to resolve.
+- Published in 2026 as *Informatica per i concorsi pubblici 2026, Manuale di teoria e quiz commentati* (NLD Concorsi), 432 pages pairing theory with commented practice quizzes.
 
-The challenge was unique: distill complex technical topics (Computer Architecture, Operating Systems, Algorithms, Networking, Databases) into chapters that are both **technically rigorous** and **accessible to non-specialists**. The target readers aren't CS students; they're professionals who need to understand computing fundamentals well enough to pass a competitive exam.
-
-## The Approach
-
-Each chapter follows a deliberate structure:
+## How each chapter is built
 
 - **Core concept** explained from first principles, without assuming prior knowledge
 - **Progressive depth** that builds from intuition to technical precision
-- **Exam-oriented practice** with worked examples and common pitfalls
+- **Exam-oriented practice** with worked examples and the common pitfalls
 
-The hardest part was calibrating the level: too technical and you lose the audience, too simplified and you produce incorrect mental models. I drew heavily on my teaching experience: 800+ hours of mentoring taught me where people actually get stuck, which is rarely where textbooks assume they will.
+## What was hard
 
-## Topics Covered
+Calibrating the level was the hardest part. Too technical and you lose the audience, too simplified and you hand the reader an incorrect mental model that breaks a chapter later.
 
-- Computer Architecture (von Neumann model, CPU pipelines, memory hierarchy)
-- Operating Systems (process management, scheduling, memory management, file systems)
-- Algorithms and Data Structures (complexity analysis, sorting, graphs, dynamic programming)
-- Networking fundamentals (OSI/TCP-IP models, protocols, security basics)
-- Database Systems (relational model, SQL, normalization, transactions)
+The two goals also pull against each other: rigor wants precision and completeness, accessibility wants fewer moving parts on the page. Every chapter is a decision about which detail earns its place.
+
+I settled most of those decisions with my teaching experience. Over 800 hours of mentoring showed me where people actually get stuck, which is rarely where textbooks assume they will.
 
 ## Publication
 
-The book was published in 2026 as *Informatica per i concorsi pubblici 2026: Manuale di teoria e quiz commentati* (NLD Concorsi), a 432-page manual that pairs theory with commented practice quizzes across every IT topic that appears in Italian public-sector exams.
+The book came out in 2026 with NLD Concorsi, Neldiritto Editore, as a 432-page manual.
+
+It pairs theory with commented practice quizzes across the IT topics that appear in Italian public-sector exams.

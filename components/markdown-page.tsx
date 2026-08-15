@@ -2,6 +2,7 @@ import Link from "next/link"
 import { MarkdownRenderer } from "./markdown-renderer"
 import { SectionHeader } from "./section-header"
 import { ItemLinks } from "./row"
+import type { ReactNode } from "react"
 import type { ItemLink } from "@/lib/constants"
 
 const LINK =
@@ -15,6 +16,9 @@ interface MarkdownPageProps {
   backLabel: string
   result?: string
   links?: ItemLink[]
+  /** the visual part of this entry, when it has one */
+  showcase?: ReactNode
+  showcaseLabel?: string
 }
 
 export function MarkdownPage({
@@ -25,6 +29,8 @@ export function MarkdownPage({
   backLabel,
   result,
   links,
+  showcase,
+  showcaseLabel,
 }: MarkdownPageProps) {
   return (
     <>
@@ -49,6 +55,13 @@ export function MarkdownPage({
             <p className="mt-4 max-w-measure font-mono text-body text-ink tnum">{result}</p>
           )}
         </section>
+
+        {showcase && (
+          <section className="border-t border-rail pb-section-sm pt-8">
+            <SectionHeader>{showcaseLabel ?? "The artifact"}</SectionHeader>
+            {showcase}
+          </section>
+        )}
 
         <section className="border-t border-rail pb-section-sm pt-8 sm:pb-section-md">
           <SectionHeader>Write-up</SectionHeader>
