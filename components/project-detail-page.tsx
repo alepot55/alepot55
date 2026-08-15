@@ -16,6 +16,7 @@ import { ConfusionMatrixViz } from "./custom-sections/confusion-matrix-viz"
 import { ConceptHubDemo } from "./custom-sections/concepthub-demo"
 import { GPUCharts } from "./custom-sections/gpu-charts"
 import { AtlasMMCharts } from "./custom-sections/atlas-mm-charts"
+import { EnergyForecastCharts } from "./custom-sections/energy-forecast-charts"
 import type { ComponentType } from "react"
 
 const CUSTOM_SECTIONS: Record<string, ComponentType<{ project: Project }>> = {
@@ -42,6 +43,7 @@ const CUSTOM_CHARTS: Record<string, ComponentType<{ project: Project }>> = {
   "flash-sae": FlashSAECharts,
   gpufsm: GPUCharts,
   "atlas-mm": AtlasMMCharts,
+  "energy-forecast": EnergyForecastCharts,
 }
 
 interface ProjectDetailPageProps {

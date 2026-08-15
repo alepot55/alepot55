@@ -22,6 +22,6 @@ The hardest part was calibrating the level: too technical and you lose the audie
 - Networking fundamentals (OSI/TCP-IP models, protocols, security basics)
 - Database Systems (relational model, SQL, normalization, transactions)
 
-## Current Status
+## Publication
 
-The book is currently in progress, with manuscript delivery expected for 2025 publication.
+The book was published in 2026 as *Informatica per i concorsi pubblici 2026: Manuale di teoria e quiz commentati* (NLD Concorsi), a 432-page manual that pairs theory with commented practice quizzes across every IT topic that appears in Italian public-sector exams.

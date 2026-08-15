@@ -38,7 +38,7 @@ const chivoMono = localFont({
 const siteUrl = "https://alepot55.github.io/alepot55"
 
 const description =
-  "GPU kernels, compiler work, and formally verified systems. MSc Computer Engineering at Politecnico di Milano."
+  "GPU kernels, compiler work, and formally verified systems. MSc Computer Engineering at Politecnico di Milano, AI Engineer at BCG X."
 
 export const metadata: Metadata = {
   title: {

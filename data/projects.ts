@@ -62,6 +62,27 @@ export const projects: Project[] = [
     links: [{ label: "Source", href: "https://github.com/alepot55/flash-sae" }],
   },
   {
+    id: "energy-forecast",
+    title: "Energy Forecast IT",
+    summary: "Day-ahead electricity prices for all seven Italian bidding zones",
+    description:
+      "End-to-end electricity price forecasting for the Italian day-ahead market (GME/IPEX), covering all seven bidding zones after the single national price was abolished in 2025. A LightGBM model with dedicated feature engineering against a LEAR baseline, wrapped in an async stack of FastAPI, TimescaleDB and Celery, with risk management, walk-forward backtesting, and a dashboard that issues buy and sell signals.",
+    result: "Scored as rMAE against a weekly naive forecast, never MAPE",
+    technologies: [
+      "Python",
+      "LightGBM",
+      "TimescaleDB",
+      "FastAPI",
+      "Celery",
+      "Streamlit",
+      "Docker",
+      "Time-Series Forecasting",
+    ],
+    period: "2026",
+    category: "ai-ml",
+    featured: true,
+  },
+  {
     id: "pvsite",
     title: "pvsite",
     summary: "Two million cadastral parcels in, a few thousand ranked sites out",

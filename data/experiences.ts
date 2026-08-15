@@ -2,13 +2,31 @@ import type { Experience } from "@/lib/constants"
 
 export const experiences: Experience[] = [
   {
+    id: "bcg-x",
+    title: "Visiting AI Engineer",
+    company: "BCG X",
+    period: "Apr 2026 - Present",
+    summary: "GenAI strategy for enterprise clients, then the systems that ship it",
+    description:
+      "Advise enterprise clients in luxury retail and industrial sectors on GenAI strategy, then design and deploy the solutions end to end: multi-agent automation on Google Cloud and Vertex AI, and LLM-based content generation.",
+    result: "Content Studio productized into a platform used across clients, Burberry and Prada among them",
+    links: [{ label: "BCG X", href: "https://www.bcg.com/x" }],
+  },
+  {
     id: "book-author",
     title: "Technical Book Author",
-    company: "Neldiritto Editore",
-    period: "2025 - Present",
-    summary: "A Computer Science textbook for Italian public-sector exams",
+    company: "NLD Concorsi, Neldiritto Editore",
+    period: "2025 - 2026",
+    summary: "A Computer Science manual for Italian public-sector exams",
     description:
-      "Commissioned to author a Computer Science textbook for Italian public-sector competitive exams. Computer architecture, operating systems and algorithms, written to be rigorous and still readable by candidates outside the field.",
+      "Authored a published Computer Science manual for Italian public-sector competitive exams: computer architecture, operating systems, algorithms, networking and databases, distilled into rigorous but accessible chapters with commented practice quizzes.",
+    result: "Published 2026, 432 pages",
+    links: [
+      {
+        label: "The book",
+        href: "https://shop.enneditore.it/products/informatica-per-i-concorsi-pubblici-2026-manuale-di-teoria-e-quiz-commentati",
+      },
+    ],
   },
   {
     id: "academic-mentor-tutor",

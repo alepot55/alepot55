@@ -1,0 +1,269 @@
+- generic [active] [ref=f84e1]:
+  - link "Skip to content" [ref=f84e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f84e3]:
+    - navigation "Main navigation" [ref=f84e4]:
+      - link "A. Potenza" [ref=f84e5] [cursor=pointer]:
+        - /url: "#"
+      - generic [ref=f84e6]:
+        - link "experience" [ref=f84e7] [cursor=pointer]:
+          - /url: "#experience"
+        - link "education" [ref=f84e8] [cursor=pointer]:
+          - /url: "#education"
+        - link "projects" [ref=f84e9] [cursor=pointer]:
+          - /url: "#projects"
+        - link "skills" [ref=f84e10] [cursor=pointer]:
+          - /url: "#skills"
+        - link "achievements" [ref=f84e11] [cursor=pointer]:
+          - /url: "#achievements"
+  - main [ref=f84e12]:
+    - generic [ref=f84e13]:
+      - heading "Alessandro Potenza" [level=1] [ref=f84e14]
+      - paragraph [ref=f84e15]: GPU kernels, compiler work, and formally verified systems. MSc Computer Engineering at Politecnico di Milano, currently AI Engineer at BCG X.
+      - paragraph [ref=f84e16]: Milan, Italy
+      - generic [ref=f84e17]:
+        - link "Email" [ref=f84e18] [cursor=pointer]:
+          - /url: mailto:ap.alessandro.potenza@gmail.com
+        - link "GitHub" [ref=f84e19] [cursor=pointer]:
+          - /url: https://github.com/alepot55
+        - link "LinkedIn" [ref=f84e20] [cursor=pointer]:
+          - /url: https://linkedin.com/in/alepot55
+    - region [ref=f84e21]:
+      - heading "Experience" [level=2] [ref=f84e23]
+      - list [ref=f84e24]:
+        - listitem [ref=f84e25]:
+          - generic [ref=f84e26]:
+            - heading [level=3] [ref=f84e27]:
+              - link "Visiting AI Engineer" [ref=f84e28] [cursor=pointer]:
+                - /url: /experience/bcg-x/
+            - paragraph [ref=f84e29]: BCG X · Apr 2026 - Present
+          - paragraph [ref=f84e30]: GenAI strategy for enterprise clients, then the systems that ship it
+          - generic [ref=f84e31]:
+            - paragraph [ref=f84e32]: Content Studio productized into a platform used across clients, Burberry and Prada among them
+            - link "BCG X" [ref=f84e34] [cursor=pointer]:
+              - /url: https://www.bcg.com/x
+        - listitem [ref=f84e35]:
+          - generic [ref=f84e36]:
+            - heading [level=3] [ref=f84e37]:
+              - link "Technical Book Author" [ref=f84e38] [cursor=pointer]:
+                - /url: /experience/book-author/
+            - paragraph [ref=f84e39]: NLD Concorsi, Neldiritto Editore · 2025 - 2026
+          - paragraph [ref=f84e40]: A Computer Science manual for Italian public-sector exams
+          - generic [ref=f84e41]:
+            - paragraph [ref=f84e42]: Published 2026, 432 pages
+            - link "The book" [ref=f84e44] [cursor=pointer]:
+              - /url: https://shop.enneditore.it/products/informatica-per-i-concorsi-pubblici-2026-manuale-di-teoria-e-quiz-commentati
+        - listitem [ref=f84e45]:
+          - generic [ref=f84e46]:
+            - heading [level=3] [ref=f84e47]:
+              - link "Academic Mentor and Technical Lead" [ref=f84e48] [cursor=pointer]:
+                - /url: /experience/academic-mentor-tutor/
+            - paragraph [ref=f84e49]: Self-Employed · Feb 2022 - Present
+          - paragraph [ref=f84e50]: Machine learning and algorithms, plus technical lead on theses
+          - paragraph [ref=f84e52]: Over 800 hours taught
+    - region [ref=f84e53]:
+      - heading "Education" [level=2] [ref=f84e55]
+      - list [ref=f84e56]:
+        - listitem [ref=f84e57]:
+          - generic [ref=f84e58]:
+            - heading [level=3] [ref=f84e59]:
+              - link "MSc in Computer Engineering" [ref=f84e60] [cursor=pointer]:
+                - /url: /education/msc-computer-engineering/
+            - paragraph [ref=f84e61]: Politecnico di Milano · 2024 - 2026
+          - paragraph [ref=f84e62]: AI Systems track. Thesis on deep learning for satellite imagery
+        - listitem [ref=f84e63]:
+          - generic [ref=f84e64]:
+            - heading [level=3] [ref=f84e65]:
+              - link "BSc in Computer Engineering" [ref=f84e66] [cursor=pointer]:
+                - /url: /education/bsc-computer-engineering/
+            - paragraph [ref=f84e67]: Sapienza University of Rome · 2021 - 2024
+          - paragraph [ref=f84e68]: Honors Program. Thesis on real-time SLAM with Gaussian Splatting
+          - paragraph [ref=f84e70]: 110 / 110 cum laude, Honors Program
+    - region [ref=f84e71]:
+      - generic [ref=f84e72]:
+        - heading "Projects" [level=2] [ref=f84e73]
+        - generic [ref=f84e74]: "12"
+      - list [ref=f84e75]:
+        - listitem [ref=f84e76]:
+          - generic [ref=f84e77]:
+            - heading [level=3] [ref=f84e78]:
+              - link "gpufsm" [ref=f84e79] [cursor=pointer]:
+                - /url: /projects/gpufsm/
+            - paragraph [ref=f84e80]: Research · 2025 - 2026
+          - paragraph [ref=f84e81]: Why Triton trails CUDA on automata, and a compiler pass that closes it
+          - generic [ref=f84e82]:
+            - paragraph [ref=f84e83]: 2.3 to 6.7 times faster on control-bound kernels
+            - generic [ref=f84e84]:
+              - link "Source" [ref=f84e85] [cursor=pointer]:
+                - /url: https://github.com/alepot55/gpufsm
+              - link "Upstream RFC" [ref=f84e86] [cursor=pointer]:
+                - /url: https://github.com/triton-lang/triton/issues/10773
+              - link "Compiler pass" [ref=f84e87] [cursor=pointer]:
+                - /url: https://github.com/alepot55/triton-perlane-retire
+        - listitem [ref=f84e88]:
+          - generic [ref=f84e89]:
+            - heading [level=3] [ref=f84e90]:
+              - link "Flash-Reasoning" [ref=f84e91] [cursor=pointer]:
+                - /url: /projects/flash-reasoning/
+            - paragraph [ref=f84e92]: Systems · 2026
+          - paragraph [ref=f84e93]: Tree-aware KV-cache attention that reads faster than HBM allows
+          - generic [ref=f84e94]:
+            - paragraph [ref=f84e95]: 1,194 GB/s effective, above the 900 GB/s HBM peak
+            - link "Source" [ref=f84e97] [cursor=pointer]:
+              - /url: https://github.com/alepot55/flash-reasoning
+        - listitem [ref=f84e98]:
+          - generic [ref=f84e99]:
+            - heading [level=3] [ref=f84e100]:
+              - link "Flash-SAE" [ref=f84e101] [cursor=pointer]:
+                - /url: /projects/flash-sae/
+            - paragraph [ref=f84e102]: Systems · 2026
+          - paragraph [ref=f84e103]: Triton kernels that drop the dense latent matrix PyTorch materialises
+          - generic [ref=f84e104]:
+            - paragraph [ref=f84e105]: 13.6 times faster decoder forward, 97 percent less memory
+            - link "Source" [ref=f84e107] [cursor=pointer]:
+              - /url: https://github.com/alepot55/flash-sae
+        - listitem [ref=f84e108]:
+          - generic [ref=f84e109]:
+            - heading [level=3] [ref=f84e110]:
+              - link "Energy Forecast IT" [ref=f84e111] [cursor=pointer]:
+                - /url: /projects/energy-forecast/
+            - paragraph [ref=f84e112]: AI/ML · 2026
+          - paragraph [ref=f84e113]: Day-ahead electricity prices for all seven Italian bidding zones
+          - paragraph [ref=f84e115]: Scored as rMAE against a weekly naive forecast, never MAPE
+        - listitem [ref=f84e116]:
+          - generic [ref=f84e117]:
+            - heading [level=3] [ref=f84e118]:
+              - link "pvsite" [ref=f84e119] [cursor=pointer]:
+                - /url: /projects/pvsite/
+            - paragraph [ref=f84e120]: Data · 2026
+          - paragraph [ref=f84e121]: Two million cadastral parcels in, a few thousand ranked sites out
+          - paragraph [ref=f84e123]: Around 80 percent of the territory ruled out by law
+        - listitem [ref=f84e124]:
+          - generic [ref=f84e125]:
+            - heading [level=3] [ref=f84e126]:
+              - link "atlas-mm" [ref=f84e127] [cursor=pointer]:
+                - /url: /projects/atlas-mm/
+            - paragraph [ref=f84e128]: AI/ML · 2026
+          - paragraph [ref=f84e129]: Order book, market maker, and Z3 proofs of the invariants
+          - generic [ref=f84e130]:
+            - paragraph [ref=f84e131]: 134K orders per second, 4 invariants proved in Z3
+            - link "Source" [ref=f84e133] [cursor=pointer]:
+              - /url: https://github.com/alepot55/atlas-mm
+        - listitem [ref=f84e134]:
+          - generic [ref=f84e135]:
+            - heading [level=3] [ref=f84e136]:
+              - link "Verify-CBL" [ref=f84e137] [cursor=pointer]:
+                - /url: /projects/verify-cbl/
+            - paragraph [ref=f84e138]: AI/ML · 2026
+          - paragraph [ref=f84e139]: An LLM translates the legacy code, Z3 proves the translation
+          - generic [ref=f84e140]:
+            - paragraph [ref=f84e141]: 100 percent verification accuracy over 42 cases
+            - link "Source" [ref=f84e143] [cursor=pointer]:
+              - /url: https://github.com/alepot55/verify-cbl
+        - listitem [ref=f84e144]:
+          - generic [ref=f84e145]:
+            - heading [level=3] [ref=f84e146]:
+              - link "agentrial" [ref=f84e147] [cursor=pointer]:
+                - /url: /projects/agentrial/
+            - paragraph [ref=f84e148]: AI/ML · 2026
+          - paragraph [ref=f84e149]: Run an agent a hundred times, get confidence intervals
+          - generic [ref=f84e150]:
+            - paragraph [ref=f84e151]: Published on PyPI, 450 tests, 45+ models tracked
+            - generic [ref=f84e152]:
+              - link "Source" [ref=f84e153] [cursor=pointer]:
+                - /url: https://github.com/alepot55/agentrial
+              - link "PyPI" [ref=f84e154] [cursor=pointer]:
+                - /url: https://pypi.org/project/agentrial/
+        - listitem [ref=f84e155]:
+          - generic [ref=f84e156]:
+            - heading [level=3] [ref=f84e157]:
+              - link "SplatSLAM" [ref=f84e158] [cursor=pointer]:
+                - /url: /projects/slam-gaussian-splatting/
+            - paragraph [ref=f84e159]: Research · 2024
+          - paragraph [ref=f84e160]: Dense photo-realistic SLAM from plain RGB video
+          - link "Source" [ref=f84e163] [cursor=pointer]:
+            - /url: https://github.com/alepot55/SplatSLAM
+        - listitem [ref=f84e164]:
+          - generic [ref=f84e165]:
+            - heading [level=3] [ref=f84e166]:
+              - link "Music Genre Classification" [ref=f84e167] [cursor=pointer]:
+                - /url: /projects/music-genre-classification/
+            - paragraph [ref=f84e168]: AI/ML · 2024
+          - paragraph [ref=f84e169]: GTZAN without the leakage that inflates the published numbers
+          - generic [ref=f84e170]:
+            - paragraph [ref=f84e171]: 82 to 83 percent accuracy, leak-free splits
+            - link "Source" [ref=f84e173] [cursor=pointer]:
+              - /url: https://github.com/alepot55/MGC-GTZAN
+        - listitem [ref=f84e174]:
+          - generic [ref=f84e175]:
+            - heading [level=3] [ref=f84e176]:
+              - link "ConceptHub" [ref=f84e177] [cursor=pointer]:
+                - /url: /projects/concepthub-ai/
+            - paragraph [ref=f84e178]: Web · 2024
+          - paragraph [ref=f84e179]: Book summaries and concept maps generated from plain text
+          - link "Live demo" [ref=f84e182] [cursor=pointer]:
+            - /url: https://concepthub-chi.vercel.app/
+        - listitem [ref=f84e183]:
+          - generic [ref=f84e184]:
+            - heading [level=3] [ref=f84e185]:
+              - link "Chessboard.js" [ref=f84e186] [cursor=pointer]:
+                - /url: /projects/chessboard-js/
+            - paragraph [ref=f84e187]: Web · 2023
+          - paragraph [ref=f84e188]: Dependency-free chess board for the web
+          - generic [ref=f84e190]:
+            - link "Source" [ref=f84e191] [cursor=pointer]:
+              - /url: https://github.com/alepot55/Chessboard.js
+            - link "npm" [ref=f84e192] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@alepot55/chessboardjs
+            - link "Docs" [ref=f84e193] [cursor=pointer]:
+              - /url: https://sites.google.com/view/chessboard-js/home
+    - region [ref=f84e194]:
+      - heading "Skills" [level=2] [ref=f84e196]
+      - list [ref=f84e197]:
+        - listitem [ref=f84e198]:
+          - heading "Programming" [level=3] [ref=f84e199]
+          - paragraph [ref=f84e200]: Python · TypeScript · C++ · JavaScript · C · Java · SQL
+        - listitem [ref=f84e201]:
+          - heading "AI/ML" [level=3] [ref=f84e202]
+          - paragraph [ref=f84e203]: PyTorch · LLM APIs · Computer Vision · Scikit-learn · SLAM · TensorFlow · NLP
+        - listitem [ref=f84e204]:
+          - heading "Systems" [level=3] [ref=f84e205]
+          - paragraph [ref=f84e206]: CUDA · OpenAI Triton · Docker · GCP · Linux · Kubernetes · Git · AWS
+        - listitem [ref=f84e207]:
+          - heading "Formal methods" [level=3] [ref=f84e208]
+          - paragraph [ref=f84e209]: Z3 SMT Solver · Formal Verification · Neuro-Symbolic AI
+        - listitem [ref=f84e210]:
+          - heading "Data" [level=3] [ref=f84e211]
+          - paragraph [ref=f84e212]: PostgreSQL · MongoDB · MySQL · Redis · VectorDB · Spark
+        - listitem [ref=f84e213]:
+          - heading "Web" [level=3] [ref=f84e214]
+          - paragraph [ref=f84e215]: FastAPI · React · Node.js · REST APIs
+    - region [ref=f84e216]:
+      - heading "Achievements" [level=2] [ref=f84e218]
+      - list [ref=f84e219]:
+        - listitem [ref=f84e220]:
+          - generic [ref=f84e221]:
+            - heading "AI Challenge, third place" [level=3] [ref=f84e222]
+            - paragraph [ref=f84e223]: Politecnico di Milano, AIRLab · 2025
+          - paragraph [ref=f84e224]: Vision Transformer ensemble for medical image classification
+          - paragraph [ref=f84e226]: Third of 193 teams
+        - listitem [ref=f84e227]:
+          - generic [ref=f84e228]:
+            - heading "Merit-Based Scholarship" [level=3] [ref=f84e229]
+            - paragraph [ref=f84e230]: Politecnico di Milano · Dec 2025
+          - paragraph [ref=f84e231]: Awarded on grade average and credits earned during the MSc
+        - listitem [ref=f84e232]:
+          - generic [ref=f84e233]:
+            - heading "Tech4Good Global Finalist" [level=3] [ref=f84e234]
+            - paragraph [ref=f84e235]: Huawei Technologies · 2024
+          - paragraph [ref=f84e236]: National winner, then the global finals in China
+    - generic [ref=f84e237]:
+      - paragraph [ref=f84e238]: Alessandro Potenza · Milano, Italy
+      - generic [ref=f84e239]:
+        - link "Email" [ref=f84e240] [cursor=pointer]:
+          - /url: mailto:ap.alessandro.potenza@gmail.com
+        - link "GitHub" [ref=f84e241] [cursor=pointer]:
+          - /url: https://github.com/alepot55
+        - link "LinkedIn" [ref=f84e242] [cursor=pointer]:
+          - /url: https://linkedin.com/in/alepot55
+  - alert [ref=f84e243]

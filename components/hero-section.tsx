@@ -13,8 +13,10 @@ export function HeroSection() {
 
       <p className="mt-5 max-w-lead text-lead text-ink">
         GPU kernels, compiler work, and formally verified systems. MSc Computer Engineering
-        at Politecnico di Milano.
+        at Politecnico di Milano, currently AI Engineer at BCG X.
       </p>
+
+      <p className="mt-3 font-mono text-meta text-ref">Milan, Italy</p>
 
       <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-body">
         {CONTACT.map((c) => (
