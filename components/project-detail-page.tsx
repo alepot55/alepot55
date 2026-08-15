@@ -37,7 +37,7 @@ const CUSTOM_SECTION_LABELS: Record<string, string> = {
   agentrial: "In the terminal",
   "music-genre-classification": "Confusion matrix",
   "concepthub-ai": "The platform",
-  "energy-forecast": "The system",
+  "energy-forecast": "The seven zones",
 }
 
 const CUSTOM_CHARTS: Record<string, ComponentType<{ project: Project }>> = {
