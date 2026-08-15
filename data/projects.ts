@@ -66,8 +66,8 @@ export const projects: Project[] = [
     title: "Energy Forecast IT",
     summary: "Day-ahead electricity prices for all seven Italian bidding zones",
     description:
-      "End-to-end electricity price forecasting for the Italian day-ahead market (GME/IPEX), covering all seven bidding zones after the single national price was abolished in 2025. A LightGBM model with dedicated feature engineering against a LEAR baseline, wrapped in an async stack of FastAPI, TimescaleDB and Celery, with risk management, walk-forward backtesting, and a dashboard that issues buy and sell signals.",
-    result: "7 zones, 168h horizon. Accuracy not yet measured on real data",
+      "End-to-end electricity price forecasting for the Italian day-ahead market (GME/IPEX), covering all seven bidding zones since demand stopped settling at the uniform national price in 2025. A LightGBM model with dedicated feature engineering against a LEAR baseline, wrapped in an async stack of FastAPI, TimescaleDB and Celery, with risk management, walk-forward backtesting, and a dashboard that issues buy and sell signals.",
+    result: "7 zones, hourly resolution. Accuracy not yet measured on real data",
     technologies: [
       "Python",
       "LightGBM",

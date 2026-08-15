@@ -1,14 +1,13 @@
 ## In short
 
-- **Problem:** Italian day-ahead prices are set zonally on GME/IPEX, and on 1 January 2025 the single national price (PUN) was abolished as the dispatch reference, so forecasting has to be per zone across all seven of them.
+- **Problem:** Italian day-ahead prices are set zonally on GME/IPEX, and on 1 January 2025 the uniform national purchase price (PUN) stopped being how buyers settle, so demand now clears at the zonal price and forecasting has to be per zone across all seven of them.
 - **Mechanism:** a LightGBM regressor with explicit feature engineering against a LEAR baseline, scored as rMAE versus the weekly naive, behind scheduled ingestion, TimescaleDB, an async FastAPI backend and a dashboard.
-- **Measured:** the LightGBM model reaches rMAE of about 0.52, comfortably inside the "good" range.
-- **Caveat:** that 0.52 comes from the **synthetic development dataset**. It is a development figure, not a production claim, and no accuracy has been measured on real prices.
+- **Development figure:** on the synthetic development dataset the LightGBM model reaches rMAE of about 0.52. That number comes from **synthetic data**, not from the market: no accuracy has been measured on real prices.
 - **State:** the real ENTSO-E numbers wait on an API token, whose registration takes a few working days. Everything else, ingestion, model, API, risk, backtest and dashboard, runs end to end.
 
 ## The market
 
-Italian day-ahead electricity prices are set zonally on the GME/IPEX exchange. The single national price (PUN) was abolished as the dispatch reference on 1 January 2025. That makes per-zone forecasting, across NORD, CNOR, CSUD, SUD, CALA, SICI and SARD, the practical problem for anyone trading or hedging Italian power.
+Italian day-ahead electricity prices are set zonally on the GME/IPEX exchange. On 1 January 2025 the uniform national purchase price (PUN) stopped being how Italian buyers settle on the day-ahead market: demand now clears at the price of its own zone, and GME publishes PUN Index GME after the fact as a volume-weighted average of the zonal prices. That makes per-zone forecasting, across NORD, CNOR, CSUD, SUD, CALA, SICI and SARD, the practical problem for anyone trading or hedging Italian power.
 
 ## What I set out to build
 
