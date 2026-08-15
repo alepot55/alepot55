@@ -16,7 +16,7 @@ import { ConfusionMatrixViz } from "./custom-sections/confusion-matrix-viz"
 import { ConceptHubDemo } from "./custom-sections/concepthub-demo"
 import { GPUCharts } from "./custom-sections/gpu-charts"
 import { AtlasMMCharts } from "./custom-sections/atlas-mm-charts"
-import { EnergyForecastSystem } from "./custom-sections/energy-forecast-system"
+import { EnergyForecastCharts } from "./custom-sections/energy-forecast-charts"
 import type { ComponentType } from "react"
 
 const CUSTOM_SECTIONS: Record<string, ComponentType<{ project: Project }>> = {
@@ -26,7 +26,6 @@ const CUSTOM_SECTIONS: Record<string, ComponentType<{ project: Project }>> = {
   agentrial: TerminalShowcase,
   "music-genre-classification": ConfusionMatrixViz,
   "concepthub-ai": ConceptHubDemo,
-  "energy-forecast": EnergyForecastSystem,
 }
 
 /** every part of the page says what it is */
@@ -37,7 +36,6 @@ const CUSTOM_SECTION_LABELS: Record<string, string> = {
   agentrial: "In the terminal",
   "music-genre-classification": "Confusion matrix",
   "concepthub-ai": "The platform",
-  "energy-forecast": "The seven zones",
 }
 
 const CUSTOM_CHARTS: Record<string, ComponentType<{ project: Project }>> = {
@@ -45,6 +43,7 @@ const CUSTOM_CHARTS: Record<string, ComponentType<{ project: Project }>> = {
   "flash-sae": FlashSAECharts,
   gpufsm: GPUCharts,
   "atlas-mm": AtlasMMCharts,
+  "energy-forecast": EnergyForecastCharts,
 }
 
 interface ProjectDetailPageProps {
