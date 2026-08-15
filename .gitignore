@@ -27,3 +27,7 @@ yarn-error.log*
 next-env.d.ts
 # claude code local config
 /.claude/
+
+# local QA artifacts
+/shots/
+/.playwright-mcp/
