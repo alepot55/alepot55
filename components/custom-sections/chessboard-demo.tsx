@@ -77,8 +77,8 @@ const FEATURES = [
 const BOARD_THEME = {
   "--whiteSquare": "hsl(var(--surface))",
   "--blackSquare": "hsl(var(--ink) / 0.12)",
-  "--selectedSquareWhite": "hsl(var(--limit) / 0.22)",
-  "--selectedSquareBlack": "hsl(var(--limit) / 0.32)",
+  "--selectedSquareWhite": "hsl(var(--accent) / 0.22)",
+  "--selectedSquareBlack": "hsl(var(--accent) / 0.32)",
   "--movedSquareWhite": "hsl(var(--ink) / 0.06)",
   "--movedSquareBlack": "hsl(var(--ink) / 0.2)",
   "--choiceSquare": "hsl(var(--surface))",
@@ -91,7 +91,7 @@ const CONTROL =
 
 /* ── Component ────────────────────────────────────────────────── */
 
-const basePath = process.env.NODE_ENV === "production" ? "/alepot55" : ""
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
 
 export function ChessboardDemo({ project }: { project: Project }) {
   const boardRef = useRef<ChessboardInstance | null>(null)
@@ -270,7 +270,7 @@ export function ChessboardDemo({ project }: { project: Project }) {
                 </span>
               </div>
               {status === "Check" && (
-                <span className="mt-0.5 block pl-[18px] font-mono text-meta text-limit">
+                <span className="mt-0.5 block pl-[18px] font-mono text-meta text-accent">
                   Get out of check
                 </span>
               )}

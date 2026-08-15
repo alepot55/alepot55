@@ -44,6 +44,8 @@ export default async function ExperiencePage({ params }: { params: { id: string 
       title={experience.title}
       subtitle={`${experience.company} · ${experience.period}`}
       content={experience.content}
+      result={experience.result}
+      links={experience.links}
       backHref="/"
       backLabel="Portfolio"
     />

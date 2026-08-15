@@ -3,18 +3,17 @@
 @tailwind utilities;
 
 /*
-  Six canonical tokens. Everything else is an alias.
-  Hard rule: --rail never carries information. Anything a reader must
-  read uses --ref or --ink. --limit marks constraints, never achievements.
+  One theme, five tokens. Light only: this page is a calling card, and a theme
+  switch is a control nobody asked for.
 */
 
 :root {
-  --bg: 200 20% 94%;
-  --surface: 0 0% 100%;
-  --ink: 204 26% 8%;
-  --ref: 207 11% 40%;
-  --rail: 208 19% 87%;
-  --limit: 329 71% 41%;
+  --bg: 0 0% 100%;
+  --surface: 30 12% 97%;
+  --ink: 220 14% 10%;
+  --ref: 220 6% 45%;
+  --rail: 220 12% 90%;
+  --accent: 340 72% 38%;
 
   /* aliases kept so bg-background / text-foreground / border-border keep working */
   --background: var(--bg);
@@ -29,27 +28,14 @@
   --secondary-foreground: var(--ink);
   --muted: var(--surface);
   --muted-foreground: var(--ref);
-  --accent: var(--surface);
   --accent-foreground: var(--ink);
-  --destructive: var(--limit);
+  --destructive: var(--accent);
   --destructive-foreground: 0 0% 100%;
   --border: var(--rail);
   --input: var(--rail);
-  --ring: var(--limit);
+  --ring: var(--accent);
 
-  --radius: 4px;
-  --value-col: 9rem;
-  --value-col-sm: 7.5rem;
-}
-
-.dark {
-  --bg: 210 22% 9%;
-  --surface: 212 20% 13%;
-  --ink: 206 24% 94%;
-  --ref: 209 12% 60%;
-  --rail: 210 16% 20%;
-  --limit: 330 100% 77%;
-  --destructive-foreground: 210 22% 9%;
+  --radius: 3px;
 }
 
 @layer utilities {
@@ -61,30 +47,16 @@
     font-variant-numeric: tabular-nums lining-nums;
   }
 
-  /* measurement rail: the only kind of horizontal line allowed outside prose */
-  .rail-live {
-    background-color: hsl(var(--ref));
-  }
-
-  /* dashed vertical tick marking a theoretical limit */
-  .tick-limit {
-    background-image: repeating-linear-gradient(
-      to bottom,
-      hsl(var(--limit)) 0 3px,
-      transparent 3px 6px
-    );
-  }
-
-  /* recharts writes fill/stroke as SVG presentation attributes, which do not
-     resolve CSS vars reliably. these classes do, and they follow the theme. */
+  /* recharts writes fill and stroke as SVG presentation attributes, where
+     var() is not reliable. these are real CSS rules, so they always resolve. */
   .chart-ink {
     fill: hsl(var(--ink));
   }
   .chart-ref {
     fill: hsl(var(--ref));
   }
-  .chart-limit {
-    fill: hsl(var(--limit));
+  .chart-accent {
+    fill: hsl(var(--accent));
   }
   .chart-rail-stroke {
     stroke: hsl(var(--rail));
@@ -92,8 +64,8 @@
   .chart-ref-stroke {
     stroke: hsl(var(--ref));
   }
-  .chart-limit-stroke {
-    stroke: hsl(var(--limit));
+  .chart-accent-stroke {
+    stroke: hsl(var(--accent));
   }
   .chart-ink-stroke {
     stroke: hsl(var(--ink));
@@ -105,8 +77,6 @@
     font-family: var(--font-sans), system-ui, sans-serif;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    min-width: 100%;
-    width: 100%;
     scroll-behavior: smooth;
   }
 
@@ -119,26 +89,6 @@
     @apply bg-background text-foreground;
     overflow-x: hidden;
     min-width: 320px;
-    width: 100%;
-    position: relative;
-  }
-
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: hsl(var(--rail));
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: hsl(var(--ref) / 0.4);
-    border-radius: 2px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--ref) / 0.7);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -157,7 +107,7 @@
   }
 
   *:focus-visible {
-    outline: 2px solid hsl(var(--limit));
+    outline: 2px solid hsl(var(--accent));
     outline-offset: 2px;
     border-radius: 2px;
   }
@@ -167,13 +117,13 @@
     left: -9999px;
     top: 0;
     z-index: 100;
-    background: hsl(var(--surface));
+    background: hsl(var(--bg));
     color: hsl(var(--ink));
     padding: 0.5rem 0.75rem;
     border: 1px solid hsl(var(--ref));
-    border-radius: 4px;
+    border-radius: 3px;
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
   }
 
   .skip-link:focus {
@@ -181,8 +131,7 @@
     top: 0.75rem;
   }
 
-  /* KaTeX keeps its own families: math is the one place a non-system face is
-     correct. Only the size is normalised against surrounding prose. */
+  /* KaTeX keeps its own families: maths is the one place another face is right */
   .katex {
     font-size: 1em !important;
   }
@@ -190,16 +139,5 @@
   pre {
     @apply overflow-x-auto;
     scrollbar-width: thin;
-    scrollbar-color: hsl(var(--ref) / 0.4) hsl(var(--rail));
-  }
-
-  .prose table {
-    @apply text-sm;
-  }
-
-  @media (max-width: 640px) {
-    .prose table {
-      @apply text-xs;
-    }
   }
 }

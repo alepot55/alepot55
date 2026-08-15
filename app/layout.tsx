@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
-import { ThemeProvider } from "@/components/theme-provider"
 import "./globals.css"
 
 const geistSans = localFont({
@@ -26,17 +25,11 @@ const geistSans = localFont({
   display: "swap",
 })
 
-// The instrumental voice: names, titles, every numeral, unit and label.
-// Self-hosted rather than pulled from next/font/google, so the production build
-// does not depend on reaching fonts.googleapis.com. Chivo Mono is OFL.
+// Names, titles, numbers, labels and code. Self-hosted rather than pulled from
+// next/font/google, so the production build does not depend on reaching
+// fonts.googleapis.com. Chivo Mono is OFL.
 const chivoMono = localFont({
-  src: [
-    {
-      path: "./fonts/ChivoMono-Variable.woff2",
-      weight: "400 600",
-      style: "normal",
-    },
-  ],
+  src: [{ path: "./fonts/ChivoMono-Variable.woff2", weight: "400 600", style: "normal" }],
   variable: "--font-mono",
   display: "swap",
   fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
@@ -79,31 +72,17 @@ export const viewport = {
   maximumScale: 5,
   userScalable: true,
   viewportFit: "cover",
+  colorScheme: "light",
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${chivoMono.variable}`}
-      suppressHydrationWarning
-    >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("theme");var d=document.documentElement;if(t==="dark"||((!t||t==="system")&&window.matchMedia("(prefers-color-scheme:dark)").matches)){d.classList.add("dark")}else{d.classList.add("light")}}catch(e){}})()`,
-          }}
-        />
-      </head>
+    <html lang="en" className={`${geistSans.variable} ${chivoMono.variable}`}>
       <body className="font-sans antialiased">
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <ThemeProvider>{children}</ThemeProvider>
+        {children}
       </body>
     </html>
   )

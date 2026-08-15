@@ -18,7 +18,6 @@ export const experiences: Experience[] = [
     summary: "Machine learning and algorithms, plus technical lead on theses",
     description:
       "Mentorship in machine learning, Python and algorithms, plus technical lead on university thesis projects: architecture design, debugging and review.",
-    value: "800+",
-    unit: "hours taught",
+    result: "Over 800 hours taught",
   },
 ]

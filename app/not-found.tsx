@@ -20,7 +20,7 @@ export default function NotFound() {
       <div className="mt-6">
         <Link
           href="/"
-          className="inline-flex min-h-[44px] items-center font-mono text-nav text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-limit"
+          className="inline-flex min-h-[44px] items-center font-mono text-nav text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-accent"
         >
           Back to portfolio
         </Link>

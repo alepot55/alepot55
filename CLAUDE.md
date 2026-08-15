@@ -16,7 +16,6 @@ setup prompt. Use `npx tsc --noEmit` plus `npm run build` as the gate.
 - **Next.js 14** (App Router, static export for GitHub Pages)
 - **React 18** with TypeScript 5
 - **Tailwind CSS** with `@tailwindcss/typography` and `tailwindcss-animate` plugins
-- **framer-motion** — one meaningful animation only, see Design System below
 - **recharts** for the per-project chart components
 - **react-markdown** with remark-gfm, remark-breaks, rehype-raw for content rendering
 - **remark-math** + **rehype-katex** + **katex** for LaTeX in markdown
@@ -26,50 +25,33 @@ setup prompt. Use `npx tsc --noEmit` plus `npm run build` as the gate.
   fonts.googleapis.com, which failed intermittently.
 - **Geist Sans** via `next/font/local` from `node_modules/geist`, weights 400/500/600, `--font-sans`
 - **@alepot55/chessboardjs** — chess library for the interactive demo (types in `types/chessboardjs.d.ts`)
-- Custom `ThemeProvider` (context + localStorage) for dark/light mode, **not** `next-themes` (despite it
-  being in package.json). It also wraps everything in `MotionConfig reducedMotion="user"`.
+- No theme provider and no dark mode: the site is light only.
 
 ## Design system
 
 The full contract lives in `.design-system.md` at the repo root. **Read it before touching any
 component.** The short version:
 
-- **Six colour tokens only**: `bg`, `surface`, `ink`, `ref`, `rail`, `limit`. No Tailwind palette
-  colours, no hex literals, and no `dark:` variants for colour: the tokens flip themselves.
-- `--limit` marks constraints, never success. `--rail` never carries information (contrast ~1.2:1).
-- **Two typefaces, one rule**: `font-mono` for anything that is a label, identifier, number, unit,
-  heading or code; the default sans for sentences only. Every visible digit is in mono.
-- Spaced uppercase is reserved for section labels. Nowhere else.
-- **No cards**: no bordered boxes around content, no shadows, no gradients. Radius is 4px everywhere.
-- **Hairlines do two jobs only**: separate the rows of a register, and mark where a part of a page
-  begins. Everything else is separated by space.
-- **Two structural levels**: `SectionHeader` announces a section or a page part, hairlines separate
-  the rows below it. Detail pages name every part (`Measurements`, `Write-up`, and the per-project
-  demo label in `CUSTOM_SECTION_LABELS`).
-- **One animation**: the measurement segment being drawn. No entry animations, no stagger.
+- **Five colour tokens, light only**: `bg`, `surface`, `ink`, `ref`, `rail`, `accent`. No Tailwind
+  palette colours, no hex literals, and no dark mode: there is no theme provider and no toggle.
+- `--accent` marks the focus ring, link hover, and failure states. Nothing else.
+- **Two typefaces**: `font-mono` (Chivo Mono) for labels, identifiers, numbers, headings and code;
+  the default sans (Geist) for sentences.
+- **One row, repeated.** `components/row.tsx` renders every entry on the site: title plus meta on
+  one line, one line of summary, then the written result and the links. Projects, roles, degrees
+  and awards all use it.
+- Rows are separated by hairlines, sections by `SectionHeader`. Those are the only two levels.
+- **No cards, no bars, no charts in the lists.** A result is a sentence with the number in it.
+  Charts live on the detail pages.
+- **Artifacts come first.** Every entry carries `links: {label, href}[]`, rendered on the row and
+  twice on the detail page. If it exists in public, it gets a link.
+- Nothing animates on entry.
 
-### The value column
+### Assets under a base path
 
-Every block that carries a value uses `ROW_GRID` from `lib/constants.ts`, with the value in the right
-column via `ValueCell` and the `VALUE_SLOT` placement class. All values on the page therefore share
-one right edge. House rule: the value cell never repeats a string already printed on the left of the
-same row, and an empty cell is a legitimate state.
-
-### Measurements
-
-`lib/measure.ts` defines `Measurement`, the scale helper and the screen-reader description.
-`components/measure.tsx` draws the axis. Rules that are enforced by the code and must stay that way:
-
-- An axis is only drawn when a `baseline` or a `limit` exists. Without a reference an axis measures
-  nothing, so the row shows the bare value instead.
-- The filled segment is a length encoding, so it only appears on a linear scale. Log scale gets
-  markers and no fill.
-- `provenance` is copied from the write-up, never inferred. If the hardware is not stated in the
-  content, the provenance carries the method and does not invent a GPU.
-- Approximate or ranged source values keep their form via `display` ("~134", "82-83").
-- The axis appears on the hero and on detail pages only. The register shows the bare value, so its
-  rows stay one height and the page stays scannable.
-- The hero draws the axis with `showProvenance={false}`: the source line belongs on the detail page.
+The site is served from `/alepot55` on GitHub Pages and from the root everywhere else. Anything the
+client fetches itself (the chess piece SVGs) must read `process.env.NEXT_PUBLIC_BASE_PATH`, which
+`next.config.mjs` sets to the prefix the build actually used. Never hardcode `/alepot55`.
 
 ## Architecture
 
@@ -90,20 +72,20 @@ Rows only link to a detail page when it does.
 **Naming quirk:** the content directory for experiences is `content/experiences/` (plural) while the
 route is `app/experience/[id]/` (singular). `data/experiences.ts` is plural too.
 
-### Project data model
+### Data model
 
-- `category`: `"ai-ml" | "systems" | "data" | "web" | "research"` — drives the register filter
-- `summary: string` — the one line shown in the register. `Experience`, `Education` and
-  `Achievement` carry the same pair: `summary` for the row, `description` for the detail page and
-  the page metadata.
-- `featured?: boolean` — eligible to open the page as the hero measurement; does not change the row
-- `measurement?: Measurement` — the headline number with its references and source
-- `artifact?: string` — what exists instead, when nothing was benchmarked ("npm package", "live demo")
-- `github?`, `liveUrl?`
+Every list entry, whatever the section, carries the same fields:
+
+- `summary: string` — the one line shown in the list
+- `description: string` — the paragraph, for the detail page and the page metadata
+- `result?: string` — the measured outcome written out as a sentence
+- `links?: ItemLink[]` — what a reader can open
+
+Projects add `category` (`"ai-ml" | "systems" | "data" | "web" | "research"`) and `technologies`.
+`featured` is vestigial and does not change rendering.
 
 Skills carry no proficiency rating. `lib/skill-usage.ts` counts, at build time, how many projects
-list each skill. The count per category goes in the spine, and the entries are ordered by that count
-so the evidenced ones lead.
+list each skill, and the entries are ordered by that count so the evidenced ones lead.
 
 ### Custom sections
 
@@ -116,41 +98,33 @@ To add one, create the component and register it in the right map.
 
 ### Shared types and constants
 
-`lib/constants.ts` exports `ROW_GRID`, `VALUE_SLOT`, `CATEGORY_LABELS`,
-`CATEGORY_LABELS_FULL`, and the `Experience`, `Education`, `Achievement` interfaces, which the data
-files apply. Those three carry optional `value` / `unit` / `artifact` for the value column.
+`lib/constants.ts` exports `ItemLink`, `CATEGORY_LABELS`, `CATEGORY_LABELS_FULL`, and the
+`Experience`, `Education`, `Achievement` interfaces, which the data files apply.
 
 `lib/utils.ts` exports `cn(...inputs)` (clsx + tailwind-merge).
 
 ### Routing
 
-- `app/page.tsx` — the whole portfolio: hero, one project register, skills, experience, education,
-  achievements, footer. Every section is full width and uses `ROW_GRID`, so the value column runs
-  unbroken from the hero to the last row.
+- `app/page.tsx` — the whole portfolio in one order: hero, experience, education, projects, skills,
+  achievements, footer. Experience and education come before projects so a recruiter reaches them
+  without scrolling past eleven entries.
 - `app/projects/[id]/page.tsx`, `app/experience/[id]/page.tsx`, `app/education/[id]/page.tsx`
 
 All dynamic routes use `generateStaticParams()`.
 
 ### Component patterns
 
-- **Server Components** for pages and `app/layout.tsx`. Components are Client Components only when
-  they need state or motion: `value-cell`, `skills-matrix`, `experience-item`, `education-item` and
-  `achievement-item` are server components.
-- Every section of the home page is the same register: a `SectionHeader`, then rows of
-  `title + meta` on one line, a one-line `summary`, and a value in the spine. Projects, skills,
-  experience, education and achievements all share that shape, so there is one thing to learn.
-  There is no category filter: eleven rows fit on a screen and each row already names its category.
-- A row is an index entry. The paragraph, the technologies and the measurement axis live on the
-  detail page, where there is room to read them.
-- `MarkdownRenderer` styles every element explicitly and no longer uses the `prose` classes.
-- `MotionWrapper` exports only `FadeIn`, which is opacity-only and takes no `delay` or `direction`.
-- The skip link in `app/layout.tsx` targets `#main`; every `<main>` needs `id="main"` and `tabIndex={-1}`.
+- **Server Components everywhere** except `SiteHeader`, which needs scroll state, and the custom
+  sections that are interactive.
+- `Row` and `ItemLinks` live in `components/row.tsx`. `SectionHeader` announces a section or a part
+  of a detail page.
+- `MarkdownRenderer` styles every element explicitly and does not use the `prose` classes.
+- The skip link in `app/layout.tsx` targets `#main`; every `<main>` needs `id="main"` and
+  `tabIndex={-1}`.
 
 ### Theming
 
-Class-based dark mode via HSL CSS variables in `app/globals.css`. `ThemeProvider` uses React context
-plus localStorage (`"theme"`), applying a class to `<html>`. An inline script in the layout reads
-localStorage before paint to avoid a flash.
+There is none. One light theme, defined once in `app/globals.css`.
 
 ## Writing style
 

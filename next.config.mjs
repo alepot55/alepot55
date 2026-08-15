@@ -15,6 +15,11 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // the client needs the same prefix the build used, for assets it requests
+  // itself (the chess piece SVGs), so it is not guessed twice
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   trailingSlash: true,
 }
 

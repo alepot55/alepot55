@@ -8,7 +8,6 @@ module.exports = {
     "./data/**/*.{js,ts,jsx,tsx}",
     "*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: ["class"],
   theme: {
     extend: {
       fontFamily: {
@@ -22,7 +21,7 @@ module.exports = {
         ink: "hsl(var(--ink))",
         ref: "hsl(var(--ref))",
         rail: "hsl(var(--rail))",
-        limit: "hsl(var(--limit))",
+        accent: "hsl(var(--accent))",
 
         // aliases
         background: "hsl(var(--background))",
@@ -47,10 +46,6 @@ module.exports = {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
@@ -71,9 +66,9 @@ module.exports = {
         full: "var(--radius)",
       },
       spacing: {
-        section: "5rem",
-        "section-md": "4rem",
-        "section-sm": "3rem",
+        section: "4.5rem",
+        "section-md": "3.5rem",
+        "section-sm": "2.75rem",
         header: "3.25rem",
         value: "9rem",
       },

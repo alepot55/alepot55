@@ -9,8 +9,7 @@ export const achievements: Achievement[] = [
     summary: "Vision Transformer ensemble for medical image classification",
     description:
       "Custom Vision Transformer ensemble for medical image classification, in the Artificial Neural Networks Challenge.",
-    value: "3 / 193",
-    unit: "teams",
+    result: "Third of 193 teams",
   },
   {
     id: "merit-scholarship",

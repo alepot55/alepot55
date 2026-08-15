@@ -1,87 +1,44 @@
 import { SiteHeader } from "@/components/site-header"
 import { HeroSection } from "@/components/hero-section"
 import { SectionHeader } from "@/components/section-header"
-import { ProjectRow } from "@/components/project-row"
-import { SkillsMatrix } from "@/components/skills-matrix"
-import { ExperienceItem } from "@/components/experience-item"
-import { EducationItem } from "@/components/education-item"
-import { AchievementItem } from "@/components/achievement-item"
-import { ScrollToTop } from "@/components/scroll-to-top"
+import { Row } from "@/components/row"
+import { SkillsList } from "@/components/skills-list"
 import { projects } from "@/data/projects"
 import { experiences } from "@/data/experiences"
 import { education } from "@/data/education"
 import { achievements } from "@/data/achievements"
 import { skills } from "@/data/skills"
 import { hasContentFile } from "@/lib/content-utils"
-import { hasAxis } from "@/lib/measure"
+import { CATEGORY_LABELS } from "@/lib/constants"
 
 const SECTION = "scroll-mt-[4.5rem] pb-section-sm sm:pb-section-md lg:pb-section"
 
-/**
- * The page opens on the one measurement that crosses a physical ceiling. If no
- * such measurement exists, it opens on the first featured one that has an axis.
- */
-function pickFlagship() {
-  return (
-    projects.find((p) => p.measurement?.limit && p.measurement.value > p.measurement.limit.value) ??
-    projects.find((p) => p.featured && p.measurement && hasAxis(p.measurement))
-  )
+type ContentType = "projects" | "experiences" | "education"
+
+function detail(type: ContentType, id: string, base: string) {
+  return hasContentFile(type, id) ? `${base}/${id}` : undefined
 }
 
 export default function Home() {
-  const projectContentMap: Record<string, boolean> = {}
-  for (const project of projects) {
-    projectContentMap[project.id] = hasContentFile("projects", project.id)
-  }
-
-  const experienceContentMap: Record<string, boolean> = {}
-  for (const exp of experiences) {
-    experienceContentMap[exp.id] = hasContentFile("experiences", exp.id)
-  }
-
-  const educationContentMap: Record<string, boolean> = {}
-  for (const edu of education) {
-    educationContentMap[edu.id] = hasContentFile("education", edu.id)
-  }
-
-  const flagship = pickFlagship()
-  const measured = projects.filter((p) => p.measurement).length
-
   return (
     <>
       <SiteHeader />
 
       <main id="main" tabIndex={-1} className="mx-auto max-w-content px-5 sm:px-8">
-        <HeroSection flagship={flagship} />
-
-        <section className={SECTION} id="projects" aria-labelledby="projects-heading">
-          <SectionHeader id="projects-heading" note={`${projects.length} · ${measured} measured`}>
-            Projects
-          </SectionHeader>
-          <ul role="list">
-            {projects.map((project) => (
-              <ProjectRow
-                key={project.id}
-                project={project}
-                hasContent={projectContentMap[project.id] || false}
-              />
-            ))}
-          </ul>
-        </section>
-
-        <section className={SECTION} id="skills" aria-labelledby="skills-heading">
-          <SectionHeader id="skills-heading">Skills</SectionHeader>
-          <SkillsMatrix skills={skills} />
-        </section>
+        <HeroSection />
 
         <section className={SECTION} id="experience" aria-labelledby="experience-heading">
           <SectionHeader id="experience-heading">Experience</SectionHeader>
           <ul role="list">
-            {experiences.map((experience) => (
-              <ExperienceItem
-                key={experience.id}
-                experience={experience}
-                hasContent={experienceContentMap[experience.id] || false}
+            {experiences.map((e) => (
+              <Row
+                key={e.id}
+                title={e.title}
+                meta={`${e.company} · ${e.period}`}
+                summary={e.summary}
+                result={e.result}
+                links={e.links}
+                href={detail("experiences", e.id, "/experience")}
               />
             ))}
           </ul>
@@ -90,33 +47,66 @@ export default function Home() {
         <section className={SECTION} id="education" aria-labelledby="education-heading">
           <SectionHeader id="education-heading">Education</SectionHeader>
           <ul role="list">
-            {education.map((edu) => (
-              <EducationItem
-                key={edu.id}
-                education={edu}
-                hasContent={educationContentMap[edu.id] || false}
+            {education.map((e) => (
+              <Row
+                key={e.id}
+                title={e.degree}
+                meta={`${e.institution} · ${e.period}`}
+                summary={e.summary}
+                result={e.result}
+                links={e.links}
+                href={detail("education", e.id, "/education")}
               />
             ))}
           </ul>
         </section>
 
-        <section className={SECTION} id="achievements" aria-labelledby="achievements-heading">
-          <SectionHeader id="achievements-heading">
-            Achievements
+        <section className={SECTION} id="projects" aria-labelledby="projects-heading">
+          <SectionHeader id="projects-heading" note={String(projects.length)}>
+            Projects
           </SectionHeader>
           <ul role="list">
-            {achievements.map((achievement) => (
-              <AchievementItem key={achievement.id} achievement={achievement} />
+            {projects.map((p) => (
+              <Row
+                key={p.id}
+                title={p.title}
+                meta={`${CATEGORY_LABELS[p.category]} · ${p.period}`}
+                summary={p.summary}
+                result={p.result}
+                links={p.links}
+                href={detail("projects", p.id, "/projects")}
+              />
             ))}
           </ul>
         </section>
 
-        <footer className="flex flex-col gap-4 border-t border-rail py-8 sm:flex-row sm:items-baseline sm:justify-between">
-          <p className="font-mono text-meta text-ref">Alessandro Potenza · Milano, Italy</p>
-          <div className="flex gap-6 font-mono text-meta">
+        <section className={SECTION} id="skills" aria-labelledby="skills-heading">
+          <SectionHeader id="skills-heading">Skills</SectionHeader>
+          <SkillsList skills={skills} />
+        </section>
+
+        <section className={SECTION} id="achievements" aria-labelledby="achievements-heading">
+          <SectionHeader id="achievements-heading">Achievements</SectionHeader>
+          <ul role="list">
+            {achievements.map((a) => (
+              <Row
+                key={a.id}
+                title={a.title}
+                meta={`${a.organization} · ${a.date}`}
+                summary={a.summary}
+                result={a.result}
+                links={a.links}
+              />
+            ))}
+          </ul>
+        </section>
+
+        <footer className="flex flex-col gap-4 border-t border-rail py-8 font-mono text-meta sm:flex-row sm:items-baseline sm:justify-between">
+          <p className="text-ref">Alessandro Potenza · Milano, Italy</p>
+          <div className="flex gap-6">
             <a
               href="mailto:ap.alessandro.potenza@gmail.com"
-              className="text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-limit"
+              className="text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-accent"
             >
               Email
             </a>
@@ -124,7 +114,7 @@ export default function Home() {
               href="https://github.com/alepot55"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-limit"
+              className="text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-accent"
             >
               GitHub
             </a>
@@ -132,15 +122,13 @@ export default function Home() {
               href="https://linkedin.com/in/alepot55"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-limit"
+              className="text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-accent"
             >
               LinkedIn
             </a>
           </div>
         </footer>
       </main>
-
-      <ScrollToTop />
     </>
   )
 }

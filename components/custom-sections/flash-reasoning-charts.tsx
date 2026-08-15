@@ -51,7 +51,7 @@ function ChartFrame({
     <div className="rounded border border-rail bg-surface p-4 text-ref">
       <p className="font-mono text-meta text-ref tnum">{title}</p>
       {limitNote && (
-        <p className="font-mono text-meta text-limit tnum">{limitNote}</p>
+        <p className="font-mono text-meta text-accent tnum">{limitNote}</p>
       )}
       <div className="mt-3 h-48">{children}</div>
     </div>
@@ -145,7 +145,7 @@ export function FlashReasoningCharts({ project: _project }: { project: Project }
             />
             <ReferenceLine
               y={900}
-              className="chart-limit-stroke text-limit"
+              className="chart-accent-stroke text-accent"
               stroke="currentColor"
               strokeDasharray="4 4"
             />

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { FadeIn } from "@/components/motion-wrapper"
 import type { Project } from "@/data/projects"
 
 /* ── Line semantics ─────────────────────────────────────────────
@@ -19,7 +18,7 @@ const LINE_CLASS: Record<LineType, string> = {
   head: "text-ink font-medium",
   out: "text-ink",
   meta: "text-ref",
-  fail: "text-limit",
+  fail: "text-accent",
 }
 
 function Line({ type, text }: { type: LineType; text: string }) {
@@ -70,7 +69,7 @@ function ResultRow({ bar }: { bar: BarSpec }) {
         <div className="h-full rounded-sm bg-ink" style={{ width: `${bar.pct}%` }} />
       </div>
       <span className="w-10 shrink-0 text-right text-ref tnum">{bar.pct}%</span>
-      <span className={`w-10 shrink-0 text-right ${missed ? "text-limit" : "text-ink"}`}>
+      <span className={`w-10 shrink-0 text-right ${missed ? "text-accent" : "text-ink"}`}>
         {bar.status}
       </span>
     </div>
@@ -237,7 +236,7 @@ export function TerminalShowcase({ project }: { project: Project }) {
   const activeTabData = TABS.find((t) => t.id === activeTab)!
 
   return (
-    <FadeIn>
+    <>
       <div className="space-y-8">
         {/* Where the tool actually lives */}
         <ul className="flex flex-wrap gap-x-10 gap-y-2" role="list">
@@ -249,7 +248,7 @@ export function TerminalShowcase({ project }: { project: Project }) {
                 rel="noopener noreferrer"
                 className="group flex min-h-[44px] flex-col justify-center"
               >
-                <span className="font-mono text-nav text-ref underline decoration-rail underline-offset-4 transition-colors group-hover:text-ink group-hover:decoration-limit">
+                <span className="font-mono text-nav text-ref underline decoration-rail underline-offset-4 transition-colors group-hover:text-ink group-hover:decoration-accent">
                   {link.title}
                 </span>
                 <span className="mt-1 font-mono text-meta text-ref">{link.subtitle}</span>
@@ -280,7 +279,7 @@ export function TerminalShowcase({ project }: { project: Project }) {
                     {tab.label}
                     {active && (
                       <span
-                        className="absolute inset-x-1 bottom-2 h-px bg-limit"
+                        className="absolute inset-x-1 bottom-2 h-px bg-accent"
                         aria-hidden="true"
                       />
                     )}
@@ -304,6 +303,6 @@ export function TerminalShowcase({ project }: { project: Project }) {
           </div>
         </div>
       </div>
-    </FadeIn>
+    </>
   )
 }

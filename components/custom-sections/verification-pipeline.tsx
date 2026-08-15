@@ -17,7 +17,7 @@ import type { Project } from "@/data/projects"
 
 /**
  * Every stage of the pipeline is part of the proven path, so it is drawn in
- * --ink. Connections are --ref. --limit is reserved for the failure branch:
+ * --ink. Connections are --ref. --accent is reserved for the failure branch:
  * a property the solver could not prove.
  */
 const PIPELINE_STEPS = [
@@ -66,7 +66,7 @@ export function VerificationPipeline({ project }: { project: Project }) {
               <CheckCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
               Verified
             </span>
-            <span className="flex items-center gap-2 text-limit">
+            <span className="flex items-center gap-2 text-accent">
               <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden="true" />
               Drift detected
               <RotateCcw className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
@@ -99,7 +99,7 @@ export function VerificationPipeline({ project }: { project: Project }) {
               <CheckCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
               Verified
             </span>
-            <span className="flex w-full max-w-[240px] items-center gap-2 text-limit">
+            <span className="flex w-full max-w-[240px] items-center gap-2 text-accent">
               <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden="true" />
               Drift detected
               <RotateCcw className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />

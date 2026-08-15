@@ -1,56 +1,33 @@
-"use client"
+const CONTACT = [
+  { label: "Email", href: "mailto:ap.alessandro.potenza@gmail.com" },
+  { label: "GitHub", href: "https://github.com/alepot55" },
+  { label: "LinkedIn", href: "https://linkedin.com/in/alepot55" },
+]
 
-import Link from "next/link"
-import { Measure } from "./measure"
-import { ValueCell } from "./value-cell"
-import { ROW_GRID, VALUE_SLOT } from "@/lib/constants"
-import type { Project } from "@/data/projects"
-
-interface HeroSectionProps {
-  /** the one project whose measurement opens the page */
-  flagship?: Project
-}
-
-export function HeroSection({ flagship }: HeroSectionProps) {
-  const m = flagship?.measurement
-
+export function HeroSection() {
   return (
-    <section className="pb-section-sm pt-24 sm:pb-section-md sm:pt-28 lg:pb-section">
-      <div className={ROW_GRID}>
-        <h1 className="font-mono text-[clamp(1.75rem,5.2vw,3.25rem)] font-semibold leading-[1.02] tracking-crush text-ink">
-          Alessandro Potenza
-        </h1>
+    <section className="pb-section-sm pt-24 sm:pb-section-md sm:pt-28">
+      <h1 className="font-mono text-[clamp(1.75rem,5.2vw,3rem)] font-semibold leading-[1.05] tracking-crush text-ink">
+        Alessandro Potenza
+      </h1>
 
-        <div className={`${VALUE_SLOT} mt-4 sm:mt-0`}>
-          <p className="font-mono text-micro uppercase tracking-micro text-ref sm:text-right">
-            Peak measured result
-          </p>
-          <ValueCell
-            value={m ? (m.display ?? m.value.toLocaleString("en-US")) : undefined}
-            unit={m?.unit}
-            size="xl"
-            className="mt-2"
-          />
-        </div>
+      <p className="mt-5 max-w-lead text-lead text-ink">
+        GPU kernels, compiler work, and formally verified systems. MSc Computer Engineering
+        at Politecnico di Milano.
+      </p>
 
-        <p className="mt-4 max-w-lead text-lead text-ink sm:mt-5">
-          GPU kernels, compiler work, and formally verified systems. MSc Computer
-          Engineering at Politecnico di Milano.
-        </p>
-
-        {m && flagship && (
-          <div className="mt-7">
-            <Measure measurement={m} trigger="mount" showProvenance={false} />
-            <p className="mt-2 font-mono text-meta text-ref">
-              <Link
-                href={`/projects/${flagship.id}`}
-                className="text-ink underline decoration-rail underline-offset-4 transition-colors hover:decoration-limit"
-              >
-                {flagship.title}
-              </Link>
-            </p>
-          </div>
-        )}
+      <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-body">
+        {CONTACT.map((c) => (
+          <a
+            key={c.href}
+            href={c.href}
+            target={c.href.startsWith("http") ? "_blank" : undefined}
+            rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+            className="text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-accent"
+          >
+            {c.label}
+          </a>
+        ))}
       </div>
     </section>
   )

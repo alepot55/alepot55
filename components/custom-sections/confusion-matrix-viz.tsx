@@ -120,7 +120,7 @@ export function ConfusionMatrixViz({ project }: { project: Project }) {
                   >
                     {isHovered && (
                       <span
-                        className="absolute inset-0 rounded-sm ring-1 ring-inset ring-limit"
+                        className="absolute inset-0 rounded-sm ring-1 ring-inset ring-accent"
                         aria-hidden="true"
                       />
                     )}

@@ -123,7 +123,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
           a: ({ children, href }) => (
             <a
               href={href}
-              className="text-ink underline decoration-rail underline-offset-4 transition-colors hover:decoration-limit"
+              className="text-ink underline decoration-rail underline-offset-4 transition-colors hover:decoration-accent"
               target={href?.startsWith("http") ? "_blank" : undefined}
               rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
             >

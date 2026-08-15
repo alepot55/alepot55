@@ -1,14 +1,11 @@
 "use client"
 
 import Link from "next/link"
-import { ThemeToggle } from "./theme-toggle"
 import { MarkdownRenderer } from "./markdown-renderer"
 import { SectionHeader } from "./section-header"
-import { Measure } from "./measure"
-import { ValueCell } from "./value-cell"
-import { hasAxis } from "@/lib/measure"
+import { ItemLinks } from "./row"
 import type { Project } from "@/data/projects"
-import { CATEGORY_LABELS_FULL, ROW_GRID, VALUE_SLOT } from "@/lib/constants"
+import { CATEGORY_LABELS_FULL } from "@/lib/constants"
 import { ChessboardDemo } from "./custom-sections/chessboard-demo"
 import { SplatSLAMShowcase } from "./custom-sections/splat-slam-showcase"
 import { VerificationPipeline } from "./custom-sections/verification-pipeline"
@@ -32,10 +29,10 @@ const CUSTOM_SECTIONS: Record<string, ComponentType<{ project: Project }>> = {
 
 /** every part of the page says what it is */
 const CUSTOM_SECTION_LABELS: Record<string, string> = {
-  "chessboard-js": "Interactive board",
+  "chessboard-js": "Try it",
   "slam-gaussian-splatting": "Reconstruction",
-  "verify-cbl": "Verification pipeline",
-  agentrial: "Command line",
+  "verify-cbl": "How it verifies",
+  agentrial: "In the terminal",
   "music-genre-classification": "Confusion matrix",
   "concepthub-ai": "The platform",
 }
@@ -47,9 +44,6 @@ const CUSTOM_CHARTS: Record<string, ComponentType<{ project: Project }>> = {
   "atlas-mm": AtlasMMCharts,
 }
 
-const LINK =
-  "text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-limit"
-
 interface ProjectDetailPageProps {
   project: Project
   content: string
@@ -58,33 +52,22 @@ interface ProjectDetailPageProps {
 export function ProjectDetailPage({ project, content }: ProjectDetailPageProps) {
   const CustomSection = CUSTOM_SECTIONS[project.id]
   const CustomCharts = CUSTOM_CHARTS[project.id]
-  const m = project.measurement
 
   return (
     <>
-      <header className="sticky top-0 z-50 h-header border-b border-rail bg-surface/[0.88] backdrop-blur-md">
+      <header className="sticky top-0 z-50 h-header border-b border-rail bg-bg/[0.92] backdrop-blur-md">
         <div className="mx-auto flex h-full max-w-content items-center justify-between px-5 sm:px-8">
           <Link href="/" className="font-mono text-nav text-ref transition-colors hover:text-ink">
             Portfolio
           </Link>
-          <div className="flex items-center gap-5 font-mono text-nav">
-            {project.github && (
-              <a href={project.github} target="_blank" rel="noopener noreferrer" className={LINK}>
-                source
-              </a>
-            )}
-            {project.liveUrl && (
-              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={LINK}>
-                live
-              </a>
-            )}
-            <ThemeToggle />
-          </div>
+          {project.links && project.links.length > 0 && (
+            <ItemLinks links={project.links} size="body" />
+          )}
         </div>
       </header>
 
       <main id="main" tabIndex={-1} className="mx-auto max-w-content px-5 sm:px-8">
-        <section className={`${ROW_GRID} pb-section-sm pt-12 sm:pt-14`}>
+        <section className="pb-section-sm pt-12 sm:pt-14">
           <p className="font-mono text-meta text-ref">
             {CATEGORY_LABELS_FULL[project.category] || project.category} · {project.period}
           </p>
@@ -93,71 +76,50 @@ export function ProjectDetailPage({ project, content }: ProjectDetailPageProps) 
             {project.title}
           </h1>
 
-          <ValueCell
-            value={m ? (m.display ?? String(m.value)) : undefined}
-            unit={m?.unit}
-            artifact={project.artifact}
-            size="m"
-            className={`${VALUE_SLOT} mt-3 sm:mt-0`}
-          />
-
           <p className="mt-5 max-w-measure text-lead text-ink">{project.description}</p>
 
-          <div className="mt-5 flex flex-wrap gap-x-1.5 gap-y-1.5">
-            {project.technologies.map((tech) => (
-              <span
-                key={tech}
-                className="rounded-sm bg-ink/[0.05] px-1.5 py-0.5 font-mono text-meta text-ref"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
+          {project.result && (
+            <p className="mt-4 max-w-measure font-mono text-body text-ink tnum">
+              {project.result}
+            </p>
+          )}
 
-          {m && hasAxis(m) && <Measure measurement={m} trigger="mount" />}
+          <p className="mt-5 max-w-measure font-mono text-meta text-ref">
+            {project.technologies.join(" · ")}
+          </p>
         </section>
 
         {CustomSection && (
           <section className="border-t border-rail pb-section-sm pt-8">
-            <SectionHeader level="part">
-              {CUSTOM_SECTION_LABELS[project.id] ?? "Demo"}
-            </SectionHeader>
+            <SectionHeader>{CUSTOM_SECTION_LABELS[project.id] ?? "Demo"}</SectionHeader>
             <CustomSection project={project} />
           </section>
         )}
 
         {CustomCharts && (
           <section className="border-t border-rail pb-section-sm pt-8">
-            <SectionHeader level="part">Measurements</SectionHeader>
+            <SectionHeader>Measurements</SectionHeader>
             <CustomCharts project={project} />
           </section>
         )}
 
         {content && (
           <section className="border-t border-rail pb-section-sm pt-8 sm:pb-section-md">
-            <SectionHeader level="part">Write-up</SectionHeader>
+            <SectionHeader>Write-up</SectionHeader>
             <article className="max-w-prose">
               <MarkdownRenderer content={content} />
             </article>
           </section>
         )}
 
-        <footer className="flex items-center justify-between gap-4 border-t border-rail py-8 font-mono text-meta">
-          <Link href="/" className={LINK}>
+        <footer className="flex flex-wrap items-baseline justify-between gap-4 border-t border-rail py-8 font-mono text-meta">
+          <Link
+            href="/"
+            className="text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-accent"
+          >
             All projects
           </Link>
-          <div className="flex gap-5">
-            {project.github && (
-              <a href={project.github} target="_blank" rel="noopener noreferrer" className={LINK}>
-                View source
-              </a>
-            )}
-            {project.liveUrl && (
-              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={LINK}>
-                Live demo
-              </a>
-            )}
-          </div>
+          {project.links && project.links.length > 0 && <ItemLinks links={project.links} />}
         </footer>
       </main>
     </>

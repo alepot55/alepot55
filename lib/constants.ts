@@ -1,12 +1,8 @@
-/**
- * The mother grid. Every block that carries a value uses it, so all values on
- * the page share one right edge.
- */
-export const ROW_GRID =
-  "grid grid-cols-1 gap-y-3 sm:grid-cols-[1fr_var(--value-col-sm)] sm:gap-x-6 sm:gap-y-0 lg:grid-cols-[1fr_var(--value-col)] lg:gap-x-8"
-
-/** placement of the value cell inside ROW_GRID */
-export const VALUE_SLOT = "sm:col-start-2 sm:row-start-1 sm:row-span-6"
+/** something you can open: source, package, demo, paper, book */
+export interface ItemLink {
+  label: string
+  href: string
+}
 
 export const CATEGORY_LABELS: Record<string, string> = {
   "ai-ml": "AI/ML",
@@ -29,13 +25,13 @@ export interface Experience {
   title: string
   company: string
   period: string
-  /** one line, for the register */
+  /** one line, for the list */
   summary: string
-  /** the full paragraph, for the detail page and page metadata */
+  /** the full paragraph, for the detail page and the page metadata */
   description: string
-  value?: string
-  unit?: string
-  artifact?: string
+  /** the measured outcome, written out. No chart, no bar. */
+  result?: string
+  links?: ItemLink[]
 }
 
 export interface Education {
@@ -45,9 +41,8 @@ export interface Education {
   period: string
   summary: string
   description: string
-  value?: string
-  unit?: string
-  artifact?: string
+  result?: string
+  links?: ItemLink[]
 }
 
 export interface Achievement {
@@ -57,7 +52,6 @@ export interface Achievement {
   date: string
   summary: string
   description: string
-  value?: string
-  unit?: string
-  artifact?: string
+  result?: string
+  links?: ItemLink[]
 }

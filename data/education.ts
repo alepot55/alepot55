@@ -18,7 +18,6 @@ export const education: Education[] = [
     summary: "Honors Program. Thesis on real-time SLAM with Gaussian Splatting",
     description:
       "Honors Program, top 1 percent of the cohort. Experimental thesis on real-time SLAM with 3D Gaussian Splatting.",
-    value: "110 / 110",
-    unit: "cum laude",
+    result: "110 / 110 cum laude, Honors Program",
   },
 ]
