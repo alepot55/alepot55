@@ -29,6 +29,9 @@ export interface Experience {
   title: string
   company: string
   period: string
+  /** one line, for the register */
+  summary: string
+  /** the full paragraph, for the detail page and page metadata */
   description: string
   value?: string
   unit?: string
@@ -40,6 +43,7 @@ export interface Education {
   degree: string
   institution: string
   period: string
+  summary: string
   description: string
   value?: string
   unit?: string
@@ -51,6 +55,7 @@ export interface Achievement {
   title: string
   organization: string
   date: string
+  summary: string
   description: string
   value?: string
   unit?: string

@@ -38,14 +38,9 @@ export function HeroSection({ flagship }: HeroSectionProps) {
           Engineering at Politecnico di Milano.
         </p>
 
-        <p className="mt-3 max-w-measure text-body text-ref">
-          Every number on this page carries its unit, its reference and its source. Where a
-          project was never benchmarked, the page says so instead of filling the gap.
-        </p>
-
         {m && flagship && (
-          <div className="mt-6">
-            <Measure measurement={m} trigger="mount" />
+          <div className="mt-7">
+            <Measure measurement={m} trigger="mount" showProvenance={false} />
             <p className="mt-2 font-mono text-meta text-ref">
               <Link
                 href={`/projects/${flagship.id}`}

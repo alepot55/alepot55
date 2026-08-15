@@ -1,7 +1,7 @@
 import { SiteHeader } from "@/components/site-header"
 import { HeroSection } from "@/components/hero-section"
 import { SectionHeader } from "@/components/section-header"
-import { ProjectsRegister } from "@/components/projects-register"
+import { ProjectRow } from "@/components/project-row"
 import { SkillsMatrix } from "@/components/skills-matrix"
 import { ExperienceItem } from "@/components/experience-item"
 import { EducationItem } from "@/components/education-item"
@@ -55,19 +55,22 @@ export default function Home() {
         <HeroSection flagship={flagship} />
 
         <section className={SECTION} id="projects" aria-labelledby="projects-heading">
-          <SectionHeader
-            id="projects-heading"
-            note={`${projects.length} listed · ${measured} measured`}
-          >
+          <SectionHeader id="projects-heading" note={`${projects.length} · ${measured} measured`}>
             Projects
           </SectionHeader>
-          <ProjectsRegister projects={projects} contentMap={projectContentMap} />
+          <ul role="list">
+            {projects.map((project) => (
+              <ProjectRow
+                key={project.id}
+                project={project}
+                hasContent={projectContentMap[project.id] || false}
+              />
+            ))}
+          </ul>
         </section>
 
         <section className={SECTION} id="skills" aria-labelledby="skills-heading">
-          <SectionHeader id="skills-heading" note="listed, not rated">
-            Skills
-          </SectionHeader>
+          <SectionHeader id="skills-heading">Skills</SectionHeader>
           <SkillsMatrix skills={skills} />
         </section>
 

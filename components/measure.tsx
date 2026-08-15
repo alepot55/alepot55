@@ -7,6 +7,8 @@ interface MeasureProps {
   measurement: Measurement
   /** hero draws on mount, rows draw when scrolled into view */
   trigger?: "mount" | "view"
+  /** the hero shows the axis alone: the source belongs on the detail page */
+  showProvenance?: boolean
 }
 
 /**
@@ -16,7 +18,11 @@ interface MeasureProps {
  * scale. On a log scale the value is marked with a cursor and nothing is
  * filled: a bar whose length is not proportional to its value lies.
  */
-export function Measure({ measurement, trigger = "view" }: MeasureProps) {
+export function Measure({
+  measurement,
+  trigger = "view",
+  showProvenance = true,
+}: MeasureProps) {
   const { value, unit, baseline, limit, provenance } = measurement
   const scale = makeScale(measurement)
 
@@ -86,10 +92,12 @@ export function Measure({ measurement, trigger = "view" }: MeasureProps) {
       </div>
 
       {/* provenance stays outside role=img so it is read, not summarised */}
-      <p className="mt-2 font-mono text-meta text-ref">
-        {measurement.display ?? value}
-        {unit ? ` ${unit}` : ""} · {provenance}
-      </p>
+      {showProvenance && (
+        <p className="mt-2 font-mono text-meta text-ref">
+          {measurement.display ?? value}
+          {unit ? ` ${unit}` : ""} · {provenance}
+        </p>
+      )}
     </div>
   )
 }

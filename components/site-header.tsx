@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { label: "skills", href: "#skills" },
   { label: "experience", href: "#experience" },
   { label: "education", href: "#education" },
-  { label: "awards", href: "#achievements" },
+  { label: "achievements", href: "#achievements" },
 ]
 
 export function SiteHeader() {
