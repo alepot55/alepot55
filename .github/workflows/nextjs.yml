@@ -63,13 +63,11 @@ jobs:
           node-version: "20"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
       - name: Setup Pages
+        # static_site_generator: next is deliberately not set. It rewrites
+        # next.config.mjs to inject basePath, which breaks a config that computes
+        # the prefix itself, and this one does: see the basePath const at the top
+        # of next.config.mjs, which also publishes it as NEXT_PUBLIC_BASE_PATH.
         uses: actions/configure-pages@v5
-        with:
-          # Automatically inject basePath in your Next.js configuration file and disable
-          # server side image optimization (https://nextjs.org/docs/api-reference/next/image#unoptimized).
-          #
-          # You may remove this line if you want to manage the configuration yourself.
-          static_site_generator: next
       - name: Restore cache
         uses: actions/cache@v4
         with:
