@@ -130,6 +130,7 @@ export function FlashSAECharts({ project }: { project: Project }) {
               className="chart-ref"
               radius={[2, 2, 0, 0]}
               maxBarSize={50}
+              isAnimationActive={false}
             />
             <Bar
               dataKey="flash"
@@ -137,6 +138,7 @@ export function FlashSAECharts({ project }: { project: Project }) {
               className="chart-ink"
               radius={[2, 2, 0, 0]}
               maxBarSize={50}
+              isAnimationActive={false}
             />
           </BarChart>
         </ResponsiveContainer>
@@ -174,6 +176,7 @@ export function FlashSAECharts({ project }: { project: Project }) {
               name="memory"
               radius={[2, 2, 0, 0]}
               maxBarSize={50}
+              isAnimationActive={false}
             >
               {memoryData.map((entry) => (
                 <Cell
