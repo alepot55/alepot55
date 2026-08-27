@@ -46,5 +46,5 @@ That last number seems impossible until you look at where the reads land. Shared
 
 - Kernel fusion mattered more than algorithmic optimization at this level.
 - The reference counting and the tree structure were straightforward.
-- The 10x came from eliminating kernel launch overhead and intermediate memory allocations.
+- The 2.54x came from eliminating kernel launch overhead and intermediate memory allocations.
 - Triton's autotuning was essential for portability across A100, H100 and RTX architectures without manually writing separate kernels.
