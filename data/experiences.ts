@@ -8,22 +8,35 @@ export const experiences: Experience[] = [
     period: "Apr 2026 - Present",
     summary: "GenAI strategy for enterprise clients, then the systems that ship it",
     description:
-      "Advise enterprise clients in luxury retail and industrial sectors on GenAI strategy, then design and deploy the solutions end to end: multi-agent automation on Google Cloud and Vertex AI, and LLM-based content generation.",
+      "Advise enterprise clients in luxury retail and industry on where generative AI actually creates value, then build the system that delivers it. Four strands so far: Dark Factory, an internal agent factory that takes a described agent to a deployed one; Content Studio, productized out of a single engagement into a platform other teams adopt without me in the room; content generation for fashion and luxury; and fraud prediction, five models built and compared on the same problem.",
     result: "Content Studio productized into a platform used across clients, Burberry and Prada among them",
+    highlights: [
+      {
+        value: "Content Studio",
+        label: "one engagement, then a platform",
+        note: "adopted across clients, Burberry and Prada among them",
+      },
+      {
+        value: "Dark Factory",
+        label: "an agent factory",
+        note: "a described agent becomes a deployed one",
+      },
+      { value: "5", label: "models for fraud prediction", note: "built and compared on one problem" },
+    ],
     links: [{ label: "BCG X", href: "https://www.bcg.com/x" }],
   },
   {
-    id: "freelance-energy-geospatial",
-    title: "Freelance Software Engineer",
-    company: "Independent, for a renewable energy developer",
-    period: "2026 - Present",
-    summary: "Two systems for siting and trading renewable energy in Italy",
+    id: "independent-work",
+    title: "Software Engineer",
+    company: "Self-Employed",
+    period: "Feb 2022 - Present",
+    summary: "Teaching software engineering, and building it for clients",
     description:
-      "Two production systems built for an independent renewable energy developer. pvsite reads an entire Italian province out of the cadastre and returns the parcels where a ground-mounted photovoltaic plant can legally be built, each with the reason. Energy Forecast IT forecasts day-ahead electricity prices for all seven Italian bidding zones, behind scheduled ingestion, an API and a dashboard. Both run and produce real output for the client, on his own machines rather than on a public site.",
-    result: "677,534 parcels screened in one province; price forecasts in all 7 zones",
+      "Software engineering on my own terms, taught and built. Most of it has gone into teaching: machine learning, Python and algorithms to university students, and technical lead on their thesis projects, over 800 hours across four years. The rest goes into building for clients: pvsite reads an entire Italian province out of the cadastre and returns the parcels where a photovoltaic plant can legally be built, and Energy Forecast IT forecasts day-ahead electricity prices for all seven Italian bidding zones.",
+    result: "677,534 parcels screened in one province, forecasts in 7 zones, over 800 hours taught",
     highlights: [
-      { value: "2", label: "systems delivered", note: "geospatial siting and price forecasting" },
-      { value: "677,534", label: "parcels screened", note: "one province, end to end" },
+      { value: "800+", label: "hours taught", note: "since 2022, plus thesis supervision" },
+      { value: "677,534", label: "parcels screened", note: "one province, cadastre to ranked shortlist" },
       { value: "7", label: "bidding zones forecast", note: "rMAE 0.34 to 0.39 on real history" },
     ],
   },
@@ -42,15 +55,5 @@ export const experiences: Experience[] = [
         href: "https://shop.enneditore.it/products/informatica-per-i-concorsi-pubblici-2026-manuale-di-teoria-e-quiz-commentati",
       },
     ],
-  },
-  {
-    id: "academic-mentor-tutor",
-    title: "Academic Mentor and Technical Lead",
-    company: "Self-Employed",
-    period: "Feb 2022 - Present",
-    summary: "Machine learning and algorithms, plus technical lead on theses",
-    description:
-      "Mentorship in machine learning, Python and algorithms, plus technical lead on university thesis projects: architecture design, debugging and review.",
-    result: "Over 800 hours taught",
   },
 ]

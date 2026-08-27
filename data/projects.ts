@@ -55,27 +55,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "upstream-compilers",
-    title: "Upstream compiler patches",
-    summary: "Patches landed in OpenAI Triton and in LLVM's MLIR",
-    description:
-      "Bug reports and patches sent to the compilers I work on top of, rather than worked around locally. Five are merged: one in Triton's Membar analysis, three in MLIR (mem2reg, the scf unroller and the vector dialect verifier), and one documentation fix. Three further Triton bugs were reported with a reproducer and fixed by the maintainers themselves.",
-    result: "5 patches merged in Triton and MLIR, 3 more bugs fixed from my reproducers",
-    highlights: [
-      { value: "5", label: "patches merged", note: "2 in Triton, 3 in LLVM's MLIR" },
-      { value: "3", label: "bugs fixed by maintainers", note: "reported with a reproducer" },
-      { value: "10", label: "still open", note: "under review upstream" },
-    ],
-    technologies: ["C++", "MLIR", "LLVM", "OpenAI Triton", "CUDA", "Compilers"],
-    period: "2026",
-    category: "systems",
-    featured: true,
-    links: [
-      { label: "Triton PRs", href: "https://github.com/triton-lang/triton/pulls?q=is%3Apr+author%3Aalepot55" },
-      { label: "LLVM PRs", href: "https://github.com/llvm/llvm-project/pulls?q=is%3Apr+author%3Aalepot55" },
-    ],
-  },
-  {
     id: "flash-reasoning",
     title: "Flash-Reasoning",
     summary: "Tree-aware KV-cache attention that reads faster than HBM allows",
@@ -102,27 +81,6 @@ export const projects: Project[] = [
     links: [{ label: "Source", href: "https://github.com/alepot55/flash-sae" }],
   },
   {
-    id: "energy-forecast",
-    title: "Energy Forecast IT",
-    summary: "Day-ahead electricity prices for all seven Italian bidding zones",
-    description:
-      "End-to-end electricity price forecasting for the Italian day-ahead market (GME/IPEX), covering all seven bidding zones since demand stopped settling at the uniform national price in 2025. A LightGBM model with dedicated feature engineering against a LEAR baseline, wrapped in an async stack of FastAPI, TimescaleDB and Celery, with risk management, walk-forward backtesting, and a dashboard that issues buy and sell signals.",
-    result: "rMAE 0.34 to 0.39 in all seven zones, on real ENTSO-E history",
-    technologies: [
-      "Python",
-      "LightGBM",
-      "TimescaleDB",
-      "FastAPI",
-      "Celery",
-      "Streamlit",
-      "Docker",
-      "Time-Series Forecasting",
-    ],
-    period: "2026",
-    category: "ai-ml",
-    featured: true,
-  },
-  {
     id: "perivallon-thesis",
     title: "Reading landfills off a satellite",
     summary: "The same frozen model, read at a larger input, localises twice as well",
@@ -147,9 +105,30 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    id: "energy-forecast",
+    title: "Energy Forecast IT",
+    summary: "Day-ahead electricity prices for all seven Italian bidding zones",
+    description:
+      "End-to-end electricity price forecasting for the Italian day-ahead market (GME/IPEX), covering all seven bidding zones since demand stopped settling at the uniform national price in 2025. A LightGBM model with dedicated feature engineering against a LEAR baseline, wrapped in an async stack of FastAPI, TimescaleDB and Celery, with risk management, walk-forward backtesting, and a dashboard that issues buy and sell signals.",
+    result: "rMAE 0.34 to 0.39 in all seven zones, on real ENTSO-E history",
+    technologies: [
+      "Python",
+      "LightGBM",
+      "TimescaleDB",
+      "FastAPI",
+      "Celery",
+      "Streamlit",
+      "Docker",
+      "Time-Series Forecasting",
+    ],
+    period: "2026",
+    category: "ai-ml",
+    featured: true,
+  },
+  {
     id: "pvsite",
     title: "pvsite",
-    summary: "Two million cadastral parcels in, a few thousand ranked sites out",
+    summary: "An entire province of cadastre in, a few thousand ranked sites out",
     description:
       "Geospatial engine that finds land where a ground-mounted photovoltaic plant can legally be built. It takes an entire Italian province from the cadastre, one to two million parcels, and returns a few thousand ranked with the reason for each. A constraint that could not be verified never yields an admissible parcel: it returns undetermined.",
     result: "677,534 parcels in, 45,728 ranked out, on the province of Viterbo",
@@ -255,25 +234,6 @@ export const projects: Project[] = [
     links: [{ label: "Source", href: "https://github.com/alepot55/SplatSLAM" }],
   },
   {
-    id: "music-genre-classification",
-    title: "Music Genre Classification",
-    summary: "GTZAN without the leakage that inflates the published numbers",
-    description:
-      "End-to-end reproducible pipeline on GTZAN with a U-Net inspired model. Splitting at track level before slicing removes the leakage that lets published pipelines report over 90 percent.",
-    result: "82 to 83 percent accuracy, leak-free splits",
-    technologies: [
-      "Python",
-      "PyTorch",
-      "Scikit-learn",
-      "Computer Vision",
-      "Jupyter",
-      "Mel-Spectrograms",
-    ],
-    period: "2024",
-    category: "ai-ml",
-    links: [{ label: "Source", href: "https://github.com/alepot55/MGC-GTZAN" }],
-  },
-  {
     id: "concepthub-ai",
     title: "ConceptHub",
     summary: "Book summaries and concept maps generated from plain text",
@@ -294,6 +254,25 @@ export const projects: Project[] = [
     links: [{ label: "Live demo", href: "https://concepthub-chi.vercel.app/" }],
   },
   {
+    id: "music-genre-classification",
+    title: "Music Genre Classification",
+    summary: "GTZAN without the leakage that inflates the published numbers",
+    description:
+      "End-to-end reproducible pipeline on GTZAN with a U-Net inspired model. Splitting at track level before slicing removes the leakage that lets published pipelines report over 90 percent.",
+    result: "82 to 83 percent accuracy, leak-free splits",
+    technologies: [
+      "Python",
+      "PyTorch",
+      "Scikit-learn",
+      "Computer Vision",
+      "Jupyter",
+      "Mel-Spectrograms",
+    ],
+    period: "2024",
+    category: "ai-ml",
+    links: [{ label: "Source", href: "https://github.com/alepot55/MGC-GTZAN" }],
+  },
+  {
     id: "chessboard-js",
     title: "Chessboard.js",
     summary: "Dependency-free chess board for the web",
@@ -306,6 +285,27 @@ export const projects: Project[] = [
       { label: "Source", href: "https://github.com/alepot55/Chessboard.js" },
       { label: "npm", href: "https://www.npmjs.com/package/@alepot55/chessboardjs" },
       { label: "Docs", href: "https://sites.google.com/view/chessboard-js/home" },
+    ],
+  },
+  {
+    id: "upstream-compilers",
+    title: "Upstream compiler patches",
+    summary: "Patches landed in OpenAI Triton and in LLVM's MLIR",
+    description:
+      "Bug reports and patches sent to the compilers I work on top of, rather than worked around locally. Five are merged: one in Triton's Membar analysis, three in MLIR (mem2reg, the scf unroller and the vector dialect verifier), and one documentation fix. Three further Triton bugs were reported with a reproducer and fixed by the maintainers themselves.",
+    result: "5 patches merged in Triton and MLIR, 3 more bugs fixed from my reproducers",
+    highlights: [
+      { value: "5", label: "patches merged", note: "2 in Triton, 3 in LLVM's MLIR" },
+      { value: "3", label: "bugs fixed by maintainers", note: "reported with a reproducer" },
+      { value: "10", label: "still open", note: "under review upstream" },
+    ],
+    technologies: ["C++", "MLIR", "LLVM", "OpenAI Triton", "CUDA", "Compilers"],
+    period: "2026",
+    category: "systems",
+    featured: true,
+    links: [
+      { label: "Triton PRs", href: "https://github.com/triton-lang/triton/pulls?q=is%3Apr+author%3Aalepot55" },
+      { label: "LLVM PRs", href: "https://github.com/llvm/llvm-project/pulls?q=is%3Apr+author%3Aalepot55" },
     ],
   },
 ]

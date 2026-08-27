@@ -2,6 +2,7 @@ import { SiteHeader } from "@/components/site-header"
 import { HeroSection } from "@/components/hero-section"
 import { SectionHeader } from "@/components/section-header"
 import { Row } from "@/components/row"
+import { CompactRow } from "@/components/compact-row"
 import { SkillsList } from "@/components/skills-list"
 import { projects } from "@/data/projects"
 import { experiences } from "@/data/experiences"
@@ -15,11 +16,21 @@ const SECTION = "scroll-mt-[4.5rem] pb-section-sm sm:pb-section-md lg:pb-section
 
 type ContentType = "projects" | "experiences" | "education"
 
+/** open-source work gets its own section, not a slot in the project list */
+const OPEN_SOURCE_ID = "upstream-compilers"
+/** how many projects get a full row before the list turns compact */
+const LEAD_PROJECTS = 6
+
 function detail(type: ContentType, id: string, base: string) {
   return hasContentFile(type, id) ? `${base}/${id}` : undefined
 }
 
 export default function Home() {
+  const listed = projects.filter((p) => p.id !== OPEN_SOURCE_ID)
+  const lead = listed.slice(0, LEAD_PROJECTS)
+  const rest = listed.slice(LEAD_PROJECTS)
+  const openSource = projects.find((p) => p.id === OPEN_SOURCE_ID)
+
   return (
     <>
       <SiteHeader />
@@ -64,11 +75,11 @@ export default function Home() {
         </section>
 
         <section className={SECTION} id="projects" aria-labelledby="projects-heading">
-          <SectionHeader id="projects-heading" note={String(projects.length)}>
+          <SectionHeader id="projects-heading" note={String(listed.length)}>
             Projects
           </SectionHeader>
           <ul role="list">
-            {projects.map((p) => (
+            {lead.map((p) => (
               <Row
                 key={p.id}
                 title={p.title}
@@ -81,7 +92,41 @@ export default function Home() {
               />
             ))}
           </ul>
+
+          {rest.length > 0 && (
+            <>
+              <p className="mt-10 font-mono text-meta text-ref">Also</p>
+              <ul role="list" className="mt-2 sm:grid sm:grid-cols-2 sm:gap-x-10">
+                {rest.map((p) => (
+                  <CompactRow
+                    key={p.id}
+                    title={p.title}
+                    meta={CATEGORY_LABELS[p.category]}
+                    summary={p.summary}
+                    href={detail("projects", p.id, "/projects")}
+                  />
+                ))}
+              </ul>
+            </>
+          )}
         </section>
+
+        {openSource && (
+          <section className={SECTION} id="open-source" aria-labelledby="open-source-heading">
+            <SectionHeader id="open-source-heading">Open source</SectionHeader>
+            <ul role="list">
+              <Row
+                title={openSource.title}
+                period={openSource.period}
+                meta={CATEGORY_LABELS[openSource.category]}
+                summary={openSource.summary}
+                result={openSource.result}
+                links={openSource.links}
+                href={detail("projects", openSource.id, "/projects")}
+              />
+            </ul>
+          </section>
+        )}
 
         <section className={SECTION} id="skills" aria-labelledby="skills-heading">
           <SectionHeader id="skills-heading">Skills</SectionHeader>
