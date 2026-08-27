@@ -13,6 +13,21 @@ export const experiences: Experience[] = [
     links: [{ label: "BCG X", href: "https://www.bcg.com/x" }],
   },
   {
+    id: "freelance-energy-geospatial",
+    title: "Freelance Software Engineer",
+    company: "Independent, for a renewable energy developer",
+    period: "2026 - Present",
+    summary: "Two systems for siting and trading renewable energy in Italy",
+    description:
+      "Two production systems built for an independent renewable energy developer. pvsite reads an entire Italian province out of the cadastre and returns the parcels where a ground-mounted photovoltaic plant can legally be built, each with the reason. Energy Forecast IT forecasts day-ahead electricity prices for all seven Italian bidding zones, behind scheduled ingestion, an API and a dashboard. Both run and produce real output for the client, on his own machines rather than on a public site.",
+    result: "677,534 parcels screened in one province; price forecasts in all 7 zones",
+    highlights: [
+      { value: "2", label: "systems delivered", note: "geospatial siting and price forecasting" },
+      { value: "677,534", label: "parcels screened", note: "one province, end to end" },
+      { value: "7", label: "bidding zones forecast", note: "rMAE 0.34 to 0.39 on real history" },
+    ],
+  },
+  {
     id: "book-author",
     title: "Technical Book Author",
     company: "NLD Concorsi, Neldiritto Editore",

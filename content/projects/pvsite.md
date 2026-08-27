@@ -2,7 +2,7 @@
 
 - **Problem:** an Italian province holds one to two million cadastral parcels and only a few thousand are worth a phone call, and a list that looks authoritative and is wrong costs a salesperson weeks.
 - **Mechanism:** three ordered stages, statutory eligibility, then legal exclusions, then a weighted ranking, with a third truth value so that an unverifiable constraint yields undetermined instead of zero.
-- **Measured:** the eligibility stage rules out roughly 80 percent of the territory before anything else is computed, which is what makes the rest affordable.
+- **Measured:** on the province of Viterbo, 677,534 cadastral parcels in and 45,728 out, 17,838 hectares. The eligibility stage does most of that work before anything expensive is computed.
 - **State:** every run ships a CSV, a GeoPackage and a lock file with the commit and the rule set, guarded by 55 test modules. The portal surfaces land worth looking at, never a site that is authorisable.
 
 ## The input, and why it cannot be done by hand
@@ -20,7 +20,7 @@ The first question is not "is this land agricultural?" but "does it fall into a 
 - closed quarries
 - sites with existing plants
 
-They combine with OR, and a partial overlap is enough. This stage discards roughly 80 percent of the territory before anything else is computed.
+They combine with OR, and a partial overlap is enough. Most of the province never gets past this stage, which is what makes the expensive checks affordable: on Viterbo, 628,168 of the 677,534 parcels are out before ranking begins.
 
 ## Stage 2: who is excluded
 

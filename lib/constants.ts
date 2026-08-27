@@ -4,6 +4,13 @@ export interface ItemLink {
   href: string
 }
 
+/** one fact to lead a detail page with: the number, what it is, the qualifier */
+export interface Highlight {
+  value: string
+  label: string
+  note?: string
+}
+
 export const CATEGORY_LABELS: Record<string, string> = {
   "ai-ml": "AI/ML",
   systems: "Systems",
@@ -31,6 +38,8 @@ export interface Experience {
   description: string
   /** the measured outcome, written out. No chart, no bar. */
   result?: string
+  /** the two or three facts the detail page leads with */
+  highlights?: Highlight[]
   links?: ItemLink[]
 }
 
@@ -42,6 +51,8 @@ export interface Education {
   summary: string
   description: string
   result?: string
+  /** the two or three facts the detail page leads with */
+  highlights?: Highlight[]
   links?: ItemLink[]
 }
 
@@ -53,5 +64,7 @@ export interface Achievement {
   summary: string
   description: string
   result?: string
+  /** the two or three facts the detail page leads with */
+  highlights?: Highlight[]
   links?: ItemLink[]
 }

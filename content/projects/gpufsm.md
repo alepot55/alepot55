@@ -4,7 +4,7 @@
 - **Diagnosis.** I call the gap *abstraction regret*, the cost a DSL imposes not through its algorithms but through the execution model it forces you to express them in, and I trace the irreducible part to intra-warp memory-level parallelism the tile IR cannot express.
 - **Cure.** A TritonGPU to LLVM per-lane-retirement pass, built below the tile IR because `scf.condition` makes a per-lane exit inexpressible inside it.
 - **Result.** 2.3 to 6.7x on control-bound kernels on an RTX 4070, 1.6 to 3.8x on an A100, and about 1.0x on gather-bound kernels, which is exactly where the diagnosis predicts no gain.
-- **Status.** Paper at PPoPP 2027 after a TACO desk reject and a CGO pivot. The compiler work is upstream as an RFC and a pull request on `triton-lang/triton`.
+- **Status.** The measurement paper is **accepted at IEEE HPEC 2026**, sole-authored, for an oral talk and for IEEE Xplore. Two further papers, on the mechanism and on a separate correctness question, are written but not yet submitted. Work from this project has since landed upstream in `triton-lang/triton` and in LLVM's MLIR.
 
 ## Problem and prior work
 
@@ -38,7 +38,7 @@ The residual is not what the usual suspects would predict. Against CUDA, the per
 
 So it is latency bound, and the cause is structural. A CUDA warp has 32 lanes each issuing an independent load, and those loads overlap in flight. A lock-step tile serialises the dependent next-state load, so the abstraction denies intra-warp memory-level parallelism.
 
-The same anatomy reproduces on an A100: same 26x total, `num_warps` component 3.7x on both architectures. It is a property of the paradigm, not of one GPU.
+The `num_warps` component reproduces on an A100 at 3.7x, the same as on the 4070, so that piece is a property of the paradigm rather than of one GPU. The full decomposition has only been established on the 4070.
 
 ## Regime dependence: NFA against DFA
 
@@ -83,4 +83,6 @@ That last failure is itself a finding: on automata the abstraction regret is fir
 
 ## Status
 
-The paper went to PPoPP 2027 after a TACO desk reject and a CGO pivot. The compiler work went upstream as an RFC and a pull request on `triton-lang/triton`, where the maintainers pushed back on the first version and were right to.
+The measurement paper is accepted at IEEE HPEC 2026, sole-authored, for an oral talk and for publication in IEEE Xplore. Two further papers, one on the mechanism and one on a separate correctness question in tile IRs, are written but not yet submitted, so they are not described here.
+
+The compiler work went upstream as an RFC and a pull request on `triton-lang/triton`. The maintainers pushed back on putting the pass in tree and were right to, so it ships out of tree as a loadable plugin. Separate patches from the same work did land, in Triton and in LLVM's MLIR.

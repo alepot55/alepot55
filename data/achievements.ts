@@ -2,6 +2,16 @@ import type { Achievement } from "@/lib/constants"
 
 export const achievements: Achievement[] = [
   {
+    id: "hpec-2026",
+    title: "Paper accepted, IEEE HPEC 2026",
+    organization: "IEEE High Performance Extreme Computing Conference",
+    date: "Aug 2026",
+    summary: "Sole author. Accepted for an oral talk and for IEEE Xplore",
+    description:
+      "The Two Faces of Abstraction Regret: Control-Flow and Memory-Layout Limits of GPU DSLs on Irregular Automata. Sole-authored, accepted for an oral presentation in the General Purpose GPU Computing session and for publication in IEEE Xplore.",
+    result: "Accepted for oral presentation, September 2026",
+  },
+  {
     id: "airlab-competition",
     title: "AI Challenge, third place",
     organization: "Politecnico di Milano, AIRLab",

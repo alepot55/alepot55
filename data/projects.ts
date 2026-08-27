@@ -1,4 +1,4 @@
-import type { ItemLink } from "@/lib/constants"
+import type { Highlight, ItemLink } from "@/lib/constants"
 
 export interface Project {
   id: string
@@ -9,6 +9,8 @@ export interface Project {
   description: string
   /** the measured outcome, written out. No chart, no bar. */
   result?: string
+  /** the two or three facts the detail page leads with */
+  highlights?: Highlight[]
   technologies: string[]
   period: string
   category: "ai-ml" | "systems" | "data" | "web" | "research"
@@ -24,7 +26,24 @@ export const projects: Project[] = [
     summary: "Why Triton trails CUDA on automata, and a compiler pass that closes it",
     description:
       "Anatomy and cure of the abstraction regret between Triton and hand-written CUDA on irregular automata. The 10x gap is decomposed into a launch-configuration artifact, a lane-packing component and an irreducible residual, the residual is traced to intra-warp latency hiding the tile IR cannot express, and the cure is built below that IR as a TritonGPU to LLVM per-lane retirement pass.",
-    result: "2.3 to 6.7 times faster on control-bound kernels",
+    result: "2.3 to 6.7 times faster on control-bound kernels. Paper accepted at IEEE HPEC 2026",
+    highlights: [
+      {
+        value: "2.3-6.7x",
+        label: "on control-bound kernels",
+        note: "RTX 4070, oracle-gated in both modes",
+      },
+      {
+        value: "15.3x",
+        label: "more cycles stalled than CUDA",
+        note: "at matched occupancy, issuing fewer instructions",
+      },
+      {
+        value: "HPEC 2026",
+        label: "accepted, oral",
+        note: "IEEE High Performance Extreme Computing",
+      },
+    ],
     technologies: ["OpenAI Triton", "CUDA", "C++", "MLIR", "LLVM", "Python", "Nsight Compute"],
     period: "2025 - 2026",
     category: "research",
@@ -33,6 +52,27 @@ export const projects: Project[] = [
       { label: "Source", href: "https://github.com/alepot55/gpufsm" },
       { label: "Upstream RFC", href: "https://github.com/triton-lang/triton/issues/10773" },
       { label: "Compiler pass", href: "https://github.com/alepot55/triton-perlane-retire" },
+    ],
+  },
+  {
+    id: "upstream-compilers",
+    title: "Upstream compiler patches",
+    summary: "Patches landed in OpenAI Triton and in LLVM's MLIR",
+    description:
+      "Bug reports and patches sent to the compilers I work on top of, rather than worked around locally. Five are merged: one in Triton's Membar analysis, three in MLIR (mem2reg, the scf unroller and the vector dialect verifier), and one documentation fix. Three further Triton bugs were reported with a reproducer and fixed by the maintainers themselves.",
+    result: "5 patches merged in Triton and MLIR, 3 more bugs fixed from my reproducers",
+    highlights: [
+      { value: "5", label: "patches merged", note: "2 in Triton, 3 in LLVM's MLIR" },
+      { value: "3", label: "bugs fixed by maintainers", note: "reported with a reproducer" },
+      { value: "10", label: "still open", note: "under review upstream" },
+    ],
+    technologies: ["C++", "MLIR", "LLVM", "OpenAI Triton", "CUDA", "Compilers"],
+    period: "2026",
+    category: "systems",
+    featured: true,
+    links: [
+      { label: "Triton PRs", href: "https://github.com/triton-lang/triton/pulls?q=is%3Apr+author%3Aalepot55" },
+      { label: "LLVM PRs", href: "https://github.com/llvm/llvm-project/pulls?q=is%3Apr+author%3Aalepot55" },
     ],
   },
   {
@@ -83,12 +123,41 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    id: "perivallon-thesis",
+    title: "Reading landfills off a satellite",
+    summary: "The same frozen model, read at a larger input, localises twice as well",
+    description:
+      "Master's thesis at Politecnico di Milano inside PERIVALLON (Horizon Europe), on how weakly supervised localisation of illegal landfills degrades as satellite ground resolution drops. Seventy logged experiments, each with its prediction registered before the measurement, produce two results: a readout law that says how large the output cell should be for a given object size and ground resolution, and a retraining-free lever that roughly doubles operational recall at 120 cm.",
+    result: "Recall at 10 percent of area from 0.282 to 0.560 at 120 cm, no retraining",
+    highlights: [
+      { value: "2x", label: "recall at 120 cm", note: "same frozen weights, larger input" },
+      { value: "70", label: "logged experiments", note: "prediction registered before measurement" },
+      { value: "0.41", label: "held-out error of the readout law", note: "in doublings, no generalisation gap" },
+    ],
+    technologies: [
+      "Python",
+      "PyTorch",
+      "Swin Transformer",
+      "Remote Sensing",
+      "Weakly Supervised Learning",
+      "Experimental Design",
+    ],
+    period: "2026",
+    category: "research",
+    featured: true,
+  },
+  {
     id: "pvsite",
     title: "pvsite",
     summary: "Two million cadastral parcels in, a few thousand ranked sites out",
     description:
       "Geospatial engine that finds land where a ground-mounted photovoltaic plant can legally be built. It takes an entire Italian province from the cadastre, one to two million parcels, and returns a few thousand ranked with the reason for each. A constraint that could not be verified never yields an admissible parcel: it returns undetermined.",
-    result: "Around 80 percent of the territory ruled out by law",
+    result: "677,534 parcels in, 45,728 ranked out, on the province of Viterbo",
+    highlights: [
+      { value: "677,534", label: "parcels examined", note: "the whole cadastre of one province" },
+      { value: "45,728", label: "came through", note: "17,838 hectares, each with its reason" },
+      { value: "13", label: "constraint layers checked", note: "an unverifiable one yields undetermined, never eligible" },
+    ],
     technologies: [
       "Python",
       "GeoPandas",

@@ -3,7 +3,8 @@ import { MarkdownRenderer } from "./markdown-renderer"
 import { SectionHeader } from "./section-header"
 import { ItemLinks } from "./row"
 import type { ReactNode } from "react"
-import type { ItemLink } from "@/lib/constants"
+import type { Highlight, ItemLink } from "@/lib/constants"
+import { Highlights } from "./highlights"
 
 const LINK =
   "text-ref underline decoration-rail underline-offset-4 transition-colors hover:text-ink hover:decoration-accent"
@@ -15,6 +16,7 @@ interface MarkdownPageProps {
   backHref: string
   backLabel: string
   result?: string
+  highlights?: Highlight[]
   links?: ItemLink[]
   /** the visual part of this entry, when it has one */
   showcase?: ReactNode
@@ -28,6 +30,7 @@ export function MarkdownPage({
   backHref,
   backLabel,
   result,
+  highlights,
   links,
   showcase,
   showcaseLabel,
@@ -55,6 +58,13 @@ export function MarkdownPage({
             <p className="mt-4 max-w-measure font-mono text-body text-ink tnum">{result}</p>
           )}
         </section>
+
+        {highlights && highlights.length > 0 && (
+          <section className="border-t border-rail pb-section-sm pt-8">
+            <SectionHeader>Highlights</SectionHeader>
+            <Highlights items={highlights} />
+          </section>
+        )}
 
         {showcase && (
           <section className="border-t border-rail pb-section-sm pt-8">

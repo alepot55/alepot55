@@ -45,6 +45,7 @@ export default async function EducationPage({ params }: { params: { id: string }
       subtitle={`${edu.institution} · ${edu.period}`}
       content={edu.content}
       result={edu.result}
+      highlights={edu.highlights}
       links={edu.links}
       backHref="/"
       backLabel="Portfolio"

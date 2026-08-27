@@ -4,6 +4,7 @@ import Link from "next/link"
 import { MarkdownRenderer } from "./markdown-renderer"
 import { SectionHeader } from "./section-header"
 import { ItemLinks } from "./row"
+import { Highlights } from "./highlights"
 import type { Project } from "@/data/projects"
 import { CATEGORY_LABELS_FULL } from "@/lib/constants"
 import { ChessboardDemo } from "./custom-sections/chessboard-demo"
@@ -17,6 +18,8 @@ import { ConceptHubDemo } from "./custom-sections/concepthub-demo"
 import { GPUCharts } from "./custom-sections/gpu-charts"
 import { AtlasMMCharts } from "./custom-sections/atlas-mm-charts"
 import { EnergyForecastCharts } from "./custom-sections/energy-forecast-charts"
+import { UpstreamContributions } from "./custom-sections/upstream-contributions"
+import { PvsiteMap } from "./custom-sections/pvsite-map"
 import type { ComponentType } from "react"
 
 const CUSTOM_SECTIONS: Record<string, ComponentType<{ project: Project }>> = {
@@ -26,6 +29,8 @@ const CUSTOM_SECTIONS: Record<string, ComponentType<{ project: Project }>> = {
   agentrial: TerminalShowcase,
   "music-genre-classification": ConfusionMatrixViz,
   "concepthub-ai": ConceptHubDemo,
+  "upstream-compilers": UpstreamContributions,
+  pvsite: PvsiteMap,
 }
 
 /** every part of the page says what it is */
@@ -36,6 +41,8 @@ const CUSTOM_SECTION_LABELS: Record<string, string> = {
   agentrial: "In the terminal",
   "music-genre-classification": "Confusion matrix",
   "concepthub-ai": "The platform",
+  "upstream-compilers": "Every change, and where it stands",
+  pvsite: "Where the land is",
 }
 
 const CUSTOM_CHARTS: Record<string, ComponentType<{ project: Project }>> = {
@@ -90,6 +97,13 @@ export function ProjectDetailPage({ project, content }: ProjectDetailPageProps) 
             {project.technologies.join(" · ")}
           </p>
         </section>
+
+        {project.highlights && project.highlights.length > 0 && (
+          <section className="border-t border-rail pb-section-sm pt-8">
+            <SectionHeader>Highlights</SectionHeader>
+            <Highlights items={project.highlights} />
+          </section>
+        )}
 
         {CustomSection && (
           <section className="border-t border-rail pb-section-sm pt-8">
