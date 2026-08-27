@@ -102,7 +102,7 @@ export function AtlasMMCharts({ project: _project }: { project: Project }) {
                 name="inventory std"
                 radius={[2, 2, 0, 0]}
                 maxBarSize={60}
-                animationDuration={800}
+                isAnimationActive={false}
               >
                 {inventoryData.map((entry, index) => (
                   <Cell
@@ -143,7 +143,7 @@ export function AtlasMMCharts({ project: _project }: { project: Project }) {
                 name="max drawdown"
                 radius={[2, 2, 0, 0]}
                 maxBarSize={60}
-                animationDuration={800}
+                isAnimationActive={false}
               >
                 {drawdownData.map((entry, index) => (
                   <Cell
@@ -184,7 +184,7 @@ export function AtlasMMCharts({ project: _project }: { project: Project }) {
                 name="fill rate"
                 radius={[2, 2, 0, 0]}
                 maxBarSize={60}
-                animationDuration={800}
+                isAnimationActive={false}
               >
                 {fillRateData.map((entry, index) => (
                   <Cell

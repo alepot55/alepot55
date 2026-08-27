@@ -135,7 +135,7 @@ export function EnergyForecastCharts({ project }: { project: Project }) {
                 className="chart-ink"
                 radius={[2, 2, 0, 0]}
                 maxBarSize={32}
-                animationDuration={800}
+                isAnimationActive={false}
               />
             </BarChart>
           </ResponsiveContainer>
@@ -168,7 +168,7 @@ export function EnergyForecastCharts({ project }: { project: Project }) {
                 className="chart-ref"
                 radius={[2, 2, 0, 0]}
                 maxBarSize={32}
-                animationDuration={800}
+                isAnimationActive={false}
               />
             </BarChart>
           </ResponsiveContainer>

@@ -174,7 +174,7 @@ export function GPUCharts({ project }: { project: Project }) {
               className="chart-ref"
               radius={[2, 2, 0, 0]}
               maxBarSize={24}
-              animationDuration={800}
+              isAnimationActive={false}
             />
             <Bar
               dataKey="triton"
@@ -182,7 +182,7 @@ export function GPUCharts({ project }: { project: Project }) {
               className="chart-ink"
               radius={[2, 2, 0, 0]}
               maxBarSize={24}
-              animationDuration={800}
+              isAnimationActive={false}
             />
           </BarChart>
         </ResponsiveContainer>
@@ -230,7 +230,7 @@ export function GPUCharts({ project }: { project: Project }) {
                 className="chart-ink"
                 radius={[2, 2, 0, 0]}
                 maxBarSize={28}
-                animationDuration={800}
+                isAnimationActive={false}
               />
             </BarChart>
           </ResponsiveContainer>
@@ -282,7 +282,7 @@ export function GPUCharts({ project }: { project: Project }) {
                 name="median"
                 radius={[2, 2, 0, 0]}
                 maxBarSize={36}
-                animationDuration={800}
+                isAnimationActive={false}
               >
                 {TECHNIQUE_SUMMARY.map((entry) => (
                   <Cell

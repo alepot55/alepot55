@@ -104,7 +104,7 @@ export function FlashReasoningCharts({ project: _project }: { project: Project }
               name="speedup"
               radius={[2, 2, 0, 0]}
               maxBarSize={60}
-              animationDuration={800}
+              isAnimationActive={false}
             >
               {speedupData.map((entry, index) => (
                 <Cell
@@ -154,7 +154,7 @@ export function FlashReasoningCharts({ project: _project }: { project: Project }
               name="bandwidth"
               radius={[2, 2, 0, 0]}
               maxBarSize={60}
-              animationDuration={800}
+              isAnimationActive={false}
             >
               {bandwidthData.map((entry, index) => (
                 <Cell
@@ -195,7 +195,7 @@ export function FlashReasoningCharts({ project: _project }: { project: Project }
               name="VRAM"
               radius={[2, 2, 0, 0]}
               maxBarSize={60}
-              animationDuration={800}
+              isAnimationActive={false}
             >
               {vramData.map((entry, index) => (
                 <Cell
