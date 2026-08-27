@@ -1,83 +1,35 @@
-## In short
+## The two bottlenecks are dict lookup and linear insertion, and the 10M/s fix is unwritten
 
-- **Problem:** a market maker quotes both sides continuously and earns the spread, against inventory risk on the position it accumulates and adverse selection from informed traders picking off stale quotes.
-- **Mechanism:** a from-scratch L2 order book, the Avellaneda-Stoikov analytical policy, a PPO agent trained in the same simulator, and Z3 proofs that the book invariants hold for every input.
-- **Measured:** about 134K orders per second in pure Python, 4 invariants proved in under 6ms each, and Avellaneda-Stoikov ahead of the PPO agent on every risk metric over 5,000 steps.
-- **State:** the whole stack runs in pure Python. The Cython/CUDA matching engine that would target more than 10M orders per second is a design, not an implementation.
+The L2 engine matches on price-time priority and takes limit orders, market orders and cancellations, all in pure Python. Its ceiling sits in the dict lookup for price levels and the linear scan for sorted insertion. A Cython/CUDA rewrite with parallel price-level matching would target more than 10M orders per second; I designed it and never implemented it.
 
-## The tradeoff being modelled
+## Both policies quote into the same GARCH(1,1) book, PPO after 500K timesteps
 
-- Tighter spreads mean more fills and more adverse selection.
-- Wider spreads mean fewer fills and less adverse selection.
-- The optimum moves with inventory and with volatility, so the quote has to be recomputed continuously.
+Prices follow GARCH(1,1), and three kinds of background agent trade against the quotes: noise, momentum, and mean-reversion. Avellaneda and Stoikov (2008) solve for the reservation price and spread in closed form; the PPO agent trained 500K timesteps in a Gymnasium wrapper on that same simulator. A tighter spread buys fills and pays adverse selection, and the optimum moves with inventory and volatility, so the quote is recomputed every step.
 
-I wanted to understand this tradeoff quantitatively, so I built the entire stack from scratch: order book engine, analytical model, RL agent, and formal verification.
+## Inventory mean-reversion is one of the four invariants, each proved in under 6ms
 
-## The limit order book engine
-
-- L2 order book with price-time priority matching.
-- Supports limit orders, market orders, and cancellations.
-- Pure Python throughput of about 134K orders per second.
-- Bottlenecks: dict lookup for price levels, and linear scan for sorted insertion.
-- A Cython/CUDA implementation would target more than 10M orders per second with parallel price-level matching.
-
-## The two policies compared
-
-**Avellaneda-Stoikov.** The analytical optimal market making model (Avellaneda and Stoikov, 2008), used as the baseline.
-
-**PPO agent.** A reinforcement learning agent trained for 500K timesteps in a Gymnasium environment.
-
-Both run in the same simulator:
-
-- GARCH(1,1) price dynamics.
-- Background agents: noise traders, momentum traders, and mean-reversion traders.
-
-## The Avellaneda-Stoikov formulas
-
-The model computes a reservation price and an optimal spread in closed form.
+The reservation price leaves mid whenever inventory is non-zero: a long position lowers it, making the ask more attractive and pulling inventory back to flat.
 
 $$r = s - q \cdot \gamma \cdot \sigma^2 \cdot \tau$$
-
-$$\delta = \gamma \cdot \sigma^2 \cdot \tau + \frac{2}{\gamma} \cdot \ln\left(1 + \frac{\gamma}{\kappa}\right)$$
 
 - `s`: mid-price
 - `q`: inventory
 - `gamma`: risk aversion
 - `sigma`: volatility
 - `tau`: time remaining
-- `kappa`: order arrival intensity
 
-The reservation price shifts away from mid whenever inventory is non-zero. A long position, `q` above zero, lowers the reservation price, which makes the ask more attractive and pushes inventory back towards flat. That mean reversion is provable, and I confirmed it with Z3.
+Z3 proves that property, along with no crossed book, positive spreads and price-time priority, for every input; the 85 unit tests only cover the cases I thought to write.
 
-## What Z3 proves
+## Avellaneda-Stoikov leads on all three risk metrics over 5,000 steps
 
-Four invariants, each proved for all possible inputs rather than for tested cases:
+| Metric | Avellaneda-Stoikov | PPO |
+| --- | --- | --- |
+| Sharpe ratio | -25.03 | -441.61 |
+| Inventory standard deviation | 7.19 | 22.40 |
+| Max drawdown | 2.99 | 19.23 |
 
-1. No crossed book.
-2. Positive spreads.
-3. Inventory mean-reversion.
-4. Price-time priority.
+PPO does learn a policy: its inventory swing is about half the 40.97 of a random baseline, and its spreads adapt to the state.
 
-Each property is verified in under 6ms.
+## The reward is dominated by PnL noise, so explained variance stayed near 0
 
-## Results over 5,000 steps
-
-Avellaneda-Stoikov leads the PPO agent on every metric:
-
-- Sharpe ratio: -25.03 against -441.61.
-- Inventory standard deviation: 7.19 against 22.40.
-- Max drawdown: 2.99 against 19.23.
-
-The PPO agent still learns a non-trivial policy: inventory standard deviation of 22.40 against 40.97 for a random baseline, plus adaptive spreads. It does not reach the analytical optimum.
-
-That is the expected outcome. Avellaneda-Stoikov computes the closed-form solution under its own model assumptions, while PPO has to discover the strategy from noisy reward signals dominated by stochastic price moves. A structured reward decomposition separating spread capture from inventory mark-to-market would likely close the gap, a known challenge in RL for market making (Spooner et al., 2018).
-
-## What I learned
-
-Formal verification complements statistical testing instead of replacing it. 85 unit tests cover specific scenarios, while Z3 proves that no crossed book and positive spread hold for every parameter combination. The proofs run in milliseconds and give a guarantee that no amount of testing can match.
-
-The reinforcement learning lesson was about reward shaping:
-
-- The composite reward `step_pnl - lambda * q^2` is dominated by stochastic PnL noise.
-- The inventory penalty is therefore hard to learn from, and explained variance stayed near 0 throughout training.
-- Decomposing the reward into separate spread capture and inventory components would give the agent cleaner learning signals.
+The composite reward `step_pnl - lambda * q^2` is swamped by stochastic price moves, so the inventory penalty is hard to learn from and explained variance stayed near 0 for the whole run. Splitting it into a spread-capture term and an inventory mark-to-market term would give the agent cleaner signals, a known difficulty in RL for market making (Spooner et al., 2018).

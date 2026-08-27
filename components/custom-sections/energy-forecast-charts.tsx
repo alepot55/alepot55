@@ -27,24 +27,6 @@ const BY_ZONE = [
   { zone: "SARD", rmae: 0.363, mae: 10.276 },
 ]
 
-const KEY_FINDINGS = [
-  {
-    value: "0.34-0.39",
-    label: "rMAE, every zone",
-    desc: "roughly a third of the naive error",
-  },
-  {
-    value: "7.4-10.5",
-    label: "MAE, EUR/MWh",
-    desc: "islands cost the most per hour",
-  },
-  {
-    value: "0.57",
-    label: "worst monthly fold",
-    desc: "SARD, November, still under 1",
-  },
-]
-
 /**
  * Recharts overwrites the className it is handed on axis ticks, so the colour
  * arrives as currentColor (the frame carries `text-ref`) and the mono face as
@@ -173,18 +155,6 @@ export function EnergyForecastCharts({ project }: { project: Project }) {
             </BarChart>
           </ResponsiveContainer>
         </ChartFrame>
-      </div>
-
-      <div className="grid gap-6 sm:grid-cols-3">
-        {KEY_FINDINGS.map((stat) => (
-          <div key={stat.label}>
-            <p className="font-mono text-value-m font-semibold tracking-snug text-ink tnum">
-              {stat.value}
-            </p>
-            <p className="mt-1.5 font-mono text-meta text-ref">{stat.label}</p>
-            <p className="font-mono text-meta text-ref tnum">{stat.desc}</p>
-          </div>
-        ))}
       </div>
 
       <p className="max-w-measure border-t border-rail pt-4 font-mono text-meta text-ref">

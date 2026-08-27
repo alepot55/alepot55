@@ -15,7 +15,6 @@ interface MarkdownPageProps {
   content: string
   backHref: string
   backLabel: string
-  result?: string
   highlights?: Highlight[]
   links?: ItemLink[]
   /** the visual part of this entry, when it has one */
@@ -29,7 +28,6 @@ export function MarkdownPage({
   content,
   backHref,
   backLabel,
-  result,
   highlights,
   links,
   showcase,
@@ -54,9 +52,6 @@ export function MarkdownPage({
             {title}
           </h1>
 
-          {result && (
-            <p className="mt-4 max-w-measure font-mono text-body text-ink tnum">{result}</p>
-          )}
         </section>
 
         {highlights && highlights.length > 0 && (

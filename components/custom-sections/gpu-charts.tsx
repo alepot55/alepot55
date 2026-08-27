@@ -58,12 +58,6 @@ const SLOWDOWN_DATA = [
   { name: "apprng", value: 6.2 },
 ]
 
-const KEY_FINDINGS = [
-  { label: "Median slowdown", value: "10.2×", desc: "Triton vs CUDA" },
-  { label: "NGAP win rate", value: "1/13", desc: "only pathological case" },
-  { label: "Worst case", value: "32.8×", desc: "hamming benchmark" },
-]
-
 /**
  * Recharts overwrites the className it is handed on axis ticks, so the colour
  * arrives as currentColor (the frame carries `text-ref`) and the mono face as
@@ -294,19 +288,6 @@ export function GPUCharts({ project }: { project: Project }) {
             </BarChart>
           </ResponsiveContainer>
         </ChartFrame>
-      </div>
-
-      {/* Key findings */}
-      <div className="grid gap-6 sm:grid-cols-3">
-        {KEY_FINDINGS.map((stat) => (
-          <div key={stat.label}>
-            <p className="font-mono text-value-m font-semibold tracking-snug text-ink tnum">
-              {stat.value}
-            </p>
-            <p className="mt-1.5 font-mono text-meta text-ref">{stat.label}</p>
-            <p className="font-mono text-meta text-ref tnum">{stat.desc}</p>
-          </div>
-        ))}
       </div>
     </div>
   )

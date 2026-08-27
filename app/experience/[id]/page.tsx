@@ -45,7 +45,6 @@ export default async function ExperiencePage({ params }: { params: { id: string 
       title={experience.title}
       subtitle={`${experience.company} · ${experience.period}`}
       content={experience.content}
-      result={experience.result}
       highlights={experience.highlights}
       links={experience.links}
       showcase={experience.id === "book-author" ? <BookShowcase /> : undefined}

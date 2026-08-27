@@ -1,29 +1,19 @@
-## In short
+## I wrote it in 2023 against a jQuery plugin from 2013
 
-- I wanted a JavaScript chess library that was modern, dependency-free and had a real API instead of a jQuery plugin from 2013.
-- Existing options either required heavy dependencies, had limited programmatic control, or could not enforce legal moves.
-- Chessboard.js is a zero-dependency npm package: an interactive board with full chess rules and an API designed to be driven from code.
-- Move validation, checkmate and draw detection and game history ship inside the same package, so no separate engine is needed.
-- Published on npm as `@alepot55/chessboardjs`. It was my first open-source package.
+I wanted to drive a chess board from a script. The options I found required jQuery or another framework, exposed little programmatic control, or could not enforce legality. It was the first open-source package I published, as `@alepot55/chessboardjs`.
 
-## What it does
+## Four rule systems ship inside the same package
 
-- **Drag-and-drop** and **click-to-move** interaction
-- **Legal move enforcement** with full chess rules
-- **Smooth animations** for piece movement
-- **Programmatic control** via a comprehensive API: FEN positions, move history, game state queries
-- **Customizable appearance**: board colors, piece sets, board orientation, highlighting
+Move validation, checkmate detection, draw detection and game history run in the package that draws the board. Libraries that render only leave legality to a chess engine the consumer wires in; this one refuses an illegal move on its own.
 
-The library is zero-dependency: no jQuery, no React, no framework lock-in. Import it in any JavaScript project and it works.
+## Six methods drive a whole game from code
 
-## Design decisions
+`getPosition`, `movePiece`, `undoMove`, `getLegalMoves`, `fen` and `isCheckmate` cover reading the position, mutating it, undoing, legality and terminal state. I designed the API before the rendering, so a chess engine, an analysis tool or a teaching app can drive the board entirely through code.
 
-- **API-first design.** The board exposes a rich programmatic interface (`getPosition`, `movePiece`, `undoMove`, `getLegalMoves`, `fen`, `isCheckmate` and more) so it can be controlled entirely through code. That makes it suitable for analysis tools, chess engines and educational applications, not just game displays.
-- **Full game logic included.** Unlike libraries that handle only the visual board and delegate rules to a separate engine, this one includes complete move validation, checkmate and draw detection, and game history. One package, zero dependencies.
-- **Static factory methods.** `Chessboard.create()`, `Chessboard.fromTemplate()` and `Chessboard.listInstances()` make it practical to manage multiple boards on the same page, which puzzles, analysis and tournament displays all need.
+## Three static factories manage the boards on one page
 
-## Status
+`Chessboard.create()`, `Chessboard.fromTemplate()` and `Chessboard.listInstances()` construct boards and enumerate the live ones, which a puzzle set or a tournament display needs.
 
-The library is published on npm as `@alepot55/chessboardjs`.
+## Two input paths, drag and click, on the same board
 
-Building it taught me a lot about API design, documentation, and the importance of thinking about developer experience from the consumer's perspective.
+A piece moves by drag-and-drop or by click-to-move, and the movement animates. Board colours, piece sets, orientation and square highlighting are set by the caller.

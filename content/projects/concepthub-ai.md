@@ -1,30 +1,22 @@
-## In short
+## 2 of the 4 features are Gemini output, and the mind map needed few-shot prompting
 
-- Pulling structured knowledge out of a book is manual work: I wanted a platform where you upload a text and get summaries, key concepts and a visual mind map back.
-- ConceptHub is a full-stack web platform built on Google's Gemini API, with React and TypeScript on the front, a Python service in the middle and PostgreSQL behind it.
-- Authentication, session management and content persistence are fully implemented, so it is a working platform rather than a demo.
-- It was my first full-stack project integrating a production LLM API, and the lessons were mostly about prompting and operational overhead.
+Pulling structured knowledge out of a book is manual work, so in 2024 I built ConceptHub to take a pasted text and hand the structure back.
 
-## What users can do
+| Feature | Comes from |
+| --- | --- |
+| Summary of a book text | Gemini API |
+| Mind map of concepts, themes and relationships | Gemini API |
+| Quotes with annotations, shareable | PostgreSQL |
+| Knowledge base with search | PostgreSQL |
 
-- **Generate AI summaries** from book texts using Google's Gemini API
-- **Create interactive mind maps** that visually organize key concepts, themes and relationships
-- **Save and share quotes** with annotations
-- **Build a knowledge base** with persistent storage and search
+The mind map came back in the same shape on every call only after the prompt carried worked examples, and which model I called mattered less than that.
 
-The platform handles the entire flow: text input, AI processing, structured output, collaborative sharing.
+## 3 record types share one relational shape, so PostgreSQL over a document store
 
-## Stack
+Mind maps, quotes and annotations were structured content from the start, so all three live in a PostgreSQL instance on Vercel and are read in SQL.
 
-- **Frontend**: React and TypeScript, for type-safe component-driven UI development
-- **Backend**: a Python service handling Gemini API integration and text processing
-- **Database**: PostgreSQL on Vercel, queried in SQL for data persistence
-- **Infrastructure**: Docker containers deployed on GCP, with the frontend on Vercel
+## 3 deployments across 2 providers, for one 2024 project
 
-The stack reflects the balance I wanted between development speed and production quality.
-
-## What I learned
-
-- **Prompt engineering mattered more than model choice** for structured output generation. Getting Gemini to produce consistent mind map structures required careful few-shot prompting.
-- **SQL beat NoSQL for structured content.** Mind maps, quotes and annotations have a clear relational structure, so PostgreSQL was the right choice over a document store.
-- **Deployment complexity scales non-linearly.** Docker plus GCP plus Vercel worked well, but the operational overhead of managing multiple services was significantly higher than expected for a project this size.
+The Python and FastAPI service runs in Docker containers on GCP, while the React frontend and the PostgreSQL instance both sit on Vercel.
+Authentication, session management and content persistence are implemented, and the deployment is public.
+It was my first full-stack project wired to a production LLM API, and keeping that split running took more operating time than the size of the project justified.

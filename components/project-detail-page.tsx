@@ -87,12 +87,6 @@ export function ProjectDetailPage({ project, content }: ProjectDetailPageProps) 
 
           <p className="mt-5 max-w-measure text-lead text-ink">{project.description}</p>
 
-          {project.result && (
-            <p className="mt-4 max-w-measure font-mono text-body text-ink tnum">
-              {project.result}
-            </p>
-          )}
-
           <p className="mt-5 max-w-measure font-mono text-meta text-ref">
             {project.technologies.join(" · ")}
           </p>
@@ -100,7 +94,6 @@ export function ProjectDetailPage({ project, content }: ProjectDetailPageProps) 
 
         {project.highlights && project.highlights.length > 0 && (
           <section className="border-t border-rail pb-section-sm pt-8">
-            <SectionHeader>Highlights</SectionHeader>
             <Highlights items={project.highlights} />
           </section>
         )}
@@ -121,7 +114,6 @@ export function ProjectDetailPage({ project, content }: ProjectDetailPageProps) 
 
         {content && (
           <section className="border-t border-rail pb-section-sm pt-8 sm:pb-section-md">
-            <SectionHeader>Write-up</SectionHeader>
             <article className="max-w-prose">
               <MarkdownRenderer content={content} />
             </article>

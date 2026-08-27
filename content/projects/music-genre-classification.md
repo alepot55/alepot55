@@ -1,43 +1,32 @@
-## In short
+## Slicing before the split moves GTZAN accuracy by 5 to 10 percent
 
-- Published GTZAN results are inflated by data leakage: tracks are sliced into segments before the train/test split, so segments of the same song end up on both sides.
-- I built a pipeline that splits at track level first and slices afterwards, with the scaler fitted only on training data.
-- A U-Net encoder repurposed for classification reached 82 to 83 percent test accuracy under leak-free evaluation, with a cross-validation mean around 90 percent.
-- The same model transfers to Indian Classical Music and Tabla Taala datasets without fine-tuning.
+The usual pipeline cuts each track into segments and then draws the train and test sets, so segments of one song sit on both sides of the split. Reordering the two steps changes the reported number by 5 to 10 percent. Published GTZAN scores above 90 percent generally come from the leaky ordering.
 
-## The leakage problem in GTZAN
+## 60/20/20 across tracks first, then 10 segments of 3 seconds
 
-The standard benchmark slices audio tracks into segments before splitting into train and test sets. Segments from the same song then appear on both sides, which inflates accuracy numbers and makes results unreproducible.
+| Stage | Choice |
+| --- | --- |
+| Split | 60/20/20 across tracks, before any audio is cut |
+| Slice | each 30-second track becomes 10 segments of 3 seconds |
+| Features | 128-bin log Mel-spectrogram per segment |
+| Normalisation | scaler fitted on the training segments only |
 
-Splitting properly changes reported accuracy by 5 to 10 percent compared to naive approaches.
+The scaler is the second leak, and it survives a correct track-level split.
 
-## The pipeline
+## 3 architectures trained on the same leak-free split
 
-- **Track-level split first**: 60/20/20 across tracks, before any audio slicing
-- **Slicing after the split**: each 30-second track becomes 10 segments of 3 seconds
-- **Features**: 128-bin log Mel-spectrograms computed per 3-second segment
-- **Scaler fitted on training data only**: another common source of leakage that many pipelines miss
+| Model | Design |
+| --- | --- |
+| Efficient_VGG | VGG-inspired baseline with reduced parameters |
+| ResSE_AudioCNN | residual blocks with squeeze-and-excitation attention |
+| UNet_Audio_Classifier | a U-Net encoder repurposed for classification |
 
-## Architectures compared
+Each is scored on segments from tracks held out before slicing.
 
-- **Efficient_VGG**: lightweight baseline inspired by VGG, with reduced parameters
-- **ResSE_AudioCNN**: residual blocks with squeeze-and-excitation attention
-- **UNet_Audio_Classifier**: an encoder from the U-Net architecture repurposed for classification
+## 82 to 83 percent test accuracy, cross-validation mean near 90 percent
 
-## Results
+The U-Net encoder was the best of the three: 82 to 83 percent on the GTZAN test tracks, and a cross-validation mean around 90 percent over the same track-level folds.
 
-The U-Net encoder architecture achieved the best performance:
+## The same model transfers to 2 further datasets without fine-tuning
 
-- **82 to 83 percent test accuracy** on GTZAN with proper leak-free evaluation
-- **Cross-validation mean around 90 percent**, so the performance is consistent
-- **Strong transfer** to Indian Classical Music and Tabla Taala datasets without fine-tuning
-
-These numbers sit below many published results on GTZAN, and that is by design. Papers reporting over 90 percent typically carry data leakage in their evaluation pipeline, so 83 percent measured properly is the more honest benchmark.
-
-## What I took from it
-
-Evaluation methodology matters as much as model architecture. The U-Net encoder was not a novel idea, but paired with a rigorous leak-free pipeline it outperformed supposedly superior architectures evaluated with flawed methodology.
-
-In ML research, honest evaluation is itself a contribution.
-
-This project was a collaboration with Camilla Sed.
+It classifies Indian Classical Music and Tabla Taala recordings with no fine-tuning on either. I built this with Camilla Sed in 2024.

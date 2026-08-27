@@ -1,37 +1,19 @@
-## In short
+## A 0.01 dollar gap per transaction leaves every assertion green
 
-- **Problem:** modernising a legacy codebase, COBOL to Python for instance, needs proof that the new code behaves identically, and a test suite only covers the scenarios someone thought to write.
-- **Failure mode:** penny drift, a rounding gap of 0.01 dollars per transaction that fails no individual test and accumulates into a real financial discrepancy across millions of transactions.
-- **Mechanism:** an LLM performs the structural translation, Z3 proves the two programs agree on every input in the space, and a Monte Carlo sampler takes over where the symbolic proof does not scale.
-- **Measured:** 100 percent verification accuracy across 42 benchmark cases, several of them with known penny drift that traditional test suites had missed.
-- **State:** the solver side is solid. What still limits the system is the translation layer, not the theorem proving.
+A suite covers the scenarios someone thought to write, and it checks a transaction at a time, so a rounding difference that small trips nothing. Across millions of transactions the same gap becomes the reconciliation discrepancy that surfaces months later. I built the pipeline in 2026 for COBOL modernisation.
 
-## Why a test suite is not enough
+## Z3 has to find one input where the two programs disagree
 
-Tests can only cover known scenarios, and they are checked one transaction at a time. A gap of 0.01 dollars per transaction breaks no assertion, so the suite stays green and says nothing about it. Across millions of transactions that same gap becomes the reconciliation problem someone finds months later.
+The pipeline encodes the legacy program and the translated one as Satisfiability Modulo Theories formulas, then asks the solver for such an input anywhere in the space. An unsatisfiable answer is the equivalence proof.
 
-## The three components
+## The second engine samples where the symbolic proof stops scaling
 
-**Z3 SMT solver.** It translates both the legacy and the modern program into Satisfiability Modulo Theories formulas. It then asks whether there exists any input, across the entire input space, where the two produce different outputs. If no such input exists, the equivalence is mathematically proven, not merely tested.
+Symbolic verification hits complexity limits on deeply nested loops and recursive structures. There a Monte Carlo sampler draws inputs uniformly and returns confidence bounds on equivalence, a statistical guarantee rather than a proof.
 
-**LLM-powered translation.** COBOL has idiosyncratic constructs, implicit decimal handling, and platform-specific behaviour. The LLM performs the initial structural translation and the formal verifier validates the result, which gives the flexibility of AI with the rigor of theorem proving.
+## 3 COBOL constructs are where the translation still breaks
 
-**Monte Carlo fallback.** Symbolic verification hits complexity limits on deeply nested loops and recursive structures. There the engine samples inputs uniformly and computes confidence bounds on equivalence, so the answer degrades to a statistical guarantee instead of no answer at all.
-
-## Results
-
-- 42 benchmark cases, including several with known penny drift that traditional test suites had missed.
-- 100 percent verification accuracy with the hybrid Z3 and Monte Carlo approach.
-- The most satisfying cases were the ones where the test suite reported all green and Verify-CBL found the rounding discrepancy anyway.
-
-Those are exactly the bugs that escape to production and cause reconciliation nightmares months later.
-
-## What I learned
-
-The theorem proving was not the hard part: Z3 is remarkably capable. The hard part was the translation layer, where COBOL produces edge cases that neither an LLM alone nor a rule-based translator alone handles reliably:
+The solver side holds. The failures cluster in the translation layer, where neither an LLM alone nor a rule-based translator alone handles COBOL reliably:
 
 - implicit decimal arithmetic
 - `COMP-3` packed decimal
 - `REDEFINES` clauses
-
-The hybrid split, LLM for structural understanding and formal methods for correctness, turned out to be far more robust than either component individually.

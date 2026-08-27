@@ -1,94 +1,39 @@
-## In short
+## The PUN stopped being the settlement price on 1 January 2025
 
-- **Problem:** Italian day-ahead prices are set zonally on GME/IPEX, and on 1 January 2025 the uniform national purchase price (PUN) stopped being how buyers settle, so demand now clears at the zonal price and forecasting has to be per zone across all seven of them.
-- **Mechanism:** a LightGBM regressor with explicit feature engineering against a LEAR baseline, scored as rMAE versus the weekly naive, behind scheduled ingestion, TimescaleDB, an async FastAPI backend and a dashboard.
-- **Measured:** rMAE between 0.34 and 0.39 in every zone, on real ENTSO-E history from 2022 to April 2026 with the last 60 days held out. Absolute error runs from 7.4 EUR/MWh in the north to 10.5 on Sicily.
-- **State:** ingestion, model, API, risk, backtest and dashboard run end to end on real data. The numbers above are holdout numbers: the model has not yet been validated live in shadow mode.
+Italian buyers now clear on GME/IPEX at the price of their own zone: NORD, CNOR, CSUD, SUD, CALA, SICI, SARD. GME still publishes PUN Index GME after the fact, as a volume-weighted average of the zonal prices.
 
-## The market
+## LightGBM on 6 feature families, against a daily-recalibrated LASSO
 
-Italian day-ahead electricity prices are set zonally on the GME/IPEX exchange. On 1 January 2025 the uniform national purchase price (PUN) stopped being how Italian buyers settle on the day-ahead market: demand now clears at the price of its own zone, and GME publishes PUN Index GME after the fact as a volume-weighted average of the zonal prices. That makes per-zone forecasting, across NORD, CNOR, CSUD, SUD, CALA, SICI and SARD, the practical problem for anyone trading or hedging Italian power.
+Features: price lags, rolling statistics, residual demand (load net of renewable generation), calendar encoding, gas TTF and weather. The baseline is LEAR, the standard in the electricity price forecasting literature, run through epftoolbox with a fallback to `sklearn.linear_model.LassoLarsIC` when the library API drifts between versions.
 
-## What I set out to build
+## The naive to beat is the price 168 hours earlier
 
-I wanted a system that did the whole thing end to end, not a notebook:
-
-- ingest the data
-- engineer the features
-- train and evaluate the model
-- serve forecasts through an API
-- surface them in a dashboard a trader could actually read
-
-## The model
-
-- LightGBM regressor with explicit feature engineering, rather than a black-box deep model.
-- Features: price lags, rolling statistics, residual demand (load net of renewable generation), calendar encoding, gas TTF, and weather.
-- Baseline: LEAR, the daily-recalibrated LASSO model that is standard in the electricity price forecasting literature.
-- LEAR runs via epftoolbox, with a transparent fallback to `sklearn.linear_model.LassoLarsIC` when the library API drifts between versions.
-
-## How it is scored
-
-Everything is scored with rMAE against a weekly naive forecast, never MAPE.
+Scoring is rMAE, never MAPE, which blows up near the zero and negative prices renewable surplus produces in Europe.
 
 $$\text{rMAE} = \frac{\text{MAE}_{\text{model}}}{\text{MAE}_{\text{naive}}}, \qquad \hat{p}^{\,\text{naive}}_{t} = p_{t-168}$$
 
 - `MAE_model`: mean absolute error of the model being scored
-- `MAE_naive`: mean absolute error of the naive forecast
-- the naive forecast is the price 168 hours earlier, one week back
-- a value below 1 means the model beats that naive
+- `MAE_naive`: mean absolute error of the naive, the price one week back
+- below 1 means the model beat that naive
 
-MAPE is banned on purpose: it blows up near zero or negative prices, which are common in the European market once renewable surplus pushes prices below zero.
+## Absolute error runs 7.4 EUR/MWh in the north to 10.5 on Sicily
 
-On real ENTSO-E history, 2022 to April 2026, with the last 60 days held out, the model lands between 0.342 and 0.392 in the seven zones, and across six monthly walk-forward folds no zone ever crossed 0.6. The honest caveat is that these are holdout numbers on history the model was scored against offline, not a live shadow-mode result.
+The last 60 days of history are held out, and across six monthly walk-forward folds no zone crossed 0.6 rMAE. These are offline holdout numbers: the model has not yet run live in shadow mode.
 
-## The stack
+## Five scheduled jobs, and 15-minute ENTSO-E data resampled to hourly
 
-The model is the easy part. Most of the work is the production system around it.
+Celery beat runs each with exponential-backoff retry.
 
-Data sources:
+| job | cadence |
+|---|---|
+| price ingest, ENTSO-E | hourly |
+| weather ingest, Open-Meteo forecast plus ERA5 | six-hourly |
+| TTF gas pull | daily |
+| day-ahead forecast | 10:30 |
+| retrain | Monday |
 
-- prices, load, and generation from ENTSO-E
-- weather from Open-Meteo, forecast plus ERA5 archive
-- gas from TTF futures
+Timestamps are UTC in TimescaleDB hypertables, compressed past 30 days, and converted to Europe/Rome only at render time. ENTSO-E has published at 15-minute resolution since 1 October 2025, so the ingest client downsamples before writing.
 
-Scheduling, under Celery beat, with exponential-backoff retry on every task:
+## Three VaR methods, four stress tests, and a CI gate at 5 percent
 
-- hourly prices
-- six-hourly weather
-- a daily gas pull
-- a 10:30 day-ahead forecast
-- a Monday retrain
-
-Storage and serving:
-
-- TimescaleDB hypertables with chunk compression past 30 days
-- an async FastAPI backend
-- a Streamlit dashboard
-- Docker Compose, with an nginx and Let's Encrypt overlay for production
-
-## Time handling
-
-All timestamps are UTC in the database, and the conversion to Europe/Rome happens only at render time in the frontend. ENTSO-E data after 1 October 2025 arrives at 15-minute resolution, so the client always resamples to hourly before persisting.
-
-## Risk and backtesting
-
-Forecasting is only half of a trading tool. The risk side computes:
-
-- parametric, historical, and Monte Carlo VaR with Expected Shortfall
-- enforced position limits
-- four predefined stress tests: gas spike, renewable surplus, north-south congestion, winter demand peak
-
-The backtest engine:
-
-- walk-forward iteration with no look-ahead bias
-- fills at the next hour's price
-- annualized Sharpe and Sortino with max drawdown
-- a Diebold-Mariano test against the seasonal naive, to check whether the edge is statistically real rather than lucky
-
-## What I learned
-
-The metric choice is a modeling decision, not an afterthought. Switching from MAPE to rMAE against a seasonal-168 baseline changed which models looked good, because the naive weekly forecast is genuinely hard to beat on a market with strong weekly seasonality.
-
-The second lesson was operational. A forecasting model in a notebook is a demo, while a model behind scheduled ingestion, retry logic, a regression gate in CI, and a dashboard that falls back to deterministic synthetic data (clearly badged, never a silent hallucination) is a system.
-
-The CI gate in particular caught more of my own mistakes than the unit tests did. It fails a merge when per-horizon MAE regresses by more than 5 percent, or when empirical coverage leaves the 0.78 to 0.82 window.
+The risk side computes parametric, historical and Monte Carlo VaR with Expected Shortfall under enforced position limits, then stresses the book against a gas spike, renewable surplus, north-south congestion and a winter demand peak. The backtest fills at the next hour's price and runs a Diebold-Mariano test against the seasonal naive. The CI gate caught more of my own mistakes than the unit tests did: it fails a merge when per-horizon MAE regresses by more than 5 percent, or when empirical coverage leaves the 0.78 to 0.82 window.

@@ -1,26 +1,15 @@
-## In short
+## Neldiritto Editore commissioned it in 2025 and published it in 2026
 
-- Neldiritto Editore commissioned me to author a Computer Science manual for candidates preparing Italian public administration competitive exams (*Concorsi Pubblici*).
-- The readers are not CS students but professionals who need computing fundamentals solid enough to pass an exam, and that audience set the level of every chapter.
-- The brief was to keep complex technical material rigorous and still accessible to non-specialists, which is the tension the whole book had to resolve.
-- Published in 2026 as *Informatica per i concorsi pubblici 2026, Manuale di teoria e quiz commentati* (NLD Concorsi), 432 pages pairing theory with commented practice quizzes.
+The publisher came to me with the brief, and I wrote the manual alone for candidates sitting Italian public administration competitive exams (*Concorsi Pubblici*). It came out under the NLD Concorsi imprint as *Informatica per i concorsi pubblici 2026, Manuale di teoria e quiz commentati*. The readers are working professionals who need computing fundamentals solid enough to pass an exam, and that audience fixed the level of every chapter.
 
-## How each chapter is built
+## Every chapter is built from the same three parts
 
-- **Core concept** explained from first principles, without assuming prior knowledge
-- **Progressive depth** that builds from intuition to technical precision
-- **Exam-oriented practice** with worked examples and the common pitfalls
+| Part | What it holds |
+| --- | --- |
+| Core concept | first principles, with no prior knowledge assumed |
+| Progressive depth | intuition first, then technical precision |
+| Exam practice | worked examples and the common pitfalls |
 
-## What was hard
+## Over 800 hours of teaching decided which details earned the page
 
-Calibrating the level was the hardest part. Too technical and you lose the audience, too simplified and you hand the reader an incorrect mental model that breaks a chapter later.
-
-The two goals also pull against each other: rigor wants precision and completeness, accessibility wants fewer moving parts on the page. Every chapter is a decision about which detail earns its place.
-
-I settled most of those decisions with my teaching experience. Over 800 hours of mentoring showed me where people actually get stuck, which is rarely where textbooks assume they will.
-
-## Publication
-
-The book came out in 2026 with NLD Concorsi, Neldiritto Editore, as a 432-page manual.
-
-It pairs theory with commented practice quizzes across the IT topics that appear in Italian public-sector exams.
+Calibrating the level was the hard part: too technical and the reader is gone, too simplified and the reader gets a mental model that breaks a chapter later. Rigor wants precision and completeness, accessibility wants fewer moving parts on the page, so each chapter is a decision about which detail stays. I settled most of those decisions from mentoring university students since 2022, which showed me where people get stuck, rarely where textbooks assume they will.

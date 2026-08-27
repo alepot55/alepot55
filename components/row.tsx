@@ -8,8 +8,6 @@ interface RowProps {
   /** organisation or category: where this belongs */
   meta?: string
   summary: string
-  /** the measured outcome, written out */
-  result?: string
   links?: ItemLink[]
   /** internal detail page, when one exists */
   href?: string
@@ -20,7 +18,7 @@ interface RowProps {
  * and what you can open. The period sits in a fixed left column so a reader
  * can scan the dates down the page without reading anything else.
  */
-export function Row({ title, period, meta, summary, result, links, href }: RowProps) {
+export function Row({ title, period, meta, summary, links, href }: RowProps) {
   return (
     <li className="group relative grid grid-cols-1 gap-x-8 gap-y-1 border-t border-rail py-4 transition-colors duration-150 hover:bg-ink/[0.02] sm:grid-cols-[9rem_1fr] sm:py-5">
       <p className="font-mono text-meta text-ref tnum sm:pt-1">{period}</p>
@@ -44,14 +42,9 @@ export function Row({ title, period, meta, summary, result, links, href }: RowPr
 
         <p className="mt-1.5 max-w-measure text-body text-ref">{summary}</p>
 
-        {(result || links?.length) && (
-          <div
-            className={`mt-2 flex flex-wrap items-baseline gap-x-6 gap-y-1.5 ${
-              result ? "justify-between" : ""
-            }`}
-          >
-            {result && <p className="font-mono text-meta text-ink tnum">{result}</p>}
-            {links && links.length > 0 && <ItemLinks links={links} />}
+        {links && links.length > 0 && (
+          <div className="mt-2 flex flex-wrap items-baseline gap-x-6 gap-y-1.5">
+            <ItemLinks links={links} />
           </div>
         )}
       </div>

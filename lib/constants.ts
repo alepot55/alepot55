@@ -36,8 +36,6 @@ export interface Experience {
   summary: string
   /** the full paragraph, for the detail page and the page metadata */
   description: string
-  /** the measured outcome, written out. No chart, no bar. */
-  result?: string
   /** the two or three facts the detail page leads with */
   highlights?: Highlight[]
   links?: ItemLink[]
@@ -50,7 +48,6 @@ export interface Education {
   period: string
   summary: string
   description: string
-  result?: string
   /** the two or three facts the detail page leads with */
   highlights?: Highlight[]
   links?: ItemLink[]
@@ -63,7 +60,6 @@ export interface Achievement {
   date: string
   summary: string
   description: string
-  result?: string
   /** the two or three facts the detail page leads with */
   highlights?: Highlight[]
   links?: ItemLink[]

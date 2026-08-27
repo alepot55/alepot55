@@ -7,8 +7,6 @@ export interface Project {
   summary: string
   /** the full paragraph, for the detail page */
   description: string
-  /** the measured outcome, written out. No chart, no bar. */
-  result?: string
   /** the two or three facts the detail page leads with */
   highlights?: Highlight[]
   technologies: string[]
@@ -23,10 +21,10 @@ export const projects: Project[] = [
   {
     id: "gpufsm",
     title: "gpufsm",
-    summary: "Why Triton trails CUDA on automata, and a compiler pass that closes it",
-    description:
-      "Anatomy and cure of the abstraction regret between Triton and hand-written CUDA on irregular automata. The 10x gap is decomposed into a launch-configuration artifact, a lane-packing component and an irreducible residual, the residual is traced to intra-warp latency hiding the tile IR cannot express, and the cure is built below that IR as a TritonGPU to LLVM per-lane retirement pass.",
-    result: "2.3 to 6.7 times faster on control-bound kernels. Paper accepted at IEEE HPEC 2026",
+        summary:
+      "A Triton pass that recovers 2.3-6.7x on automata kernels",
+        description:
+      "I traced the 10.2x gap between Triton and hand-written CUDA on finite automata to one thing the tile IR cannot express, then built the compiler pass that recovers 2.3 to 6.7x of it. The measurement paper is accepted at IEEE HPEC 2026.",
     highlights: [
       {
         value: "2.3-6.7x",
@@ -39,9 +37,9 @@ export const projects: Project[] = [
         note: "at matched occupancy, issuing fewer instructions",
       },
       {
-        value: "HPEC 2026",
-        label: "accepted, oral",
-        note: "IEEE High Performance Extreme Computing",
+        value: "1.00x",
+        label: "on the pointer-chase control",
+        note: "maximal memory irregularity, no scalar control, no gain: the prediction held",
       },
     ],
     technologies: ["OpenAI Triton", "CUDA", "C++", "MLIR", "LLVM", "Python", "Nsight Compute"],
@@ -50,17 +48,17 @@ export const projects: Project[] = [
     featured: true,
     links: [
       { label: "Source", href: "https://github.com/alepot55/gpufsm" },
-      { label: "Upstream RFC", href: "https://github.com/triton-lang/triton/issues/10773" },
+      { label: "triton#10773, declined", href: "https://github.com/triton-lang/triton/issues/10773" },
       { label: "Compiler pass", href: "https://github.com/alepot55/triton-perlane-retire" },
     ],
   },
   {
     id: "flash-reasoning",
     title: "Flash-Reasoning",
-    summary: "Tree-aware KV-cache attention that reads faster than HBM allows",
-    description:
-      "Tree-aware KV-cache attention for reasoning LLMs. Fused GQA Triton kernels exploit physical prefix sharing between branches, so shared blocks stay resident in L2 and the kernel reads faster than HBM allows.",
-    result: "1,194 GB/s effective, above the 900 GB/s HBM peak",
+        summary:
+      "2.54x on reasoning attention by sharing the KV prefix",
+        description:
+      "Triton attention kernels for reasoning LLMs that reuse the KV prefix branches share. 2.54x over standard attention and 1,194 GB/s effective, above the card's 900 GB/s HBM peak, because the shared blocks stay in L2.",
     technologies: ["OpenAI Triton", "CUDA", "PyTorch", "Python", "LLM Inference"],
     period: "2026",
     category: "systems",
@@ -70,10 +68,10 @@ export const projects: Project[] = [
   {
     id: "flash-sae",
     title: "Flash-SAE",
-    summary: "Triton kernels that drop the dense latent matrix PyTorch materialises",
-    description:
-      "Triton kernels for sparse autoencoders. Fusing the sparse gather removes the dense latent matrix that PyTorch materialises even though over 99 percent of features are inactive. Drop-in replacement with full autograd support.",
-    result: "13.6 times faster decoder forward, 97 percent less memory",
+        summary:
+      "13.6x on the SAE decoder forward, 1.78x end to end",
+        description:
+      "Triton kernels for sparse autoencoders. PyTorch materialises the dense latent matrix even though 99 percent of features are inactive; fusing the gather removes it. 13.6x faster decoder forward and 97 percent less memory, drop-in with autograd.",
     technologies: ["OpenAI Triton", "CUDA", "PyTorch", "Python", "Mechanistic Interpretability"],
     period: "2026",
     category: "systems",
@@ -83,10 +81,10 @@ export const projects: Project[] = [
   {
     id: "perivallon-thesis",
     title: "Reading landfills off a satellite",
-    summary: "The same frozen model, read at a larger input, localises twice as well",
-    description:
-      "Master's thesis at Politecnico di Milano inside PERIVALLON (Horizon Europe), on how weakly supervised localisation of illegal landfills degrades as satellite ground resolution drops. Seventy logged experiments, each with its prediction registered before the measurement, produce two results: a readout law that says how large the output cell should be for a given object size and ground resolution, and a retraining-free lever that roughly doubles operational recall at 120 cm.",
-    result: "Recall at 10 percent of area from 0.282 to 0.560 at 120 cm, no retraining",
+        summary:
+      "Doubling landfill localisation at 120 cm without retraining",
+        description:
+      "My master's thesis at Politecnico di Milano, inside PERIVALLON. Reading the same frozen classifier at a larger input doubles where it can point on satellite imagery: recall at 10 percent of area goes from 0.282 to 0.560 at 120 cm.",
     highlights: [
       { value: "2x", label: "recall at 120 cm", note: "same frozen weights, larger input" },
       { value: "70", label: "logged experiments", note: "prediction registered before measurement" },
@@ -107,10 +105,10 @@ export const projects: Project[] = [
   {
     id: "energy-forecast",
     title: "Energy Forecast IT",
-    summary: "Day-ahead electricity prices for all seven Italian bidding zones",
-    description:
-      "End-to-end electricity price forecasting for the Italian day-ahead market (GME/IPEX), covering all seven bidding zones since demand stopped settling at the uniform national price in 2025. A LightGBM model with dedicated feature engineering against a LEAR baseline, wrapped in an async stack of FastAPI, TimescaleDB and Celery, with risk management, walk-forward backtesting, and a dashboard that issues buy and sell signals.",
-    result: "rMAE 0.34 to 0.39 in all seven zones, on real ENTSO-E history",
+        summary:
+      "rMAE 0.34 to 0.39 across all 7 Italian power zones",
+        description:
+      "Day-ahead electricity price forecasting for a client, one model per Italian bidding zone. On real ENTSO-E history from 2022 to April 2026 the models land at rMAE 0.34 to 0.39, a third of the weekly naive's error.",
     technologies: [
       "Python",
       "LightGBM",
@@ -128,14 +126,26 @@ export const projects: Project[] = [
   {
     id: "pvsite",
     title: "pvsite",
-    summary: "An entire province of cadastre in, a few thousand ranked sites out",
-    description:
-      "Geospatial engine that finds land where a ground-mounted photovoltaic plant can legally be built. It takes an entire Italian province from the cadastre, one to two million parcels, and returns a few thousand ranked with the reason for each. A constraint that could not be verified never yields an admissible parcel: it returns undetermined.",
-    result: "677,534 parcels in, 45,728 ranked out, on the province of Viterbo",
+        summary:
+      "677,534 parcels read, 611 big enough to build on",
+        description:
+      "I read the whole cadastre of an Italian province for a client, 677,534 parcels on Viterbo, and returned the ones where a photovoltaic plant is legally buildable. 611 are on their own large enough for his smallest plant. None has been built on yet.",
     highlights: [
-      { value: "677,534", label: "parcels examined", note: "the whole cadastre of one province" },
-      { value: "45,728", label: "came through", note: "17,838 hectares, each with its reason" },
-      { value: "13", label: "constraint layers checked", note: "an unverifiable one yields undetermined, never eligible" },
+      {
+        value: "677,534",
+        label: "parcels read on Viterbo",
+        note: "the whole cadastre of one province, one run",
+      },
+      {
+        value: "628,168",
+        label: "out before any scoring runs",
+        note: "statutory eligibility alone, 92.7 percent of the input",
+      },
+      {
+        value: "611",
+        label: "large enough on their own",
+        note: "2.25 usable hectares, the client's smallest plant at 1.5 MWp",
+      },
     ],
     technologies: [
       "Python",
@@ -154,10 +164,10 @@ export const projects: Project[] = [
   {
     id: "atlas-mm",
     title: "atlas-mm",
-    summary: "Order book, market maker, and Z3 proofs of the invariants",
-    description:
-      "GPU-accelerated limit order book simulator with formally verified market making. From-scratch L2 matching engine, the Avellaneda-Stoikov analytical model against a PPO agent, and Z3 proofs that the book invariants hold for every input.",
-    result: "134K orders per second, 4 invariants proved in Z3",
+        summary:
+      "134K orders per second, 4 book invariants proved in Z3",
+        description:
+      "A limit order book simulator with a formally verified market maker. From-scratch L2 matching at 134,000 orders per second, the Avellaneda-Stoikov model against a PPO agent, and four book invariants proved in Z3 for every input.",
     technologies: [
       "Python",
       "Z3 SMT Solver",
@@ -175,10 +185,10 @@ export const projects: Project[] = [
   {
     id: "verify-cbl",
     title: "Verify-CBL",
-    summary: "An LLM translates the legacy code, Z3 proves the translation",
-    description:
-      "Neuro-symbolic verification engine. An LLM translates legacy code, then Z3 proves the translation behaves identically for every input, catching the penny drift that accumulates below the resolution of any test suite.",
-    result: "100 percent verification accuracy over 42 cases",
+        summary:
+      "Z3 proved 42 of 42 LLM translations of legacy code",
+        description:
+      "An LLM translates legacy financial code, then Z3 proves the translation behaves identically for every input. It agreed with the ground truth on all 42 benchmark cases, including ones with penny drift no test suite would catch.",
     technologies: [
       "Python",
       "Z3 SMT Solver",
@@ -194,10 +204,10 @@ export const projects: Project[] = [
   {
     id: "agentrial",
     title: "agentrial",
-    summary: "Run an agent a hundred times, get confidence intervals",
-    description:
-      "The pytest for AI agents. Run an agent a hundred times and get Wilson confidence intervals instead of anecdotes, with step-level failure attribution via Fisher exact test and real cost tracking.",
-    result: "Published on PyPI, 450 tests, 45+ models tracked",
+        summary:
+      "Wilson intervals for agents, on PyPI, 450 tests",
+        description:
+      "The pytest for AI agents. Run an agent a hundred times and get Wilson confidence intervals instead of anecdotes, with step-level failure attribution by Fisher exact test. Published on PyPI, 450 tests, 45 models tracked.",
     technologies: [
       "Python",
       "Statistics",
@@ -217,9 +227,10 @@ export const projects: Project[] = [
   {
     id: "slam-gaussian-splatting",
     title: "SplatSLAM",
-    summary: "Dense photo-realistic SLAM from plain RGB video",
-    description:
-      "Real-time 3D mapping and SLAM from monocular RGB video using 3D Gaussian Splatting. Photo-realistic dense reconstruction without depth sensors, built as a Nerfstudio extension.",
+        summary:
+      "Dense SLAM from RGB video using 3D Gaussian Splatting",
+        description:
+      "Real-time 3D mapping from monocular RGB video using 3D Gaussian Splatting, built as a Nerfstudio extension. My bachelor's thesis at Sapienza. Dense photo-realistic reconstruction without a depth sensor.",
     technologies: [
       "Python",
       "PyTorch",
@@ -236,9 +247,10 @@ export const projects: Project[] = [
   {
     id: "concepthub-ai",
     title: "ConceptHub",
-    summary: "Book summaries and concept maps generated from plain text",
-    description:
-      "Full-stack learning platform on the Gemini API. Generates book summaries and conceptual mind maps from text, with authentication and persistent storage.",
+        summary:
+      "Book summaries and concept maps, 3 record types, 2024",
+        description:
+      "A platform that turns plain text into book summaries and concept maps, built end to end.",
     technologies: [
       "React",
       "TypeScript",
@@ -256,10 +268,10 @@ export const projects: Project[] = [
   {
     id: "music-genre-classification",
     title: "Music Genre Classification",
-    summary: "GTZAN without the leakage that inflates the published numbers",
-    description:
-      "End-to-end reproducible pipeline on GTZAN with a U-Net inspired model. Splitting at track level before slicing removes the leakage that lets published pipelines report over 90 percent.",
-    result: "82 to 83 percent accuracy, leak-free splits",
+        summary:
+      "82 to 83 percent on GTZAN, with a leak-free split",
+        description:
+      "Music genre classification on GTZAN with the track-level split the published numbers usually skip. The leakage-free score is lower than the literature's and it is the one reported here.",
     technologies: [
       "Python",
       "PyTorch",
@@ -275,9 +287,10 @@ export const projects: Project[] = [
   {
     id: "chessboard-js",
     title: "Chessboard.js",
-    summary: "Dependency-free chess board for the web",
-    description:
-      "Dependency-free JavaScript library for interactive chess boards. Programmatic API, drag and drop, animations, and legal move enforcement, published on npm.",
+        summary:
+      "A dependency-free chess board, published on npm",
+        description:
+      "A chess board component for the web with no dependencies: FEN positions, move handling, programmatic control. Published on npm.",
     technologies: ["JavaScript", "TypeScript", "npm", "Node.js"],
     period: "2023",
     category: "web",
@@ -290,10 +303,10 @@ export const projects: Project[] = [
   {
     id: "upstream-compilers",
     title: "Upstream compiler patches",
-    summary: "Patches landed in OpenAI Triton and in LLVM's MLIR",
-    description:
-      "Bug reports and patches sent to the compilers I work on top of, rather than worked around locally. Five are merged: one in Triton's Membar analysis, three in MLIR (mem2reg, the scf unroller and the vector dialect verifier), and one documentation fix. Three further Triton bugs were reported with a reproducer and fixed by the maintainers themselves.",
-    result: "5 patches merged in Triton and MLIR, 3 more bugs fixed from my reproducers",
+        summary:
+      "5 patches merged in OpenAI Triton and LLVM's MLIR",
+        description:
+      "Bugs I hit while building on Triton and MLIR, sent upstream instead of worked around. Five patches merged, three more bugs fixed by maintainers from my reproducers, ten changes still open.",
     highlights: [
       { value: "5", label: "patches merged", note: "2 in Triton, 3 in LLVM's MLIR" },
       { value: "3", label: "bugs fixed by maintainers", note: "reported with a reproducer" },

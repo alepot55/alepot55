@@ -137,19 +137,28 @@ There is none. One light theme, defined once in `app/globals.css`.
   - percentages are words: `97 percent`
   - identifiers and variables are inline code: `k`, `d_model`, `O(batch * k * d_model)`
   - a display formula is followed by a list glossing its symbols, not a paragraph full of `$...$`
-- **Write-ups are schematic.** Every one opens with `## In short` and 3 to 5 bullets: the problem,
-  the mechanism, the measured result, the current state. Then sections whose `##` titles say what
-  they contain. Paragraphs run to 3 sentences at most, and anything enumerable becomes a list.
-- **One paragraph is one source line.** The renderer uses `remark-breaks`, so a newline inside a
-  paragraph becomes a `<br>` and splits the sentence on screen.
+- **Write-ups carry no summary block.** The page already prints the opening sentence and the three
+  highlights above the write-up; a `## In short` block is the fourth copy of the same facts and is
+  banned. Deleting it removed 2,111 words, 23 percent of the corpus.
+- **Every `##` heading is a claim containing a number**, so the headings alone read as the summary:
+  "## The gap is 10.2x median and 32.8x worst, across 13 benchmarks", never "## Problem and prior work".
+- **Budgets, enforced by `scripts/lint-copy.py`:** list-row summary at most 13 words and 70 characters
+  and it must contain a digit; a write-up at most 500 words; a section at most 90 words and 3 sentences.
+- **No closing reflection.** If a lesson is real it goes in the section holding its evidence.
+- **Three or more parallel facts sharing a schema become a table**, not a list of sentences.
+- **First person for provenance only**: what I built, when, with whom, what a reviewer rejected.
+- **Banned constructions**, all checked by the linter: promotional adjectives; a quantity word with no
+  quantity; an editorial tail (", rather than X", "and that is the point"); "not X but Y"; a sentence
+  whose subject is the previous sentence; a hidden verb; a sentence that stays true under another
+  project's title; an epigram. The site is allowed one epigram in total.
 - Numbers in content must match the numbers in `data/projects.ts`. If a write-up hedges a figure, the
-  data hedges it too. A number that came from a synthetic or development set says so, in the
-  `## In short` block, not buried in a paragraph.
+  data hedges it too. A number that came from a synthetic or development set says so in the sentence
+  that states it, never in a footnote.
 
 ## Adding content
 
 - **New project**: add an entry to `data/projects.ts`, optionally create `content/projects/[id].md`.
-  `featured: true` expands the row. Give it a `measurement` if one exists, an `artifact` if not.
+  The summary must contain a digit. There is no `result` field: the number lives in the summary.
 - **New experience/education/achievement**: update the corresponding `/data` file, optionally add
   markdown in `/content`.
 - Detail pages only become navigable when a matching markdown file exists.

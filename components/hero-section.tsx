@@ -4,6 +4,28 @@ const CONTACT = [
   { label: "LinkedIn", href: "https://linkedin.com/in/alepot55" },
 ]
 
+/**
+ * What a reader can check without taking my word for it, named by its host.
+ * The credibility belongs to LLVM and to IEEE, so their names are the label.
+ */
+const EVIDENCE = [
+  {
+    label: "llvm/llvm-project",
+    note: "3 patches merged",
+    href: "https://github.com/llvm/llvm-project/pulls?q=is%3Apr+author%3Aalepot55+is%3Amerged",
+  },
+  {
+    label: "triton-lang/triton",
+    note: "2 patches merged",
+    href: "https://github.com/triton-lang/triton/pulls?q=is%3Apr+author%3Aalepot55+is%3Amerged",
+  },
+  {
+    label: "IEEE HPEC 2026",
+    note: "paper accepted, oral",
+    href: "https://ieee-hpec.org/",
+  },
+]
+
 export function HeroSection() {
   return (
     <section className="pb-section-sm pt-24 sm:pb-section-md sm:pt-28">
@@ -12,11 +34,31 @@ export function HeroSection() {
       </h1>
 
       <p className="mt-5 max-w-lead text-lead text-ink">
-        GPU kernels, compiler work, and formally verified systems. MSc Computer Engineering
-        at Politecnico di Milano, currently AI Engineer at BCG X.
+        I work on GPU kernels and compilers. Five of my patches are merged in OpenAI Triton and
+        in LLVM&rsquo;s MLIR, and my paper on why tile DSLs lose to hand-written CUDA on irregular
+        workloads is accepted at IEEE HPEC 2026. MSc at Politecnico di Milano, now at BCG X.
       </p>
 
       <p className="mt-3 font-mono text-meta text-ref">Milan, Italy</p>
+
+      <ul role="list" className="mt-8 border-t border-rail">
+        {EVIDENCE.map((e) => (
+          <li
+            key={e.href}
+            className="group relative flex flex-wrap items-baseline gap-x-4 gap-y-0.5 border-b border-rail py-2.5"
+          >
+            <a
+              href={e.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-body text-ink after:absolute after:inset-0 hover:underline hover:decoration-accent hover:underline-offset-4"
+            >
+              {e.label}
+            </a>
+            <span className="font-mono text-meta text-ref tnum">{e.note}</span>
+          </li>
+        ))}
+      </ul>
 
       <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-body">
         {CONTACT.map((c) => (

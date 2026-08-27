@@ -1,34 +1,23 @@
-## In short
+## Four strands since April 2026, one stack underneath
 
-- Visiting AI Engineer at BCG X, the build-and-design arm of Boston Consulting Group, in Milan since April 2026.
-- I advise enterprise clients in luxury retail and industry on where generative AI actually creates value, then design and deploy the system that delivers it, rather than a proof of concept that never ships.
-- Four strands so far: **Dark Factory**, an internal agent factory; **Content Studio**, productized out of one engagement into a platform; **content generation for fashion and luxury**; and **fraud prediction**, five models built and compared on one problem.
-- The engineering is multi-agent automation on Google Cloud and Vertex AI, plus LLM-based generation.
+I joined BCG X, the build-and-design arm of Boston Consulting Group, at the Milan office in April 2026 as a visiting AI engineer. The four strands share their engineering: multi-agent automation on Google Cloud and Vertex AI, with LLM-based generation on top.
 
-## Dark Factory
+## Dark Factory factors out five parts and leaves three per agent
 
-An agent factory: the machinery that takes an agent from described to deployed, so that building the tenth agent costs a fraction of what the first one did.
+Five parts repeat almost unchanged from one agent to the next, and rebuilding them per engagement is where the time goes:
 
-The insight it is built on is that most of the work in an agentic system is not the agent. It is everything around it: the tool surface, the guardrails, the evaluation harness, the deployment path, the observability that tells you which step failed and why. Those parts are almost identical between agents, and rebuilding them per engagement is where the time goes.
+- tool surface
+- guardrails
+- evaluation harness
+- deployment path
+- observability that names the step that failed and why
 
-So they get factored out once and the agent-specific part shrinks to what genuinely differs: the task, the tools it may touch, the checks that say it did the job. What comes out the other side is a deployed agent with its evaluation attached, not a notebook someone still has to productionize.
+What is left per agent is the task, the tools it may touch, and the checks that say it did the job. An agent leaves the factory deployed, with its evaluation attached.
 
-## Content Studio
+## Evaluation is half the build on two of the four strands
 
-It started as one client engagement and I turned it into a reusable platform.
+Brand voice in fashion and luxury is an asset with legal and commercial weight, so the guardrails and the evaluation harness take as much of the work as the generation does. On fraud prediction I built five models on one problem and compared them. The comparison showed what the winner was winning against, and the cases where the ranking between models flips.
 
-Productizing a one-off build is a different discipline from delivering a single project. It forces clean abstractions, sane defaults, and an interface a new team can adopt without me in the room. It is now used across multiple customers, Burberry and Prada among them.
+## An internal Tech Hour for senior BCG X engineers
 
-## Content generation for fashion and luxury
-
-LLM-based generation for a sector with unusually strict constraints: brand voice is not a preference there, it is an asset with legal and commercial weight, and the tolerance for output that is merely close is low. The work is as much about the evaluation and the guardrails as about the generation.
-
-## Fraud prediction
-
-Five models built and compared on the same problem, rather than one model tuned until it looked good. Comparing several approaches on one problem is what makes the choice defensible: it shows what the winner is winning against, and it exposes the cases where the ranking flips.
-
-## Bridging strategy and engineering
-
-A large part of the value is translation. Executive stakeholders think in business outcomes, engineering teams think in systems and constraints, and keeping the two aligned is what turns an AI ambition into something that ships.
-
-I also run an internal Tech Hour that upskills senior engineers on agentic AI: how agents are built, where they break, and how to evaluate them honestly.
+I run it on agentic AI: how agents are built, where they break, and how to evaluate them.

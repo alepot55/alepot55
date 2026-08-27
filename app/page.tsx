@@ -48,7 +48,6 @@ export default function Home() {
                 period={e.period}
                 meta={e.company}
                 summary={e.summary}
-                result={e.result}
                 links={e.links}
                 href={detail("experiences", e.id, "/experience")}
               />
@@ -66,7 +65,6 @@ export default function Home() {
                 period={e.period}
                 meta={e.institution}
                 summary={e.summary}
-                result={e.result}
                 links={e.links}
                 href={detail("education", e.id, "/education")}
               />
@@ -86,7 +84,6 @@ export default function Home() {
                 period={p.period}
                 meta={CATEGORY_LABELS[p.category]}
                 summary={p.summary}
-                result={p.result}
                 links={p.links}
                 href={detail("projects", p.id, "/projects")}
               />
@@ -120,7 +117,6 @@ export default function Home() {
                 period={openSource.period}
                 meta={CATEGORY_LABELS[openSource.category]}
                 summary={openSource.summary}
-                result={openSource.result}
                 links={openSource.links}
                 href={detail("projects", openSource.id, "/projects")}
               />
@@ -143,7 +139,6 @@ export default function Home() {
                 period={a.date}
                 meta={a.organization}
                 summary={a.summary}
-                result={a.result}
                 links={a.links}
               />
             ))}
