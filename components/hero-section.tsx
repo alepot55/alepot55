@@ -24,6 +24,11 @@ const EVIDENCE = [
     note: "paper accepted, oral",
     href: "https://ieee-hpec.org/",
   },
+  {
+    label: "pypi.org/project/agentrial",
+    note: "published package, 450 tests",
+    href: "https://pypi.org/project/agentrial/",
+  },
 ]
 
 export function HeroSection() {
@@ -34,9 +39,9 @@ export function HeroSection() {
       </h1>
 
       <p className="mt-5 max-w-lead text-lead text-ink">
-        I work on GPU kernels and compilers. Five of my patches are merged in OpenAI Triton and
-        in LLVM&rsquo;s MLIR, and my paper on why tile DSLs lose to hand-written CUDA on irregular
-        workloads is accepted at IEEE HPEC 2026. MSc at Politecnico di Milano, now at BCG X.
+        I write software across the range: compiler passes and GPU kernels at one end, production
+        systems and agent platforms at the other. MSc at Politecnico di Milano, now Forward
+        Deployed AI Engineer at BCG&nbsp;X.
       </p>
 
       <p className="mt-3 font-mono text-meta text-ref">Milan, Italy</p>

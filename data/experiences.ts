@@ -3,7 +3,7 @@ import type { Experience } from "@/lib/constants"
 export const experiences: Experience[] = [
   {
     id: "bcg-x",
-    title: "Visiting AI Engineer",
+    title: "Forward Deployed AI Engineer",
     company: "BCG X",
     period: "Apr 2026 - Present",
         summary:

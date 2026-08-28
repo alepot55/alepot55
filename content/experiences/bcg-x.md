@@ -1,6 +1,6 @@
 ## Four strands since April 2026, one stack underneath
 
-I joined BCG X, the build-and-design arm of Boston Consulting Group, at the Milan office in April 2026 as a visiting AI engineer. The four strands share their engineering: multi-agent automation on Google Cloud and Vertex AI, with LLM-based generation on top.
+I joined BCG X, the build-and-design arm of Boston Consulting Group, at the Milan office in April 2026, forward deployed: I sit with the client, not behind a delivery team. The four strands share their engineering: multi-agent automation on Google Cloud and Vertex AI, with LLM-based generation on top.
 
 ## Dark Factory factors out five parts and leaves three per agent
 
