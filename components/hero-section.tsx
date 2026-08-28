@@ -39,8 +39,8 @@ export function HeroSection() {
       </h1>
 
       <p className="mt-5 max-w-lead text-lead text-ink">
-        I write software across the range: compiler passes and GPU kernels at one end, production
-        systems and agent platforms at the other. MSc at Politecnico di Milano, now Visiting
+        I build production software and own it after it ships, from the client&rsquo;s problem down
+        to the compiler when that is where it sits. MSc at Politecnico di Milano, now Visiting
         Forward Deployed AI Engineer at BCG&nbsp;X.
       </p>
 
