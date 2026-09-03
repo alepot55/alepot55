@@ -47,7 +47,6 @@ export const projects: Project[] = [
     category: "research",
     featured: true,
     links: [
-      { label: "Source", href: "https://github.com/alepot55/gpufsm" },
       { label: "triton#10773, declined", href: "https://github.com/triton-lang/triton/issues/10773" },
       { label: "Compiler pass", href: "https://github.com/alepot55/triton-perlane-retire" },
     ],

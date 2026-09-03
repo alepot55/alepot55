@@ -1,43 +1,61 @@
-# Hi, I'm Alessandro
+# Alessandro Potenza
 
-**MSc Computer Engineering @ Politecnico di Milano** · AI Systems & GPU Programming
+I build production software and own it after it ships, from the client's problem down to the
+compiler when that is where it sits.
 
-I build high-performance systems at the intersection of deep learning and GPU programming. My work spans custom CUDA/Triton kernels for LLM inference, formal verification with SMT solvers, and statistical frameworks for AI agent evaluation.
+Visiting Forward Deployed AI Engineer at BCG X. MSc Computer Engineering, Politecnico di Milano.
+Milan, Italy.
 
-[![Portfolio](https://img.shields.io/badge/Portfolio-000?style=for-the-badge&logo=vercel&logoColor=white)](https://alepot55.github.io/alepot55)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/alepot55)
-[![PyPI](https://img.shields.io/badge/PyPI-3775A9?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/agentrial/)
+[alepot55.github.io/alepot55](https://alepot55.github.io/alepot55) ·
+[LinkedIn](https://linkedin.com/in/alepot55) ·
+ap.alessandro.potenza@gmail.com
+
+## Upstream
+
+- **[llvm/llvm-project](https://github.com/llvm/llvm-project/pulls?q=is%3Apr+author%3Aalepot55)**:
+  3 patches merged in MLIR. A `mem2reg` crash on a zero-extent alloca, the `scf` unroller reading
+  loop bounds it had not established were constant, and the `vector.multi_reduction` verifier
+  accepting dimensions that then wrote past the end of a buffer.
+- **[triton-lang/triton](https://github.com/triton-lang/triton/pulls?q=is%3Apr+author%3Aalepot55)**:
+  2 patches merged, one in the Membar analysis that removes 30 redundant barriers from an H100
+  build. It buys no measurable speedup and the pull request says so.
+- **[Reported and fixed by maintainers](https://github.com/triton-lang/triton/issues?q=is%3Aissue+author%3Aalepot55)**:
+  3 further Triton bugs, each filed with a reproducer. The credit there is for the report.
+
+## Published
+
+- **IEEE HPEC 2026**, *The Two Faces of Abstraction Regret: Control-Flow and Memory-Layout Limits
+  of GPU DSLs on Irregular Automata*. Sole author, accepted for an oral talk.
+- **[Informatica per i concorsi pubblici 2026](https://shop.enneditore.it/products/informatica-per-i-concorsi-pubblici-2026-manuale-di-teoria-e-quiz-commentati)**,
+  a 432-page Computer Science manual for Italian public-sector exams. Neldiritto Editore.
+
+## Projects
+
+- **[triton-perlane-retire](https://github.com/alepot55/triton-perlane-retire)**: a TritonGPU to
+  LLVM pass giving each lane its own loop exit, which the tile IR cannot express. 2.3 to 6.7x on
+  control-bound kernels and about 1.0x on gather-bound ones, exactly where the diagnosis predicts
+  no gain. Ships out of tree, as the maintainers asked
+  ([RFC](https://github.com/triton-lang/triton/issues/10773)).
+- **[flash-reasoning](https://github.com/alepot55/flash-reasoning)**: attention kernels that reuse
+  the KV prefix reasoning branches share. 2.54x, at 1,194 GB/s effective against the card's
+  900 GB/s HBM peak, because the shared blocks stay in L2.
+- **[flash-sae](https://github.com/alepot55/flash-sae)**: Triton kernels for sparse autoencoders.
+  Fusing the gather removes the dense latent matrix PyTorch materialises for features that are
+  99 percent inactive. 13.6x on the decoder forward, 1.78x end to end.
+- **[atlas-mm](https://github.com/alepot55/atlas-mm)**: a limit order book simulator with a
+  formally verified market maker. 134,000 orders per second, and 4 book invariants proved in Z3
+  for every input.
+- **[verify-cbl](https://github.com/alepot55/verify-cbl)**: an LLM translates legacy financial
+  code, then Z3 proves the translation behaves identically for every input. It agreed with the
+  ground truth on 42 of 42 cases.
+- **[agentrial](https://github.com/alepot55/agentrial)**: run an agent a hundred times and get
+  Wilson confidence intervals instead of anecdotes.
+  [On PyPI](https://pypi.org/project/agentrial/), 450 tests.
+
+Also [SplatSLAM](https://github.com/alepot55/SplatSLAM),
+[MGC-GTZAN](https://github.com/alepot55/MGC-GTZAN),
+[Chessboard.js](https://github.com/alepot55/Chessboard.js).
 
 ---
 
-### Projects
-
-**[agentrial](https://github.com/alepot55/agentrial)** — The pytest for AI agents: run your agent 100 times, get confidence intervals instead of anecdotes. ([PyPI](https://pypi.org/project/agentrial/) · [VS Code](https://marketplace.visualstudio.com/items?itemName=alepot55.agentrial-vscode))
-
-**[Flash-Reasoning](https://github.com/alepot55/flash-reasoning)** — Tree-Aware KV-Cache Attention for Reasoning LLMs, with custom fused GQA Triton kernels exceeding HBM bandwidth limits.
-
-**[Flash-SAE](https://github.com/alepot55/flash-sae)** — High-performance Triton kernels for Sparse Autoencoders. 13.6x decoder speedup, 97% memory reduction.
-
-**[Verify-CBL](https://github.com/alepot55/verify-cbl)** — Neuro-symbolic formal verification engine using Z3 SMT solver and LLM-powered code translation.
-
-**[SplatSLAM](https://github.com/alepot55/SplatSLAM)** — Real-time 3D SLAM from monocular RGB using 3D Gaussian Splatting. No depth sensors needed.
-
-**[ConceptHub](https://concepthub-chi.vercel.app/)** — AI-powered learning platform with auto-generated book summaries and mind maps.
-
-**[Music Genre Classification](https://github.com/alepot55/MGC-GTZAN)** — SOTA 83.5% accuracy on GTZAN with a U-Net inspired model and leak-free methodology.
-
-**[Chessboard.js](https://github.com/alepot55/Chessboard.js)** — Dependency-free JS library for interactive chess: drag-and-drop, animations, legal move enforcement.
-
----
-
-### Highlights
-
-- **Merit-Based Scholarship**, Politecnico di Milano
-- **Global Finalist, Huawei Seeds for the Future**: led a team to the Global Finals in China
-- **Top 1.5%** (3rd/193) in the Polimi AI Challenge with a custom Vision Transformer ensemble
-- **110/110 cum Laude**, Sapienza University of Rome, Honors Program (Top 1%)
-- **Technical book author** for a Computer Science textbook (Neldiritto Editore)
-
----
-
-Python · C++ · CUDA · Triton · PyTorch · Docker · TypeScript · React · PostgreSQL
+Last updated August 2026.
