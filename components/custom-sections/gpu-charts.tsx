@@ -130,7 +130,7 @@ export function GPUCharts({ project }: { project: Project }) {
       {/* Chart 1: CUDA vs Triton kernel time per benchmark */}
       <ChartFrame
         title="CUDA vs Triton, best kernel time per benchmark"
-        caption="13 FSA benchmarks, log scale (ms). Lower is faster."
+        caption="13 FSA benchmarks from the 2025 course project, log scale (ms). Lower is faster."
         keys={[
           { label: "CUDA", tone: "ref" },
           { label: "Triton", tone: "ink" },

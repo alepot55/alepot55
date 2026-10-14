@@ -24,7 +24,7 @@ export const projects: Project[] = [
         summary:
       "A Triton pass that recovers 2.3-6.7x on automata kernels",
         description:
-      "I traced the 10.2x gap between Triton and hand-written CUDA on finite automata to one thing the tile IR cannot express, then built the compiler pass that recovers 2.3 to 6.7x of it. The measurement paper is accepted at IEEE HPEC 2026.",
+      "I traced the 10.2x gap between Triton and hand-written CUDA on finite automata to one thing the tile IR cannot express, then built the compiler pass that recovers 2.3 to 6.7x of it. The work started as a 2025 Advanced Computer Architectures course project with Francesco Poloni that Davide Conficconi and Filippo Del Nero (NECST Laboratory) proposed and supervised. The measurement paper is accepted at IEEE HPEC 2026.",
     highlights: [
       {
         value: "2.3-6.7x",
