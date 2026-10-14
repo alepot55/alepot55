@@ -8,4 +8,4 @@ It sits inside PERIVALLON, a Horizon Europe project. Seventy logged experiments 
 
 ## What the coursework turned into
 
-Flash-Reasoning and Flash-SAE both started as course projects in high-performance computing and deep learning, and both ended as Triton kernel libraries with measured speedups. The gpufsm work grew out of the same GPU course and became an accepted HPEC paper.
+Flash-Reasoning and Flash-SAE both started as course projects in high-performance computing and deep learning, and both ended as Triton kernel libraries with measured speedups. The gpufsm work grew out of a 2025 Advanced Computer Architectures course project with Francesco Poloni that Davide Conficconi and Filippo Del Nero (NECST Laboratory) proposed and supervised, and became an accepted HPEC paper.

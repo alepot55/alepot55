@@ -25,7 +25,8 @@ ap.alessandro.potenza@gmail.com
 ## Published
 
 - **IEEE HPEC 2026**, *The Two Faces of Abstraction Regret: Control-Flow and Memory-Layout Limits
-  of GPU DSLs on Irregular Automata*. Sole author, accepted for an oral talk.
+  of GPU DSLs on Irregular Automata*. Single author, accepted for an oral talk. The work grew out of
+  a 2025 Advanced Computer Architectures course project with Francesco Poloni that Davide Conficconi and Filippo Del Nero (NECST Laboratory) proposed and supervised.
 - **[Informatica per i concorsi pubblici 2026](https://shop.enneditore.it/products/informatica-per-i-concorsi-pubblici-2026-manuale-di-teoria-e-quiz-commentati)**,
   a 432-page Computer Science manual for Italian public-sector exams. Neldiritto Editore.
 

@@ -6,9 +6,9 @@ export const achievements: Achievement[] = [
     title: "Paper accepted, IEEE HPEC 2026",
     organization: "IEEE High Performance Extreme Computing Conference",
     date: "Aug 2026",
-    summary: "Sole author, accepted for an oral talk and IEEE Xplore",
+    summary: "Accepted for an oral talk and IEEE Xplore",
     description:
-      "The Two Faces of Abstraction Regret: Control-Flow and Memory-Layout Limits of GPU DSLs on Irregular Automata. Sole-authored, accepted for an oral presentation in the General Purpose GPU Computing session and for publication in IEEE Xplore.",
+      "The Two Faces of Abstraction Regret: Control-Flow and Memory-Layout Limits of GPU DSLs on Irregular Automata. Single author, accepted for an oral presentation in the General Purpose GPU Computing session and for publication in IEEE Xplore. The work grew out of a 2025 Advanced Computer Architectures course project with Francesco Poloni that Davide Conficconi and Filippo Del Nero (NECST Laboratory) proposed and supervised.",
   },
   {
     id: "airlab-competition",

@@ -1,6 +1,6 @@
 ## The gap is 10.2x median and 32.8x worst, across 13 benchmarks
 
-Thirteen automata benchmarks on an RTX 4070, each checked against a CPU oracle before it is timed. Triton's median is 10.2x slower than hand-written CUDA and its worst is 32.8x, on hamming. The number circulated already; the mechanism did not.
+Thirteen automata benchmarks on an RTX 4070, each checked against a CPU oracle before it is timed, measured in a 2025 Advanced Computer Architectures course project with Francesco Poloni that Davide Conficconi and Filippo Del Nero (NECST Laboratory) proposed and supervised. Triton's median is 10.2x slower than hand-written CUDA and its worst is 32.8x, on hamming. The number circulated already; the mechanism did not.
 
 ## Two thirds of the gap is a launch flag and a packing loss
 
@@ -24,4 +24,4 @@ Same source, lowered to the thread model: 2.3 to 6.7x on control-bound kernels o
 
 ## Upstream declined the in-tree pass, and was right to
 
-I opened an RFC and a pull request on `triton-lang/triton` asking for the pass in tree. The maintainers declined, so it ships out of tree as a loadable plugin; separate patches from the same work did land, in Triton and in LLVM's MLIR. I am the sole author, and the measurement paper is accepted at IEEE HPEC 2026 for an oral talk and IEEE Xplore.
+I opened an RFC and a pull request on `triton-lang/triton` asking for the pass in tree. The maintainers declined, so it ships out of tree as a loadable plugin; separate patches from the same work did land, in Triton and in LLVM's MLIR. The measurement paper, accepted at IEEE HPEC 2026 for an oral talk and IEEE Xplore, grew out of that course project.
